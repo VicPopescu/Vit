@@ -1,10 +1,27 @@
-$color-WineBerry: #4B1B3B;
-$color-Olivetone: #7B760F;
+$color-Black:               #000000;
+$color-White:               #FFFFFF;
+$color-Red:                 #F60E13;
+$color-Gray:                #808080;
+$color-White:               #FFFFFF;
 
+$color-WineBerry:           #4B1B3B;
+$color-Olivetone:           #7B760F;
+$color-HeavyMetal:          #282A28;
+$color-Lima:                #37C91D;
+$color-CaribbeanGreen:      #09D391;
+
+
+$border-default: 1px solid $color-Black;
+
+$font-xs:  8px; //extra-small
+$font-sm: 12px; //small
+$font-nm: 16px; //normal
+$font-lg: 22px; //large
+$font-xl: 32px; //extra-large
 
 body {
     background: url('http://www.socwall.com/images/wallpapers/40495-2400x1500.jpg') no-repeat;
     background-size: cover;
     background-position: center;
-    background-color: $color-WineBerry;
+    background-color: $color-HeavyMetal;
 }
