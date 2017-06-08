@@ -30,8 +30,7 @@ body {
     height: auto;
     width: 50%;
     position: absolute;
-    right: 2%;
-    left: auto;
+    left: 1%;
     bottom: 5%;
     top: auto;
     &__allMessages {
@@ -50,5 +49,15 @@ body {
     }
     &__submit {
         //
+    }
+}
+
+#login{
+    position: absolute;
+    top: auto;
+    bottom: 5%;
+    left: 20%;
+    &__form {
+        margin: 10px;
     }
 }

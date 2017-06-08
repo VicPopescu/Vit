@@ -1,19 +1,30 @@
-var express = require('express');
-var app = express();
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-var path = require('path');
-var fs = require('fs');
-var sassMiddleware = require('node-sass-middleware');
+const express = require('express');
+const app = express();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+const path = require('path');
+const fs = require('fs');
+const sassMiddleware = require('node-sass-middleware');
 
 /**
  *      Custom modules
  */
 //profanity filter
-var profanityFilter = require('../custom_modules/profanity_filter/profanity-filter.js');
+const profanityFilter = require('../custom_modules/profanity_filter/profanity-filter.js');
 
 /**
- *      Routes
+ *      Variables
+ */
+var port = process.env.PORT || 4400;
+var room = { //default room to join
+    id: "1",
+    name: "Default Room",
+    listOfUsers: [],
+    emittedMessages: []
+};
+
+/**
+ *      Routing
  */
 //sass middleware
 app.use(sassMiddleware({
@@ -55,9 +66,12 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 //test connection
 io.on('connection', function (client) {
-    client.on('chat message', function (msg) {
-        console.log('(ANY CLIENT): ' + msg);
-        io.emit('new message', msg);
+
+    client.on('user message', function (o) {
+
+        console.log('(CLIENT): [' + o.usr + ']: ' + o.msg);
+
+        io.emit('new message', o);
     });
 });
 
@@ -82,4 +96,4 @@ var serverStatus = function () {
  */
 
 //start server
-server.listen(process.env.port || 4000, serverStatus);
+server.listen(port, serverStatus);
