@@ -1,16 +1,16 @@
-const express = require('express');
-const app = express();
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
-const path = require('path');
-const fs = require('fs');
-const sassMiddleware = require('node-sass-middleware');
+var express = require('express');
+var app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+var path = require('path');
+var fs = require('fs');
+var sassMiddleware = require('node-sass-middleware');
 
 /**
  *      Custom modules
  */
 //profanity filter
-const profanityFilter = require('../custom_modules/profanity_filter/profanity-filter.js');
+var profanityFilter = require('../custom_modules/profanity_filter/profanity-filter.js');
 
 /**
  *      Routes
