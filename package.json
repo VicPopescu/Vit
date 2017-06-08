@@ -1,6 +1,7 @@
 {
   "name": "vit",
   "version": "1.0.0",
+  "engines":{"node": "6.10.0"},
   "description": "Node.Js, Socket.io chat application",
   "main": "server/index.js",
   "scripts": {
