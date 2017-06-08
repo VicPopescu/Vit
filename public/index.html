@@ -12,8 +12,17 @@
 </head>
 
 <body>
-    <img src='http://simswiki.info/images/f/f8/Under_construction.png' height="300px" style="display: block; margin: 10% auto;"/>
+    <!--<img src='http://simswiki.info/images/f/f8/Under_construction.png' height="300px" style="display: block; margin: 10% auto;"/>-->
+    <section id="chat">
+        <ul id="chat__allMessages"></ul>
+        <form id="chat__form" action="">
+            <input id="chat__userInput" autocomplete="off" />
+            <button id="chat__submit">Potato</button>
+        </form>
+    </section>
 
+    <!--Scripts-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="socket.io/socket.io.js"></script>
     <script src="js/index.js"></script>
 </body>
