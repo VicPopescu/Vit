@@ -10,7 +10,7 @@ const sassMiddleware = require('node-sass-middleware');
  *      Custom modules
  */
 //profanity filter
-const profanityFilter = require('../custom_modules/profanity_filter/profanity-filter.js');
+const profanityFilter = require('./custom_modules/profanity_filter/profanity-filter.js');
 
 /**
  *      Variables
@@ -29,14 +29,14 @@ var room = { //default room to join
 //sass middleware
 app.use(sassMiddleware({
     /* Options */
-    src: path.join(__dirname, 'sass'),
-    dest: path.join(__dirname, '../public/css'),
+    src: path.join(__dirname, 'server/sass'),
+    dest: path.join(__dirname, 'public/css'),
     debug: false,
     outputStyle: 'compressed',
     prefix: '/css'
 }));
 //set static public folder
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 // // sending to sender-client only
