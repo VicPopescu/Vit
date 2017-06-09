@@ -23,6 +23,9 @@ var room = { //default room to join
     emittedMessages: []
 };
 
+var allClients = {};
+var allUsers = {};
+
 /**
  *      Routing
  */
@@ -72,6 +75,22 @@ io.on('connection', function (client) {
         console.log('(CLIENT): [' + o.usr + ']: ' + o.msg);
 
         io.emit('new message', o);
+    });
+
+    client.on('user login', function (user) {
+
+        client.username = user;
+        console.log(client.username + " joined");
+        
+
+        allClients[client.id] = client;
+        allUsers[client.id] = user;
+
+
+        io.emit('new user logged in', {id: client.id, name: user});
+
+        client.emit('fetch users', allUsers);
+
     });
 });
 
