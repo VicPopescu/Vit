@@ -34,11 +34,6 @@ var set_cookie = function (name, val) {
 };
 
 /**
- *      Global Variables
- */
-var usr = get_cookieByName('user') || null; //local saved user name
-
-/**
  *      Caching selectors
  */
 var $chat = $('#chat'),
@@ -52,6 +47,17 @@ var $login = $('#login'),
     $login__form = $('#login__form'),
     $login__userInput = $('#login__userInput'),
     $login__submit = $('#login__submit');
+
+/**
+ *      Global Variables
+ */
+var usr = get_cookieByName('user') || null; //local saved user name
+if (!usr) {
+    $login.show();
+    $login__userInput.focus();
+} else {
+    $chat.show();
+}
 
 
 /**
@@ -74,6 +80,9 @@ $login__form.submit(function (e) {
     set_cookie('user', user);
     usr = user || usr;
 
+    $login.hide();
+    $chat.show();
+    $chat__userInput.focus();
 
     e.preventDefault();
     return false;
@@ -92,7 +101,7 @@ $chat__form.submit(function (e) {
         'msg': msg
     });
 
-    $chat__userInput.val('');
+    $chat__userInput.val('').focus();
 
     e.preventDefault();
     return false;

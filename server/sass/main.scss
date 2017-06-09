@@ -1,19 +1,19 @@
 //          --/COLORS/--          //
-$color-Black : #000000;
-$color-White : #FFFFFF;
-$color-Red : #F60E13;
-$color-Gray : #808080;
-$color-White : #FFFFFF;
+$color-Black: #000000;
+$color-White: #FFFFFF;
+$color-Red: #F60E13;
+$color-Gray: #808080;
+$color-White: #FFFFFF;
 //          --/COLORS/--          //
-$color-WineBerry : #4B1B3B;
-$color-Olivetone : #7B760F;
-$color-HeavyMetal : #282A28;
-$color-Lima : #37C91D;
-$color-CaribbeanGreen : #09D391;
+$color-WineBerry: #4B1B3B;
+$color-Olivetone: #7B760F;
+$color-HeavyMetal: #282A28;
+$color-Lima: #37C91D;
+$color-CaribbeanGreen: #09D391;
 //          --/BORDERS/--         //
 $border-default: 1px solid $color-Olivetone;
 //           --/FONTS/--          //
-$font-xs : 8px; //extra-small
+$font-xs: 8px; //extra-small
 $font-sm: 12px; //small
 $font-nm: 16px; //normal
 $font-lg: 22px; //large
@@ -29,6 +29,7 @@ body {
 #chat {
     height: auto;
     width: 50%;
+    display: none;    
     position: absolute;
     left: 1%;
     bottom: 5%;
@@ -52,11 +53,20 @@ body {
     }
 }
 
-#login{
+#login {
+    width: 20%;
+    height: 100px;
+    display: none;    
     position: absolute;
-    top: auto;
-    bottom: 5%;
-    left: 20%;
+    left: 0;
+    right: 0;
+    top: 40%;
+    bottom: 0;
+    margin: 0 auto;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: auto;
+    border: $border-default;
     &__form {
         margin: 10px;
     }
