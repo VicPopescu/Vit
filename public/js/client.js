@@ -1,7 +1,8 @@
 /**
  *      Global Constants
  */
-const socket = io();
+const url = window.location.href;
+const socket = io.connect(url);
 
 
 /**
