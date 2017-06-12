@@ -2,7 +2,7 @@
  *      Global Constants
  */
 const url = window.location.href;
-const socket = io.connect(url);
+const socket = io({transports: ['websocket'], upgrade: false}).connect(url);
 
 
 /**
@@ -105,7 +105,7 @@ var update_usersList = function (action, user) {
         $users__list.empty();
 
         $.each(users, function (id, name) {
-             $users__list.append(template_userlistItem(id, name));
+            $users__list.append(template_userlistItem(id, name));
         });
     }
 
@@ -125,7 +125,7 @@ if (!usr) {
     $login.show();
     $login__userInput.focus();
 } else {
-    do_login(socket, usr);    
+    do_login(socket, usr);
     $chat.show();
 }
 
@@ -135,14 +135,10 @@ if (!usr) {
 $login__form.submit(function (e) {
 
     var user = $login__userInput.val();
-    set_cookie('user', user);
-    usr = user || usr;
+
     //send login info to server
     do_login(socket, user);
     //DOM update
-    $login.remove();
-    $chat.show();
-    $chat__userInput.focus();
 
     e.preventDefault();
     return false;
@@ -183,16 +179,25 @@ socket.on('connection', function () {
 });
 
 socket.on('disconnect', function () {
-    //we need potato connection here
-    update_usersList('add all', allUsers);
+    //
 });
 
 
 /////////////////////////////////////////////
 
-socket.on('a client connected', function (allUsers) {
+socket.on('connection success', function (users) {
 
-    update_usersList('add all', allUsers);
+    var all = users.all;
+    var thisUser = users.thisUser;
+
+    update_usersList('add all', all);
+
+    set_cookie('user', thisUser);
+    usr = thisUser || usr;
+
+    $login.remove();
+    $chat.show();
+    $chat__userInput.focus();
 });
 
 socket.on('a client disconnected', function (user) {
@@ -205,9 +210,10 @@ socket.on('a user logged in', function (user) {
     update_usersList('add', user);
 });
 
+
+///////////////////////////////////////////////
+
 socket.on('new message', function (o) {
 
     $chat__allMessages.append(template_message(o.usr, o.msg));
 });
-
-

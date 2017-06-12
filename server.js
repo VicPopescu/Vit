@@ -34,12 +34,24 @@ app.use(sassMiddleware({
     /* Options */
     src: path.join(__dirname, 'server/sass'),
     dest: path.join(__dirname, 'public/css'),
-    debug: false,
+    debug: true,
     outputStyle: 'compressed',
     prefix: '/css'
 }));
 //set static public folder
 app.use(express.static(path.join(__dirname, 'public')));
+
+/**
+ * Returns a random integer between min and max, if provided, or use default numbers
+ */
+function getIntRandom(min, max) {
+
+    //default values, if min and max are not provided
+    min = min || 0;
+    max = max || 1000;
+
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 
 // // sending to sender-client only
@@ -70,29 +82,39 @@ app.use(express.static(path.join(__dirname, 'public')));
 //test connection
 io.on('connection', function (client) {
 
-    client.on('user message', function (o) {
-
-        console.log('(CLIENT): [' + o.usr + ']: ' + o.msg);
-
-        io.emit('new message', o);
-    });
-
+    /**
+     * 
+     */
     client.on('user login', function (user) {
+
+        // for (var id in allUsers) {
+        //     if (allUsers[id] = user) {
+        //         user += getIntRandom();
+        //         break;
+        //     }
+        // }
 
         client.username = user;
 
-        console.log(client.username + " joined");
+        console.log(client.username + " Joined");
 
         allClients[client.id] = client;
         allUsers[client.id] = user;
 
-        io.emit('a user logged in', {
+        client.broadcast.emit('a user logged in', {
             id: client.id,
             name: user
         });
-        client.emit('a client connected', allUsers);
+
+        client.emit('connection success', {
+            all: allUsers,
+            thisUser: user
+        });
     });
 
+    /**
+     * 
+     */
     client.on('disconnect', function () {
 
         var id = client.id;
@@ -106,6 +128,17 @@ io.on('connection', function (client) {
             id: client.id
         });
     });
+
+    /**
+     * 
+     */
+    client.on('user message', function (o) {
+
+        console.log('(CLIENT): [' + o.usr + ']: ' + o.msg);
+
+        io.emit('new message', o);
+    });
+
 });
 
 
