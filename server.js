@@ -6,8 +6,6 @@ const path = require('path');
 const fs = require('fs');
 const sassMiddleware = require('node-sass-middleware');
 
-io.set('transports', ['websocket']);
-
 /**
  *      Custom modules
  */
@@ -83,6 +81,8 @@ function getIntRandom(min, max) {
 
 //test connection
 io.on('connection', function (client) {
+
+    io.set('transports', ['websocket']);
 
     /**
      * 

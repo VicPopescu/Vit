@@ -53,6 +53,9 @@ var $chat = $('#chat'),
     $chat__userInput = $('#chat__userInput'),
     $chat__submit = $('#chat__submit');
 
+var $chat_messageUser = $('.chat__messageUser');
+
+
 
 var $login = $('#login'),
     $login__form = $('#login__form'),
@@ -67,7 +70,7 @@ var $users__list = $('#users__list');
  */
 var template_message = function (u, m) {
 
-    l = '<li>' + u + ': ' + m + '</li>';
+    l = '<li><span class="chat__messageUser">' + u + '</span>:<span class="chat__message"> ' + m + '</span></li>';
 
     return l;
 };
@@ -171,6 +174,27 @@ $chat__form.submit(function (e) {
 
     e.preventDefault();
     return false;
+});
+
+//
+$chat.on('click.msgUser', '.chat__messageUser', function () {
+
+    var user = $(this).text();
+
+    $chat__userInput.val(function (index, msg) {
+        $(this).focus();
+        return msg + " @" + user + " ";
+    });
+});
+
+$users__list.on('click.msgUser', 'li' , function(){
+
+    var user = $(this).text();
+
+    $chat__userInput.val(function (index, msg) {
+        $(this).focus();
+        return msg + " @" + user + " ";
+    });
 });
 
 

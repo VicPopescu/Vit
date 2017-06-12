@@ -9,6 +9,7 @@ $color-Olivetone: #7B760F;
 $color-HeavyMetal: #282A28;
 $color-Lima: #37C91D;
 $color-CaribbeanGreen: #09D391;
+$color-Malibu: #72D0F3;
 //          --/BORDERS/--         //
 $border-default: 1px solid $color-Olivetone;
 //           --/FONTS/--          //
@@ -27,14 +28,14 @@ body {
 }
 
 #chat {
-    height: auto;
+    height: 90%;
     width: 90%;
-    display: none;    
+    display: none;
     position: absolute;
     left: 1%;
     bottom: 5%;
     top: auto;
-    &__users{
+    &__users {
         padding: 5px;
         width: 20%;
         position: absolute;
@@ -42,22 +43,32 @@ body {
         bottom: 10%;
         border: $border-default;
         color: $color-Olivetone;
-
-        #users__list{
+        #users__list {
             list-style-type: circle;
-
+            color: $color-Malibu;
+            li {
+                cursor: pointer;
+            }
         }
     }
     &__allMessages {
         width: 40%;
+        height: 90%;
         list-style: none;
+        overflow-y: auto;
         margin: 0;
         padding: 0;
+        border: $border-default;
         li {
             padding: 2px;
             margin: 10px;
             border: $border-default;
             color: $color-White;
+            vertical-align: bottom;
+        }
+        .chat__messageUser {
+            color: $color-Malibu;
+            cursor: pointer;
         }
     }
     &__form {
@@ -71,7 +82,7 @@ body {
 #login {
     width: 20%;
     height: 100px;
-    display: none;    
+    display: none;
     position: absolute;
     left: 0;
     right: 0;
