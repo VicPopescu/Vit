@@ -3,7 +3,6 @@ $color-Black: #000000;
 $color-White: #FFFFFF;
 $color-Red: #F60E13;
 $color-Gray: #808080;
-$color-White: #FFFFFF;
 //          --/COLORS/--          //
 $color-WineBerry: #4B1B3B;
 $color-Olivetone: #7B760F;
@@ -19,11 +18,12 @@ $font-nm: 16px; //normal
 $font-lg: 22px; //large
 $font-xl: 32px; //extra-large
 body {
-    // background: url('http://www.socwall.com/images/wallpapers/40495-2400x1500.jpg') no-repeat;
     background-size: cover;
     background-position: center;
     background-color: $color-HeavyMetal;
     height: 100%;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 80%;
 }
 
 #chat {
@@ -35,12 +35,16 @@ body {
     bottom: 5%;
     top: auto;
     &__users{
+        padding: 5px;
         width: 20%;
         position: absolute;
         right: 5px;
         bottom: 10%;
         border: $border-default;
-        &__list{
+        color: $color-Olivetone;
+
+        #users__list{
+            list-style-type: circle;
 
         }
     }
