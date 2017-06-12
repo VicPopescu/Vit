@@ -57,17 +57,6 @@ var $login = $('#login'),
 
 var $users__list = $('#users__list');
 
-/**
- *      Global Variables
- */
-var usr = get_cookieByName('user') || null; //local saved user name
-if (!usr) {
-    $login.show();
-    $login__userInput.focus();
-} else {
-    $chat.show();
-}
-
 
 /**
  *      Templates
@@ -113,16 +102,32 @@ var update_usersList = function (action, user) {
 
     function addAll(users) {
 
+        $users__list.empty();
+
         $.each(users, function (id, name) {
-            template_userlistItem(id, name)
+             $users__list.append(template_userlistItem(id, name));
         });
     }
 
     function remove(user) {
 
+        $users__list.find("[data-userId='" + user.id + "']").remove();
     };
 
 };
+
+/**
+ *      Global Variables
+ */
+var usr = get_cookieByName('user') || null; //local saved user name
+
+if (!usr) {
+    $login.show();
+    $login__userInput.focus();
+} else {
+    do_login(socket, usr);    
+    $chat.show();
+}
 
 /**
  *      Managing form submits
@@ -174,6 +179,30 @@ $chat__form.submit(function (e) {
  */
 socket.on('connection', function () {
     //we need potato connection here
+    update_usersList('add all', allUsers);
+});
+
+socket.on('disconnect', function () {
+    //we need potato connection here
+    update_usersList('add all', allUsers);
+});
+
+
+/////////////////////////////////////////////
+
+socket.on('a client connected', function (allUsers) {
+
+    update_usersList('add all', allUsers);
+});
+
+socket.on('a client disconnected', function (user) {
+
+    update_usersList('remove', user);
+});
+
+socket.on('a user logged in', function (user) {
+
+    update_usersList('add', user);
 });
 
 socket.on('new message', function (o) {
@@ -181,12 +210,4 @@ socket.on('new message', function (o) {
     $chat__allMessages.append(template_message(o.usr, o.msg));
 });
 
-socket.on('new user logged in', function (user) {
 
-    update_usersList('add', user);
-});
-
-socket.on('fetch users', function (allUsers) {
-
-    update_usersList('add all', allUsers);
-});

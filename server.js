@@ -80,17 +80,31 @@ io.on('connection', function (client) {
     client.on('user login', function (user) {
 
         client.username = user;
+
         console.log(client.username + " joined");
-        
 
         allClients[client.id] = client;
         allUsers[client.id] = user;
 
+        io.emit('a user logged in', {
+            id: client.id,
+            name: user
+        });
+        client.emit('a client connected', allUsers);
+    });
 
-        io.emit('new user logged in', {id: client.id, name: user});
+    client.on('disconnect', function () {
 
-        client.emit('fetch users', allUsers);
+        var id = client.id;
 
+        console.log(client.username + ' Got disconnect!');
+
+        delete allClients[id];
+        delete allUsers[id];
+
+        io.emit('a client disconnected', {
+            id: client.id
+        });
     });
 });
 
