@@ -6,6 +6,8 @@ const path = require('path');
 const fs = require('fs');
 const sassMiddleware = require('node-sass-middleware');
 
+io.set('transports', ['websocket']);
+
 /**
  *      Custom modules
  */

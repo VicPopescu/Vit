@@ -2,7 +2,11 @@
  *      Global Constants
  */
 const url = window.location.href;
-const socket = io({transports: ['websocket'], upgrade: false}).connect(url);
+const opt = {
+    transports: ['websocket'],
+    upgrade: false
+}
+const socket = io(url, opt);
 
 
 /**
@@ -150,7 +154,7 @@ $chat__form.submit(function (e) {
 
     var msg = $chat__userInput.val();
 
-    if (msg === "reset") {
+    if (msg === "logout") {
         reset_cookie("user");
         location.reload();
     }
