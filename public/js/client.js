@@ -47,6 +47,8 @@ var set_cookie = function (name, val) {
 /**
  *      Caching selectors
  */
+
+var $document = $(document);
 var $chat = $('#chat'),
     $chat__allMessages = $('#chat__allMessages'),
     $chat__form = $('#chat__form'),
@@ -62,7 +64,9 @@ var $login = $('#login'),
     $login__userInput = $('#login__userInput'),
     $login__submit = $('#login__submit');
 
+var $users = $('#chat__users');
 var $users__list = $('#users__list');
+var $toggle__users = $('#toggleUsers');
 
 
 /**
@@ -186,7 +190,8 @@ $chat.on('click.msgUser', '.chat__messageUser', function () {
     });
 });
 
-$users__list.on('click.msgUser', 'li' , function(){
+//
+$users__list.on('click.msgUser', 'li', function () {
 
     var user = $(this).text();
 
@@ -195,6 +200,36 @@ $users__list.on('click.msgUser', 'li' , function(){
         return msg + " @" + user + " ";
     });
 });
+
+function displayUserslist(e1) {
+
+    $users.animate({
+        right: "+=26%"
+    }, 300, function () {
+        $document.on('click.hideUsersList', hideUsersList);
+    });
+    $(this).unbind(e1);
+}
+
+function hideUsersList(ev) {
+
+    if (ev.target.id == "chat__users")
+        return;
+    //For descendants of menu_content being clicked
+    if ($(ev.target).closest('#chat__users').length)
+        return;
+
+    $users.animate({
+        right: "-=26%"
+    }, 300, function () {
+        $toggle__users.off('click.displayUsers').one('click.displayUsers', displayUserslist);
+    });
+    $(this).unbind(ev);
+};
+
+//
+$toggle__users.one('click.displayUsers', displayUserslist);
+
 
 
 /**

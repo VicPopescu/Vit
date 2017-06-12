@@ -3,6 +3,7 @@ $color-Black: #000000;
 $color-White: #FFFFFF;
 $color-Red: #F60E13;
 $color-Gray: #808080;
+$color-TransparentBlack: rgba(0, 0, 0, 0.2);
 //          --/COLORS/--          //
 $color-WineBerry: #4B1B3B;
 $color-Olivetone: #7B760F;
@@ -19,52 +20,47 @@ $font-nm: 16px; //normal
 $font-lg: 22px; //large
 $font-xl: 32px; //extra-large
 body {
+    background: linear-gradient(135deg, #002e3a, #017796);
     background-size: cover;
-    background-position: center;
-    background-color: $color-HeavyMetal;
     height: 100%;
     font-family: 'Nunito Sans', sans-serif;
     font-size: 80%;
+    overflow: hidden;
 }
 
 #chat {
-    height: 90%;
+    height: 98%;
     width: 90%;
     display: none;
     position: absolute;
     left: 1%;
-    bottom: 5%;
-    top: auto;
-    &__users {
-        padding: 5px;
-        width: 20%;
-        position: absolute;
-        right: 5px;
-        bottom: 10%;
-        border: $border-default;
-        color: $color-Olivetone;
-        #users__list {
-            list-style-type: circle;
-            color: $color-Malibu;
-            li {
-                cursor: pointer;
-            }
-        }
-    }
+    top: 1%;
     &__allMessages {
         width: 40%;
-        height: 90%;
+        height: 95%;
         list-style: none;
         overflow-y: auto;
         margin: 0;
         padding: 0;
         border: $border-default;
+        background-color: $color-TransparentBlack;
+        -webkit-transition: all 0.2s ease-in-out 0s;
+        -moz-transition: all 0.2s ease-in-out 0s;
+        -o-transition: all 0.2s ease-in-out 0s;
+        -ms-transition: all 0.2s ease-in-out 0s;
+        transition: all 0.2s ease-in-out 0s;
+        &:hover {
+            border-color: $color-White;
+        }
         li {
-            padding: 2px;
+            padding: 10px;
             margin: 10px;
             border: $border-default;
             color: $color-White;
             vertical-align: bottom;
+            &:hover {
+                border-color: $color-White;
+            }
         }
         .chat__messageUser {
             color: $color-Malibu;
@@ -76,6 +72,42 @@ body {
     }
     &__submit {
         //
+    }
+}
+
+#chat__users {
+    height: 93%;
+    width: 20%;
+    position: absolute;
+    top: 1%;
+    bottom: 0;
+    right: -25%;
+    background-color: $color-TransparentBlack;
+    padding: 5px;
+    border: $border-default;
+    color: $color-Olivetone;
+    #users__list {
+        list-style-type: circle;
+        color: $color-Malibu;
+        li {
+            cursor: pointer;
+        }
+    }
+}
+
+#toggleUsers {
+    width: 100px;
+    position: absolute;
+    right: 2%;
+    top: 2%;
+    font-size: 120%;
+    color: $color-White;
+    text-align: center;
+    cursor: pointer;
+    border: $border-default;
+    padding: 0.4%;
+    &:hover {
+        border-color: $color-TransparentBlack;
     }
 }
 
