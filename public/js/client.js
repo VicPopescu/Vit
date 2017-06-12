@@ -143,9 +143,8 @@ $login__form.submit(function (e) {
 
     var user = $login__userInput.val();
 
-    //send login info to server
-    do_login(socket, user);
-    //DOM update
+    //check if user is allowed and send login info to server
+    user && do_login(socket, user);
 
     e.preventDefault();
     return false;
@@ -223,6 +222,7 @@ socket.on('connection success', function (users) {
     set_cookie('user', thisUser);
     usr = thisUser || usr;
 
+    //DOM update
     $login.remove();
     $chat.show();
     $chat__userInput.focus();
