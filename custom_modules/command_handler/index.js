@@ -12,7 +12,7 @@ var CommandHandler = (function () {
     /**
      *      Global variables
      */
-   
+
 
     /**
      *      Public exports

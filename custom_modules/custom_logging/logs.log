@@ -1,0 +1,8 @@
+13/06/2017  17h:53m (SERVER) [USER: unknown]:  Disconnected!
+13/06/2017  17h:53m (SERVER) [USER: TestUser1]:  Joined!
+13/06/2017  17h:53m (SERVER) [USER: unknown]:  Disconnected!
+13/06/2017  17h:53m (SERVER) [USER: TestUser2]:  Joined!
+13/06/2017  17h:53m (CLIENT): [TestUser2]: testing logging
+13/06/2017  17h:53m (CLIENT): [TestUser1]: testing logging
+13/06/2017  17h:53m (CLIENT): [TestUser1]: if logging
+13/06/2017  17h:53m (CLIENT): [TestUser2]: test that logggggg

@@ -13,6 +13,8 @@ const sassMiddleware = require('node-sass-middleware');
 const profanityFilter = require('./custom_modules/profanity_filter/index.js');
 //command handler
 const commandHandler = require('./custom_modules/command_handler/index.js');
+//server logging
+const log = require('./custom_modules/custom_logging/index.js');
 
 
 /**
@@ -45,16 +47,58 @@ app.use(sassMiddleware({
 app.use(express.static(path.join(__dirname, 'public')));
 
 /**
- * Returns a random integer between min and max, if provided, or use default numbers
+ *      Returns a random integer between min and max, if provided, or use default numbers
  */
-function getIntRandom(min, max) {
+function get_intRandom(min, max) {
 
     //default values, if min and max are not provided
     min = min || 0;
     max = max || 1000;
 
     return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+};
+
+
+/**
+ *      Get current date and time
+ */
+function get_date(format) {
+
+    var date = new Date();
+
+    var day = date.getDate(),
+        month = date.getMonth() + 1,
+        year = date.getFullYear();
+
+    var h = date.getHours(),
+        m = date.getMinutes();
+
+    day < 10 ? day = '0' + day : day;
+    month < 10 ? month = '0' + month : month;
+    h < 10 ? h = '0' + h : h;
+    m < 10 ? m = '0' + m : m;
+
+    switch (format) {
+        case 'hour':
+
+            var time = h + 'h:' + m + 'm';
+            break;
+
+        case 'date':
+
+            var time = day + '/' + month + '/' + year;
+            break;
+        case 'date and hour':
+
+            var time = day + '/' + month + '/' + year + '  ' + h + 'h:' + m + 'm';
+            break;
+
+        default:
+            break;
+    }
+
+    return time;
+};
 
 
 // // sending to sender-client only
@@ -94,14 +138,22 @@ io.on('connection', function (client) {
 
         // for (var id in allUsers) {
         //     if (allUsers[id] = user) {
-        //         user += getIntRandom();
+        //         user += get_intRandom();
         //         break;
         //     }
         // }
 
         client.username = user;
 
-        console.log(client.username + " Joined");
+        if (client.username) {
+
+            console.log(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Joined!');
+            log.write(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Joined!');
+        } else {
+
+            console.log(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Joined!');
+            log.write(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Joined!');
+        }
 
         allClients[client.id] = client;
         allUsers[client.id] = user;
@@ -124,7 +176,15 @@ io.on('connection', function (client) {
 
         var id = client.id;
 
-        console.log(client.username + ' Got disconnect!');
+        if (client.username) {
+
+            console.log(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Disconnected!');
+            log.write(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Disconnected!');
+        }else{
+
+            console.log(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Disconnected!');
+            log.write(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Disconnected!');
+        }
 
         delete allClients[id];
         delete allUsers[id];
@@ -142,6 +202,7 @@ io.on('connection', function (client) {
         o.msg = profanityFilter.filterReplace(o.msg);
 
         console.log('(CLIENT): [' + o.usr + ']: ' + o.msg);
+        log.write(get_date('date and hour') + ' (CLIENT): [' + o.usr + ']: ' + o.msg);
 
         io.emit('new message', o);
     });
@@ -155,8 +216,6 @@ io.on('connection', function (client) {
         var id = client.id;
 
         console.log('(COMMAND) [' + client.username + ']: ' + cmd.cmd);
-
-
     });
 
 });
