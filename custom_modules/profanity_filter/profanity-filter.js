@@ -83,6 +83,38 @@ var ProfanityFilter = (function () {
         });
     }
 
+
+    /**
+     *      Add new bad words to dictionary
+     */
+    var addGoodWord = function (newGoodWord) {
+
+        fs.readFile(dictionary_location, 'utf8', function (err, dictionary) {
+
+            if (err) return console.log(err);
+
+            //parse external JSON into object that can be modified
+            var parsedDictionary = JSON.parse(dictionary);
+
+            //add bad word if it's not already added
+            if (parsedDictionary.fluffyWords.indexOf(newGoodWord) == -1) {
+
+                parsedDictionary.fluffyWords.push(newGoodWord);
+
+                //stringify object so it can be writted on external JSON file
+                parsedDictionary = JSON.stringify(parsedDictionary);
+
+                fs.writeFile(dictionary_location, parsedDictionary, 'utf8', function (err) {
+
+                    if (err) return console.log(err);
+                    console.log("Successful writed another fluffy word!")
+                });
+            } else {
+                console.log("That fluffy word already exists!");
+            }
+        });
+    }
+
     /**
      *      Replace bad words with fluffy unicorns
      */
@@ -95,7 +127,7 @@ var ProfanityFilter = (function () {
         for (var i = 0; i < w.length; i++) {
 
             if (bad.test(w[i])) {
-                
+
                 var good = goodWord();
                 w[i] = good;
             }
@@ -118,6 +150,8 @@ var ProfanityFilter = (function () {
         getGoodWord: goodWord,
 
         addBadWord: addBadWord,
+
+        addGoodWord: addGoodWord,
 
         filterReplace: filterReplace
     };
