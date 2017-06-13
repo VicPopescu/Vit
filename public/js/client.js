@@ -163,7 +163,7 @@ var handle_cmd = function (str) {
     return false;
 };
 
-function clear_input(){
+function clear_input() {
 
     //auto focus on input
     $chat__userInput.val('').focus();
@@ -338,4 +338,17 @@ socket.on('a user logged in', function (user) {
 socket.on('new message', function (o) {
 
     $chat__allMessages.append(template_message(o.usr, o.msg));
+});
+
+socket.on("image", function (imgInfo) {
+
+    var img = new Image();
+
+    img.onload = function () {
+        $chat__allMessages.append(img);
+    };
+
+    img.src = 'data:image/jpeg;base64,' + imgInfo.buffer;    
+
+    //ctx.drawImage(img, 0, 0);
 });

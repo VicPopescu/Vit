@@ -180,7 +180,7 @@ io.on('connection', function (client) {
 
             console.log(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Disconnected!');
             log.write(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Disconnected!');
-        }else{
+        } else {
 
             console.log(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Disconnected!');
             log.write(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Disconnected!');
@@ -214,6 +214,19 @@ io.on('connection', function (client) {
     client.on('command', function (cmd) {
 
         var id = client.id;
+
+        fs.readFile(__dirname + '/public/images/logo_1.png', function (err, buf) {
+
+            if (err) {
+                console.log(err);
+                return false;
+            }
+
+            client.emit('image', {
+                buffer: buf.toString('base64')
+            });
+            console.log('image file is initialized');
+        });
 
         console.log('(COMMAND) [' + client.username + ']: ' + cmd.cmd);
     });
