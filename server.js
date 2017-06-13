@@ -11,6 +11,8 @@ const sassMiddleware = require('node-sass-middleware');
  */
 //profanity filter
 const profanityFilter = require('./custom_modules/profanity_filter/profanity-filter.js');
+//const commandHandler = require('./custom_modules/command_handler/command-handler.js');
+
 
 /**
  *      Variables
@@ -136,9 +138,24 @@ io.on('connection', function (client) {
      */
     client.on('user message', function (o) {
 
+        o.msg = profanityFilter.filterReplace(o.msg);
+
         console.log('(CLIENT): [' + o.usr + ']: ' + o.msg);
 
         io.emit('new message', o);
+    });
+
+
+    /**
+     * 
+     */
+    client.on('command', function (cmd) {
+
+        var id = client.id;
+
+        console.log('(COMMAND) [' + client.username + ']: ' + cmd.cmd);
+
+
     });
 
 });

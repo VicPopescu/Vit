@@ -132,6 +132,46 @@ var update_usersList = function (action, user) {
  */
 var usr = get_cookieByName('user') || null; //local saved user name
 
+
+/**
+ *      Handle commands
+ */
+function get_cmd(str) {
+
+    var reg = /^!cmd\s(.*)/;
+    var cmd = str.match(reg);
+
+    return cmd[1];
+};
+
+function exec_cmd(cmd) {
+
+    socket.emit('command', {
+        'cmd': cmd
+    });
+};
+
+/**
+ *      Check for commands and return it
+ *      @param {string} str User input that need to be checked for commands
+ */
+var handle_cmd = function (str) {
+
+    var cmd = get_cmd(str);
+    exec_cmd(cmd);
+
+    return false;
+};
+
+function clear_input(){
+
+    //auto focus on input
+    $chat__userInput.val('').focus();
+};
+
+/**
+ *      Auto login if user already logged
+ */
 if (!usr) {
     $login.show();
     $login__userInput.focus();
@@ -140,8 +180,9 @@ if (!usr) {
     $chat.show();
 }
 
+
 /**
- *      Managing form submits
+ *      Login form
  */
 $login__form.submit(function (e) {
 
@@ -155,31 +196,49 @@ $login__form.submit(function (e) {
 });
 
 
-//
+/**
+ *      Handle user input
+ */
 $chat__form.submit(function (e) {
 
+    //user input
     var msg = $chat__userInput.val();
-
-    if (msg === "logout") {
-        reset_cookie("user");
-        location.reload();
-    }
 
     //handle early exit in case user or message is undefined
     if (!msg || !usr) return false;
 
+    var testReg = /^!cmd\s/;
+    var inputCmd = testReg.test(msg);
+
+    //check for user commands
+    if (inputCmd) {
+        handle_cmd(msg);
+        clear_input();
+        return false;
+    };
+
+    //delete cookie and log out, jsut for testing purpose
+    if (msg === "logout") {
+        reset_cookie("user");
+        location.reload();
+    };
+
+    //send the message to the server
     socket.emit('user message', {
         'usr': usr,
         'msg': msg
     });
 
-    $chat__userInput.val('').focus();
+    clear_input();
 
     e.preventDefault();
     return false;
 });
 
-//
+
+/**
+ *      User @mentioning
+ */
 $chat.on('click.msgUser', '.chat__messageUser', function () {
 
     var user = $(this).text();

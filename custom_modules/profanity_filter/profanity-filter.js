@@ -19,7 +19,7 @@ var ProfanityFilter = (function () {
      */
     var getDictionaryJSON = function () {
 
-        function fsCallback (err, dictionary) {
+        function fsCallback(err, dictionary) {
 
             //check for config reading errors
             if (err) {
@@ -38,7 +38,7 @@ var ProfanityFilter = (function () {
      */
     var badWords = function () {
 
-        return new RegExp(getDictionaryJSON().badWords.join("|"), 'gi');
+        return new RegExp(getDictionaryJSON().badWords.join("|"), 'i');
     }
 
 
@@ -89,11 +89,21 @@ var ProfanityFilter = (function () {
 
     var filterReplace = function (message) {
 
-        var good = goodWord();
-
+        var w = message.split(" ");
         var bad = badWords();
 
-            return message.replace(bad, good);
+        for (var i = 0; i < w.length; i++) {
+
+            if (bad.test(w[i])) {
+                
+                var good = goodWord();
+                w[i] = good;
+            }
+        }
+
+        w = w.join(' ');
+
+        return w;
     }
 
     /**
