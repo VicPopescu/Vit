@@ -10,8 +10,9 @@ const sassMiddleware = require('node-sass-middleware');
  *      Custom modules
  */
 //profanity filter
-const profanityFilter = require('./custom_modules/profanity_filter/profanity-filter.js');
-//const commandHandler = require('./custom_modules/command_handler/command-handler.js');
+const profanityFilter = require('./custom_modules/profanity_filter/index.js');
+//command handler
+const commandHandler = require('./custom_modules/command_handler/index.js');
 
 
 /**

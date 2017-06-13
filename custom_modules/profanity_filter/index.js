@@ -30,7 +30,7 @@ var ProfanityFilter = (function () {
         }
 
         return JSON.parse(fs.readFileSync(dictionary_location, 'utf8', fsCallback));
-    }
+    };
 
 
     /**
@@ -39,7 +39,7 @@ var ProfanityFilter = (function () {
     var badWords = function () {
 
         return new RegExp(getDictionaryJSON().badWords.join("|"), 'i');
-    }
+    };
 
 
     /**
@@ -50,10 +50,10 @@ var ProfanityFilter = (function () {
         var arr = getDictionaryJSON().fluffyWords;
 
         return arr[Math.floor(Math.random() * arr.length)];
-    }
+    };
 
     /**
-     *      Add new bad words to dictionary
+     *      Add new bad word to dictionary
      */
     var addBadWord = function (newBadWord) {
 
@@ -81,11 +81,11 @@ var ProfanityFilter = (function () {
                 console.log("That bad word already exists!");
             }
         });
-    }
+    };
 
 
     /**
-     *      Add new bad words to dictionary
+     *      Add new fluffy word to dictionary
      */
     var addGoodWord = function (newGoodWord) {
 
@@ -113,7 +113,7 @@ var ProfanityFilter = (function () {
                 console.log("That fluffy word already exists!");
             }
         });
-    }
+    };
 
     /**
      *      Replace bad words with fluffy unicorns
@@ -136,7 +136,7 @@ var ProfanityFilter = (function () {
         w = w.join(' ');
 
         return w;
-    }
+    };
 
     /**
      *      Public exports
