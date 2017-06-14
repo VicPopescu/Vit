@@ -1,5 +1,5 @@
 /**
- *      Custom Server Loging Module
+ *      Custom Server Logging Module
  */
 var CustomLogging = (function () {
 
@@ -8,13 +8,13 @@ var CustomLogging = (function () {
      */
     var fs = require('fs');
     var util = require('util');
-    var filePath = __dirname + '/logs.log';
-
 
 
     /**
      *      Global variables
      */
+    var filePath = __dirname + '/logs.log';
+
 
 
     /**

@@ -6,3 +6,6 @@
 13/06/2017  17h:53m (CLIENT): [TestUser1]: testing logging
 13/06/2017  17h:53m (CLIENT): [TestUser1]: if logging
 13/06/2017  17h:53m (CLIENT): [TestUser2]: test that logggggg
+14/06/2017  19h:17m (SERVER) [USER: TestUser1]:  Disconnected!
+14/06/2017  19h:17m (SERVER) [USER: TestUser1]:  Joined!
+14/06/2017  19h:25m (SERVER) [USER: TestUser1]:  Disconnected!

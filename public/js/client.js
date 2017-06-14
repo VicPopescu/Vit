@@ -49,11 +49,16 @@ var set_cookie = function (name, val) {
  */
 
 var $document = $(document);
+
 var $chat = $('#chat'),
     $chat__allMessages = $('#chat__allMessages'),
     $chat__form = $('#chat__form'),
     $chat__userInput = $('#chat__userInput'),
     $chat__submit = $('#chat__submit');
+
+var $file = $('#file'),
+    $file__input = $('#file__input'),
+    $file__submit = $('#file__submit');
 
 var $chat_messageUser = $('.chat__messageUser');
 
@@ -260,6 +265,29 @@ $users__list.on('click.msgUser', 'li', function () {
     });
 });
 
+//
+$file__input.on('change', function (e) {
+
+    var reader;
+
+    var file = e.target.files[0];
+
+    if (file) {
+
+        reader = new FileReader();
+
+        reader.onload = function (evnt) {
+
+            socket.emit('file transfer', {
+                Data: evnt.target.result
+            });
+        }
+
+        reader.readAsDataURL(file);
+    };
+
+});
+
 function displayUserslist(e1) {
 
     $users.animate({
@@ -348,7 +376,22 @@ socket.on("image", function (imgInfo) {
         $chat__allMessages.append(img);
     };
 
-    img.src = 'data:image/jpeg;base64,' + imgInfo.buffer;    
+    img.src = 'data:image/jpeg;base64,' + imgInfo.buffer;
+});
 
-    //ctx.drawImage(img, 0, 0);
+
+//
+socket.on("file transfer all", function (file) {
+
+    var img = new Image();
+    img.src = file.Data;
+
+    $(img).css({
+        'width': '100%',
+        'height': 'auto'
+    });
+
+    var imgLink = $("<a download='name' href=" + file.Data + " title=''></a>");
+    imgLink.append(img);
+    $chat__allMessages.append(imgLink);
 });

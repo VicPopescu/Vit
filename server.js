@@ -231,6 +231,15 @@ io.on('connection', function (client) {
         console.log('(COMMAND) [' + client.username + ']: ' + cmd.cmd);
     });
 
+
+    /**
+     * 
+     */
+    client.on('file transfer', function (file) {
+
+        io.emit('file transfer all', file);
+    });
+
 });
 
 
