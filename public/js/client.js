@@ -77,20 +77,40 @@ var $toggle__users = $('#toggleUsers');
 /**
  *      Templates
  */
+//
 var template_message = function (u, m) {
 
-    l = '<li><span class="chat__messageUser">' + u + '</span>:<span class="chat__message"> ' + m + '</span></li>';
+    var t = '<li><span class="chat__messageUser">' + u + '</span>:<span class="chat__message"> ' + m + '</span></li>';
 
-    return l;
+    return t;
 };
 
+//
 var template_userlistItem = function (id, u) {
 
-    l = '<li data-userId=' + id + '>' + u + '</li>';
+    var t = '<li data-userId=' + id + '>' + u + '</li>';
 
-    return l;
+    return t;
 };
 
+//
+var template_imageTransfer = function (user, content) {
+
+    var t, d;
+    var img = new Image();
+
+    img.src = content.Data;
+    img.style.width = 'auto';
+    img.style.height = '100px';
+    img.style.imageRendering = '-webkit-optimize-contrast';
+
+    d = $('<a download="name" href=' + content.Data + ' title=""></a>').append(img);
+    t = $('<li><span class="chat__messageUser">' + user + '</span></li>').append(d);
+
+    return t;
+};
+
+//
 var do_login = function (socket, user) {
 
     socket.emit('user login', user);
@@ -136,6 +156,21 @@ var update_usersList = function (action, user) {
  *      Global Variables
  */
 var usr = get_cookieByName('user') || null; //local saved user name
+var scrollToBottom = true;
+
+function updateScroll() {
+
+    console.log('scrolltop', $chat__allMessages.scrollTop());
+    console.log('scrollHeight', $chat__allMessages[0].scrollHeight);
+    console.log("height", $chat__allMessages.height())
+    console.log('minus', $chat__allMessages[0].scrollHeight - $chat__allMessages.height());
+
+    var h = $chat__allMessages.height();
+    var s = $chat__allMessages[0].scrollHeight;
+    var bot = Math.floor(s - h);
+
+    $chat__allMessages.scrollTop(bot);
+};
 
 
 /**
@@ -366,6 +401,7 @@ socket.on('a user logged in', function (user) {
 socket.on('new message', function (o) {
 
     $chat__allMessages.append(template_message(o.usr, o.msg));
+    updateScroll();
 });
 
 socket.on("image", function (imgInfo) {
@@ -383,15 +419,5 @@ socket.on("image", function (imgInfo) {
 //
 socket.on("file transfer all", function (file) {
 
-    var img = new Image();
-    img.src = file.Data;
-
-    $(img).css({
-        'width': '100%',
-        'height': 'auto'
-    });
-
-    var imgLink = $("<a download='name' href=" + file.Data + " title=''></a>");
-    imgLink.append(img);
-    $chat__allMessages.append(imgLink);
+    $chat__allMessages.append(template_imageTransfer(file.user, file.content));
 });

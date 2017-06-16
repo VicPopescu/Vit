@@ -237,7 +237,11 @@ io.on('connection', function (client) {
      */
     client.on('file transfer', function (file) {
 
-        io.emit('file transfer all', file);
+        io.emit('file transfer all', {
+            'user': client.username,
+            'content': file,
+            'type': 'null'
+        });
     });
 
 });
