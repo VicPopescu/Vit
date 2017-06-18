@@ -235,12 +235,18 @@ io.on('connection', function (client) {
     /**
      * 
      */
-    client.on('file transfer', function (file) {
+    client.on('file send', function (file) {
 
-        io.emit('file transfer all', {
+        //file description:
+        //
+        //name: 'file name',
+        //size: '10',
+        //type: 'text/plain',
+        //data: 'data:text/plain;base64,dGVzdA=='
+
+        io.emit('file broadcast all', {
             'user': client.username,
-            'content': file,
-            'type': 'null'
+            'content': file
         });
     });
 

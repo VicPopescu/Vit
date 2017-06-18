@@ -99,12 +99,26 @@ var template_imageTransfer = function (user, content) {
     var t, d;
     var img = new Image();
 
-    img.src = content.Data;
+    img.src = content.data;
     img.style.width = 'auto';
     img.style.height = '100px';
     img.style.imageRendering = '-webkit-optimize-contrast';
 
-    d = $('<a download="name" href=' + content.Data + ' title=""></a>').append(img);
+    d = $('<a download="' + content.name + '" href=' + content.data + ' title="' + content.name + '">' + content.name + '</a>').append(img);
+    t = $('<li><span class="chat__messageUser">' + user + '</span></li>').append(d);
+
+    return t;
+};
+
+//
+var template_txtTransfer = function (user, content) {
+
+    var t, d;
+    var file = new File([content.data], content.name, {type: content.type, lastModified: content.lastModifDate});
+
+    file.src = content.data;
+
+    d = $('<a class="fileTransfer__text" download="' + content.name + '" href=' + content.data + ' title="' + content.name + '">' + content.name + '</a>').append(file);
     t = $('<li><span class="chat__messageUser">' + user + '</span></li>').append(d);
 
     return t;
@@ -114,8 +128,9 @@ var template_imageTransfer = function (user, content) {
 var do_login = function (socket, user) {
 
     socket.emit('user login', user);
-}
+};
 
+//
 var update_usersList = function (action, user) {
 
     switch (action) {
@@ -160,10 +175,10 @@ var scrollToBottom = true;
 
 function updateScroll() {
 
-    console.log('scrolltop', $chat__allMessages.scrollTop());
-    console.log('scrollHeight', $chat__allMessages[0].scrollHeight);
-    console.log("height", $chat__allMessages.height())
-    console.log('minus', $chat__allMessages[0].scrollHeight - $chat__allMessages.height());
+    // console.log('scrolltop', $chat__allMessages.scrollTop());
+    // console.log('scrollHeight', $chat__allMessages[0].scrollHeight);
+    // console.log("height", $chat__allMessages.height())
+    // console.log('minus', $chat__allMessages[0].scrollHeight - $chat__allMessages.height());
 
     var h = $chat__allMessages.height();
     var s = $chat__allMessages[0].scrollHeight;
@@ -309,12 +324,24 @@ $file__input.on('change', function (e) {
 
     if (file) {
 
+        var name = file.name;
+        var size = file.size;
+        var type = file.type;
+        var lastModifiedDate = file.lastModifiedDate;
+        var data;
+
         reader = new FileReader();
 
         reader.onload = function (evnt) {
 
-            socket.emit('file transfer', {
-                Data: evnt.target.result
+            data = evnt.target.result;
+
+            socket.emit('file send', {
+                name: name,
+                size: size,
+                type: type,
+                lastModifDate: lastModifiedDate,
+                data: data
             });
         }
 
@@ -417,7 +444,19 @@ socket.on("image", function (imgInfo) {
 
 
 //
-socket.on("file transfer all", function (file) {
+socket.on("file broadcast all", function (file) {
 
-    $chat__allMessages.append(template_imageTransfer(file.user, file.content));
+    var fileType = file.content.type;
+    var image = /^image\//;
+    var txt = /^text\//;
+
+
+    if (image.test(fileType)) {
+
+        $chat__allMessages.append(template_imageTransfer(file.user, file.content));
+
+    } else if (txt.test(fileType)) {
+
+        $chat__allMessages.append(template_txtTransfer(file.user, file.content));
+    }
 });
