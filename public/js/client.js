@@ -319,7 +319,15 @@ function updateScroll() {
  */
 var update_history = function (history) {
 
-    for (var i = 0; i < history.length; i++) {
+    var startHistory;
+
+    if (history.length > 20) {
+        startHistory = history.length - 20;
+    } else {
+        startHistory = 0;
+    };
+
+    for (var i = startHistory; i < history.length; i++) {
         var user = history[i].usr;
         var message = history[i].msg;
 
@@ -590,6 +598,8 @@ socket.on('disconnect', function () {});
 /////////////////////////////////////////////
 
 socket.on('login success', function (users) {
+
+    console.log(users);
 
     var all = users.all;
     var history = users.history;

@@ -23,6 +23,8 @@ const commandHandler = require('./custom_modules/command_handler/index.js');
 const log = require('./custom_modules/custom_logging/index.js');
 //user login
 const login = require('./custom_modules/login/index.js');
+//history
+const history = require('./custom_modules/history/index.js');
 
 
 
@@ -30,7 +32,7 @@ const login = require('./custom_modules/login/index.js');
  *      Variables
  */
 //var port = process.env.PORT || 4400;
-var room = { //default room to join
+var room = { //default room to join //TO BE
     id: "1",
     name: "Default Room",
     listOfUsers: [],
@@ -39,8 +41,6 @@ var room = { //default room to join
 
 var allClients = {};
 var allUsers = {};
-var allMesages = [];
-var historyLength = 20;
 
 /**
  *      Routing
@@ -168,6 +168,7 @@ io.on('connection', function (client) {
             var userName = userDetails.user;
             var password = userDetails.pass;
 
+
             client.username = userName;
             client.password = password;
 
@@ -188,14 +189,15 @@ io.on('connection', function (client) {
                 id: client.id,
                 name: userName
             });
-
+            console.log(history.getHistory());
+            
             client.emit('login success', {
                 all: allUsers,
                 thisUser: {
                     user: userName,
                     pass: password
                 },
-                history: allMesages
+                history: history.getHistory()
             });
         } else {
             client.emit('login failed', {
@@ -237,8 +239,7 @@ io.on('connection', function (client) {
         //profanity check and replace
         o.msg = profanityFilter.filterReplace(o.msg);
         //saving messages history
-        if (allMesages.length >= historyLength) allMesages.shift();
-        allMesages.push(o);
+        history.logHistory(null, o);
         //logs
         console.log('(CLIENT): [' + o.usr + ']: ' + o.msg);
         log.write(get_date('date and hour') + ' (CLIENT): [' + o.usr + ']: ' + o.msg);
