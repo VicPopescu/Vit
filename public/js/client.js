@@ -302,6 +302,18 @@ var update_usersList = function (action, user) {
 };
 
 /**
+ *
+ */
+function updateScroll() {
+
+    var h = $chat__allMessages.height();
+    var s = $chat__allMessages[0].scrollHeight;
+    var bot = Math.floor(s - h);
+
+    $chat__allMessages.scrollTop(bot);
+};
+
+/**
  * 
  * @param {object} history Messages history
  */
@@ -312,21 +324,7 @@ var update_history = function (history) {
         var message = history[i].msg;
 
         $chat__allMessages.append(template_message(user, message));
-        updateScroll();
     };
-};
-
-
-/**
- *
- */
-function updateScroll() {
-
-    var h = $chat__allMessages.height();
-    var s = $chat__allMessages[0].scrollHeight;
-    var bot = Math.floor(s - h);
-
-    $chat__allMessages.scrollTop(bot);
 };
 
 
@@ -612,6 +610,7 @@ socket.on('login success', function (users) {
     $chat.show();
     $chat__userInput.focus();
     notify("Welcome " + thisUser + "!");
+    updateScroll();
 });
 
 
@@ -642,6 +641,7 @@ socket.on('a client disconnected', function (user) {
 socket.on('a user logged in', function (user) {
 
     update_usersList('add', user);
+    notify(user.name + " joined!");
 });
 
 
