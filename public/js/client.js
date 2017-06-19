@@ -134,8 +134,11 @@ var do_logout = function () {
  */
 var usr = get_cookieByName('vitUser') || null; //local saved user name
 var pass = get_cookieByName('vitPass') || null; //pass
-
+var windowFocused = true;
 var scrollToBottom = true;
+
+
+
 
 /**
  * Auto login if user already logged
@@ -214,6 +217,35 @@ var template_txtTransfer = function (user, content) {
 
     return t;
 };
+
+/**
+ * 
+ * @param {string} notification 
+ */
+var notify = function (message) {
+
+    var message = message || null;
+
+    // check browser support
+    if (!("Notification" in window)) {
+        console.log("Notifications are not supported by current browser!")
+    } else if (message) {
+        switch (Notification.permission) {
+            case "granted":
+                var notification = new Notification(message);
+            case "denied":
+                break;
+            default:
+                Notification.requestPermission(function (permission) {
+                    // ask for notifications permission
+                    if (permission === "granted") {
+                        var notification = new Notification(message);
+                    }
+                });
+        }
+    }
+}
+
 
 
 /**
@@ -512,6 +544,14 @@ function fileUploadTrigger() {
     $file__input.trigger('click');
 };
 
+/**
+ * 
+ */
+function visibilityChanged() {
+    
+    document.visibilityState === "visible" ?  windowFocused = true : windowFocused = false;
+};
+
 
 /**
  *      Attach handlers
@@ -519,6 +559,7 @@ function fileUploadTrigger() {
 $tools__toggleUsers.one('click.displayUsers', displayUserslist);
 $tools__fileSend.off('click.fileSend').on('click.fileSend', fileUploadTrigger);
 $tools__signOut.off('click.triggerSignOut').on('click.triggerSignOut', do_logout);
+if (document.addEventListener) document.addEventListener("visibilitychange", visibilityChanged);
 
 
 /**
@@ -553,11 +594,12 @@ socket.on('login success', function (users) {
     $tools.show();
     $chat.show();
     $chat__userInput.focus();
+    notify("Welcome " + thisUser + "!");
 });
 
 
-socket.on('register success', function(user){
-    
+socket.on('register success', function (user) {
+
     var username = user.user;
     var password = user.pass;
 
@@ -586,13 +628,12 @@ socket.on('a user logged in', function (user) {
 });
 
 
-
-
 ///////////////////////////////////////////////
 
 socket.on('new message', function (o) {
 
     $chat__allMessages.append(template_message(o.usr, o.msg));
+    !windowFocused && notify(o.usr + ' : ' + o.msg);
     updateScroll();
 });
 
