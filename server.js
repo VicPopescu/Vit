@@ -46,7 +46,7 @@ app.use(sassMiddleware({
     src: path.join(__dirname, 'server/sass'),
     dest: path.join(__dirname, 'public/css'),
     debug: true,
-    outputStyle: 'compressed',
+    outputStyle: 'extended',
     prefix: '/css'
 }));
 //set static public folder

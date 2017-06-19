@@ -68,8 +68,6 @@ var $file = $('#file'),
 
 var $chat_messageUser = $('.chat__messageUser');
 
-
-
 var $login = $('#login'),
     $login__form = $('#login__form'),
     $login__userInput = $('#login__userInput'),
@@ -77,7 +75,11 @@ var $login = $('#login'),
 
 var $users = $('#chat__users');
 var $users__list = $('#users__list');
-var $toggle__users = $('#toggleUsers');
+
+var $tools = $('#tools');
+var $tools__toggleUsers = $('#tools__toggleUsers');
+var $tools__fileSend = $('#tools__fileSend');
+var $tools__signOut = $('#tools__signOut');
 
 
 /**
@@ -134,10 +136,18 @@ var template_txtTransfer = function (user, content) {
 };
 
 //
-var do_login = function (socket, user) {
+function do_login(socket, user) {
 
     socket.emit('user login', user);
 };
+
+//
+function do_logout() {
+    reset_cookie("user");
+    location.reload();
+}
+
+
 
 //
 var update_usersList = function (action, user) {
@@ -283,8 +293,7 @@ $chat__form.submit(function (e) {
 
     //delete cookie and log out, jsut for testing purpose
     if (msg === "logout") {
-        reset_cookie("user");
-        location.reload();
+        do_logout();
     };
 
     //send the message to the server
@@ -324,7 +333,9 @@ $users__list.on('click.msgUser', 'li', function () {
     });
 });
 
-//
+/**
+ *
+ */
 $file__input.on('change', function (e) {
 
     var reader;
@@ -356,13 +367,17 @@ $file__input.on('change', function (e) {
 
         reader.readAsDataURL(file);
     };
-
 });
 
+
+/**
+ * 
+ * @param {object} e1 
+ */
 function displayUserslist(e1) {
 
     $users.animate({
-        right: "+=26%"
+        right: "+=30%"
     }, 300, function () {
         $document.on('click.hideUsersList', hideUsersList);
     });
@@ -378,16 +393,29 @@ function hideUsersList(ev) {
         return;
 
     $users.animate({
-        right: "-=26%"
+        right: "-=30%"
     }, 300, function () {
-        $toggle__users.off('click.displayUsers').one('click.displayUsers', displayUserslist);
+        $tools__toggleUsers.off('click.displayUsers').one('click.displayUsers', displayUserslist);
     });
     $(this).unbind(ev);
 };
 
-//
-$toggle__users.one('click.displayUsers', displayUserslist);
 
+/**
+ * 
+ */
+function fileUploadTrigger() {
+
+    $file__input.trigger('click');
+};
+
+
+/**
+ *      Attach handlers
+ */
+$tools__toggleUsers.one('click.displayUsers', displayUserslist);
+$tools__fileSend.off('click.fileSend').on('click.fileSend', fileUploadTrigger);
+$tools__signOut.off('click.triggerSignOut').on('click.triggerSignOut', do_logout);
 
 
 /**
@@ -417,6 +445,7 @@ socket.on('connection success', function (users) {
 
     //DOM update
     $login.remove();
+    $tools.show();
     $chat.show();
     $chat__userInput.focus();
 });

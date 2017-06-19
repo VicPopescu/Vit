@@ -28,6 +28,7 @@
     <!--Fonts-->
     <link href="css/normalize.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans|Rubik" rel="stylesheet">
+    <link rel="stylesheet" href="css/font-awesome-4.7.0.min.css">
     <!--Stylesheet-->
     <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
@@ -44,22 +45,33 @@
         </form>
     </section>
     <section id="chat__users">
-        <p>Users:</p>
+        
         <ul id="users__list"></ul>
     </section>
+
     <section id="login">
         <form id="login__form" action="">
-            <input id="login__userInput" autocomplete="off" />
+            <input id="login__userInput" autocomplete="off" maxlength="20"/>
             <button id="login__submit">Login</button>
         </form>
     </section>
-    <div id="toggleUsers">
-        USERS
-    </div>
-    <form id="file" action="" style="position: absolute; bottom: 20px; right: 20px;">
+
+    <form id="file" action="" style="position: absolute; bottom: 20px; right: 20px;" hidden="hidden">
         <input id="file__input" type="file" name="uploads[]" accept="image/*,text/plain" multiple="multiple">
         <div>Upload File</div>
     </form>
+
+    <section id="tools">
+        <div id="tools__toggleUsers" class="tools__item tools__toggleUsers" title="Users">
+            <i class="fa fa-user-o fa-2x" aria-hidden="true"></i>
+        </div>
+        <div id="tools__fileSend" class="tools__item tools__fileSend" title="Send file!">
+            <i class="fa fa-file-o fa-2x" aria-hidden="true"></i>
+        </div>
+        <div id="tools__signOut" class="tools__item tools__signOut" title="Sign Out!">
+            <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
+        </div>
+    </section>
 
 
     <!--Scripts-->
