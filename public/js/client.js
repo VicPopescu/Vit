@@ -1,12 +1,17 @@
 /**
  *      Global Constants
  */
-const url = window.location.href;
-const opt = {
+const url = window.location.protocol + '//' + window.location.host;
+var opt = {
+    resource: (window.location.pathname.split('/').slice(0, -1).join('/') + '/socket.io').substring(1),
     transports: ['websocket'],
     upgrade: false
-}
-const socket = io(url, opt);
+};
+// const opt = {
+//     transports: ['websocket'],
+//     upgrade: false
+// }
+const socket = io.connect(url, opt);
 
 
 /**
@@ -114,7 +119,10 @@ var template_imageTransfer = function (user, content) {
 var template_txtTransfer = function (user, content) {
 
     var t, d;
-    var file = new File([content.data], content.name, {type: content.type, lastModified: content.lastModifDate});
+    var file = new File([content.data], content.name, {
+        type: content.type,
+        lastModified: content.lastModifDate
+    });
 
     file.src = content.data;
 

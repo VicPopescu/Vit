@@ -1,10 +1,12 @@
 const express = require('express');
 const app = express();
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
+const server = require('http').createServer(app);
+const io = require('socket.io').listen(server);
 const path = require('path');
 const fs = require('fs');
 const sassMiddleware = require('node-sass-middleware');
+
+app.set('port', process.env.PORT || 4400);
 
 /**
  *      Custom modules
@@ -20,7 +22,7 @@ const log = require('./custom_modules/custom_logging/index.js');
 /**
  *      Variables
  */
-var port = process.env.PORT || 4400;
+//var port = process.env.PORT || 4400;
 var room = { //default room to join
     id: "1",
     name: "Default Room",
@@ -128,8 +130,6 @@ function get_date(format) {
 
 //test connection
 io.on('connection', function (client) {
-
-    io.set('transports', ['websocket']);
 
     /**
      * 
@@ -273,4 +273,4 @@ var serverStatus = function () {
  */
 
 //start server
-server.listen(port, serverStatus);
+server.listen(app.get('port'), serverStatus);
