@@ -589,7 +589,7 @@ if (document.addEventListener) document.addEventListener("visibilitychange", vis
 //
 socket.on('connection', function () {
     //we need potato connection here
-    update_usersList('add all', allUsers);
+    //update_usersList('add all', allUsers);
 });
 //
 socket.on('disconnect', function () {});
@@ -598,8 +598,6 @@ socket.on('disconnect', function () {});
 /////////////////////////////////////////////
 
 socket.on('login success', function (users) {
-
-    console.log(users);
 
     var all = users.all;
     var history = users.history;

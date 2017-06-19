@@ -50,7 +50,7 @@ app.use(sassMiddleware({
     /* Options */
     src: path.join(__dirname, 'server/sass'),
     dest: path.join(__dirname, 'public/css'),
-    debug: true,
+    debug: false,
     outputStyle: 'extended',
     prefix: '/css'
 }));
@@ -162,6 +162,14 @@ io.on('connection', function (client) {
             user: userDetails.user,
             pass: userDetails.pass
         };
+        
+        //disconnect duplicate sockets
+        for (var id in allUsers) {
+            if (allUsers[id] === userDetails.user) {
+                io.sockets.connected[id].disconnect();
+                break;
+            }
+        }
 
         if (login.findUser(user)) {
 
@@ -189,8 +197,7 @@ io.on('connection', function (client) {
                 id: client.id,
                 name: userName
             });
-            console.log(history.getHistory());
-            
+
             client.emit('login success', {
                 all: allUsers,
                 thisUser: {
