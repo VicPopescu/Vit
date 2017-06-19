@@ -63,7 +63,6 @@ var get_cookieByName = function (name) {
     return document.cookie.replace(regex, "$1");
 };
 
-
 /**
  * 
  */
@@ -71,7 +70,6 @@ var get_all = function () {
 
     return document.cookie;
 };
-
 
 /**
  * 
@@ -82,7 +80,6 @@ var reset_cookie = function (name) {
     document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
 };
 
-
 /**
  * 
  * @param {string} name 
@@ -92,7 +89,6 @@ var set_cookie = function (name, val) {
 
     if (name && val) document.cookie = name + "=" + val;
 };
-
 
 /**
  * Login user
@@ -149,7 +145,7 @@ if (!usr && !pass) {
     $login__userInput.focus();
 } else {
     do_login(socket, usr, pass);
-}
+};
 
 
 
@@ -193,7 +189,7 @@ var template_imageTransfer = function (user, content) {
     img.style.imageRendering = '-webkit-optimize-contrast';
 
     d = $('<a download="' + content.name + '" href=' + content.data + ' title="' + content.name + '">' + content.name + '</a>').append(img);
-    t = $('<li><span class="chat__messageUser">' + user + '</span></li>').append(d);
+    t = $('<li><span class="chat__messageUser">' + user + ': </span></li>').append(d);
 
     return t;
 };
@@ -214,7 +210,7 @@ var template_txtTransfer = function (user, content) {
     file.src = content.data;
 
     d = $('<a class="fileTransfer__text" download="' + content.name + '" href=' + content.data + ' title="' + content.name + '">' + content.name + '</a>').append(file);
-    t = $('<li><span class="chat__messageUser">' + user + '</span></li>').append(d);
+    t = $('<li><span class="chat__messageUser">' + user + ': </span></li>').append(d);
 
     return t;
 };
@@ -549,6 +545,8 @@ socket.on('login success', function (users) {
 
     set_cookie('vitUser', thisUser);
     set_cookie('vitPass', thisPass);
+
+    usr = thisUser || null;
 
     //DOM update
     $login.remove();

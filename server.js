@@ -145,7 +145,7 @@ io.on('connection', function (client) {
 
         user.type = user.type || 'user';
 
-        login.registerUser(user, function(){
+        login.registerUser(user, function () {
             client.emit('register success', user);
         });
     });
@@ -155,21 +155,22 @@ io.on('connection', function (client) {
      */
     client.on('user login', function (userDetails) {
 
-        var userName = userDetails.user;
-        var password = userDetails.pass;
         var user = {
-            type: null,
-            user: userName,
-            pass: password
+            type: userDetails.type || 'user',
+            user: userDetails.user,
+            pass: userDetails.pass
         };
 
-        client.username = userName;
-        client.password = password;
-
-        allClients[client.id] = client;
-        allUsers[client.id] = userName;
-
         if (login.findUser(user)) {
+
+            var userName = userDetails.user;
+            var password = userDetails.pass;
+
+            client.username = userName;
+            client.password = password;
+
+            allClients[client.id] = client;
+            allUsers[client.id] = userName;
 
             if (client.username) {
 
@@ -198,7 +199,6 @@ io.on('connection', function (client) {
                 message: "Login failed!\n User not found! Please register before login!"
             });
         }
-
     });
 
     /**
