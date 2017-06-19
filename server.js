@@ -141,14 +141,19 @@ io.on('connection', function (client) {
     /**
      * 
      */
-    client.on('user login', function (userDetails) {
+    client.on('user register', function (user) {
 
-        // for (var id in allUsers) {
-        //     if (allUsers[id] = user) {
-        //         user += get_intRandom();
-        //         break;
-        //     }
-        // }
+        user.type = user.type || 'user';
+
+        login.registerUser(user, function(){
+            client.emit('register success', user);
+        });
+    });
+
+    /**
+     * 
+     */
+    client.on('user login', function (userDetails) {
 
         var userName = userDetails.user;
         var password = userDetails.pass;
@@ -189,7 +194,9 @@ io.on('connection', function (client) {
                 }
             });
         } else {
-            client.emit('login failed', {message: "Login failed!\n User not found! Please register before login!"});
+            client.emit('login failed', {
+                message: "Login failed!\n User not found! Please register before login!"
+            });
         }
 
     });

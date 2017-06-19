@@ -95,7 +95,7 @@ var set_cookie = function (name, val) {
 
 
 /**
- * 
+ * Login user
  * @param {object} socket 
  * @param {string} user 
  * @param {string} pass 
@@ -109,7 +109,21 @@ var do_login = function (socket, user, pass) {
 };
 
 /**
- * 
+ * Register new user
+ * @param {object} socket 
+ * @param {string} user 
+ * @param {string} pass 
+ */
+var do_register = function (socket, user, pass) {
+
+    socket.emit('user register', {
+        user: user,
+        pass: pass
+    });
+};
+
+/**
+ * Logout user
  */
 var do_logout = function () {
 
@@ -119,9 +133,8 @@ var do_logout = function () {
 };
 
 
-
 /**
- *      Global Variables
+ * Global Variables
  */
 var usr = get_cookieByName('vitUser') || null; //local saved user name
 var pass = get_cookieByName('vitPass') || null; //pass
@@ -129,7 +142,7 @@ var pass = get_cookieByName('vitPass') || null; //pass
 var scrollToBottom = true;
 
 /**
- *      Auto login if user already logged
+ * Auto login if user already logged
  */
 if (!usr && !pass) {
     $login.show();
@@ -318,10 +331,8 @@ function clear_input() {
 };
 
 
-/**
- * Login form
- */
-$login__form.submit(function (e) {
+
+$login__submit.on('click.doLogin', function (e) {
 
     var user = $login__userInput.val();
     var pass = $login__passInput.val();
@@ -331,7 +342,33 @@ $login__form.submit(function (e) {
 
     e.preventDefault();
     return false;
+})
+
+$register__submit.on('click.doRegister', function (e) {
+
+    var user = $login__userInput.val();
+    var pass = $login__passInput.val();
+
+    //check if user is allowed and send login info to server
+    user && pass && do_register(socket, user, pass);
+
+    e.preventDefault();
+    return false;
 });
+/**
+ * Login form
+ */
+// $login__form.submit(function (e) {
+
+//     var user = $login__userInput.val();
+//     var pass = $login__passInput.val();
+
+//     //check if user is allowed and send login info to server
+//     user && pass && do_login(socket, user, pass);
+
+//     e.preventDefault();
+//     return false;
+// });
 
 
 /**
@@ -518,6 +555,15 @@ socket.on('login success', function (users) {
     $tools.show();
     $chat.show();
     $chat__userInput.focus();
+});
+
+
+socket.on('register success', function(user){
+    
+    var username = user.user;
+    var password = user.pass;
+
+    do_login(socket, username, password);
 });
 
 socket.on('login failed', function (err) {

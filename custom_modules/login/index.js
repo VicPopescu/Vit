@@ -39,7 +39,7 @@ var Login = (function () {
      */
     var findUser = function (user) {
 
-        var type = user.type || 'users',
+        var type = user.type || 'user',
             username = user.user,
             pass = user.pass;
 
@@ -59,7 +59,7 @@ var Login = (function () {
      * 
      * @param {object} user 
      */
-    var registerUser = function (user) {
+    var registerUser = function (user, autoLogin) {
 
         //if user is not already registered
         if (!findUser(user)) {
@@ -83,9 +83,9 @@ var Login = (function () {
                 fs.writeFile(users_location, parsedUsersList, 'utf8', function (err) {
 
                     if (err) return console.log(err);
-                    console.log("User added!")
+                    console.log("User added!");
+                    autoLogin();
                 });
-
             });
 
         } else {
