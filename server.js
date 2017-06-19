@@ -39,6 +39,8 @@ var room = { //default room to join
 
 var allClients = {};
 var allUsers = {};
+var allMesages = [];
+var historyLength = 20;
 
 /**
  *      Routing
@@ -192,7 +194,8 @@ io.on('connection', function (client) {
                 thisUser: {
                     user: userName,
                     pass: password
-                }
+                },
+                history: allMesages
             });
         } else {
             client.emit('login failed', {
@@ -231,11 +234,15 @@ io.on('connection', function (client) {
      */
     client.on('user message', function (o) {
 
+        //profanity check and replace
         o.msg = profanityFilter.filterReplace(o.msg);
-
+        //saving messages history
+        if (allMesages.length >= historyLength) allMesages.shift();
+        allMesages.push(o);
+        //logs
         console.log('(CLIENT): [' + o.usr + ']: ' + o.msg);
         log.write(get_date('date and hour') + ' (CLIENT): [' + o.usr + ']: ' + o.msg);
-
+        //broadcast message to all users
         io.emit('new message', o);
     });
 

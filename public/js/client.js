@@ -301,6 +301,21 @@ var update_usersList = function (action, user) {
 
 };
 
+/**
+ * 
+ * @param {object} history Messages history
+ */
+var update_history = function (history) {
+
+    for (var i = 0; i < history.length; i++) {
+        var user = history[i].usr;
+        var message = history[i].msg;
+
+        $chat__allMessages.append(template_message(user, message));
+        updateScroll();
+    };
+};
+
 
 /**
  *
@@ -548,8 +563,8 @@ function fileUploadTrigger() {
  * 
  */
 function visibilityChanged() {
-    
-    document.visibilityState === "visible" ?  windowFocused = true : windowFocused = false;
+
+    document.visibilityState === "visible" ? windowFocused = true : windowFocused = false;
 };
 
 
@@ -579,10 +594,12 @@ socket.on('disconnect', function () {});
 socket.on('login success', function (users) {
 
     var all = users.all;
+    var history = users.history;
     var thisUser = users.thisUser.user;
     var thisPass = users.thisUser.pass;
 
     update_usersList('add all', all);
+    update_history(history);
 
     set_cookie('vitUser', thisUser);
     set_cookie('vitPass', thisPass);
