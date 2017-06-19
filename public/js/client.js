@@ -3,10 +3,11 @@
  */
 const url = window.location.protocol + '//' + window.location.host;
 var opt = {
-    resource: (window.location.pathname.split('/').slice(0, -1).join('/') + '/socket.io').substring(1),
-    transports: ['websocket'],
-    upgrade: false
+    path: '/socket.io',
+    //transports: ['websocket'],
+    //upgrade: false
 };
+
 // const opt = {
 //     transports: ['websocket'],
 //     upgrade: false

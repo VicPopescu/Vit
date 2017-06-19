@@ -1,7 +1,11 @@
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
-const io = require('socket.io').listen(server);
+const io = require('socket.io')(server, {
+    path: '/socket.io',
+    //transports: ['websocket'],
+   //upgrade: false
+});
 const path = require('path');
 const fs = require('fs');
 const sassMiddleware = require('node-sass-middleware');
