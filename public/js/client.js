@@ -14,42 +14,6 @@ var opt = {
 // }
 const socket = io.connect(url, opt);
 
-
-/**
- *      Cookies management
- */
-//
-var get_cookieByName = function (name) {
-
-    var p1 = "(?:(?:^|.*;\\s*)";
-    var p2 = "\\s*\\=\\s*([^;]*).*$)|^.*$";
-    var regex = new RegExp(p1 + name + p2);
-
-    return document.cookie.replace(regex, "$1");
-};
-//
-var get_all = function () {
-
-    return document.cookie;
-};
-//
-var reset_cookie = function (name) {
-
-    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-};
-//
-var set_cookie = function (name, val) {
-
-    if (name && val) document.cookie = name + "=" + val;
-};
-
-
-/**
- *      Login handler
- */
-
-
-
 /**
  *      Caching selectors
  */
@@ -71,7 +35,10 @@ var $chat_messageUser = $('.chat__messageUser');
 var $login = $('#login'),
     $login__form = $('#login__form'),
     $login__userInput = $('#login__userInput'),
-    $login__submit = $('#login__submit');
+    $login__passInput = $('#login__passInput'),
+    $login__submit = $('#login__submit'),
+    $login__error = $('#login__error'),
+    $register__submit = $('#register__submit');
 
 var $users = $('#chat__users');
 var $users__list = $('#users__list');
@@ -82,10 +49,102 @@ var $tools__fileSend = $('#tools__fileSend');
 var $tools__signOut = $('#tools__signOut');
 
 
+
 /**
- *      Templates
+ * 
+ * @param {string} name 
  */
-//
+var get_cookieByName = function (name) {
+
+    var p1 = "(?:(?:^|.*;\\s*)";
+    var p2 = "\\s*\\=\\s*([^;]*).*$)|^.*$";
+    var regex = new RegExp(p1 + name + p2);
+
+    return document.cookie.replace(regex, "$1");
+};
+
+
+/**
+ * 
+ */
+var get_all = function () {
+
+    return document.cookie;
+};
+
+
+/**
+ * 
+ * @param {string} name 
+ */
+var reset_cookie = function (name) {
+
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+};
+
+
+/**
+ * 
+ * @param {string} name 
+ * @param {string} val 
+ */
+var set_cookie = function (name, val) {
+
+    if (name && val) document.cookie = name + "=" + val;
+};
+
+
+/**
+ * 
+ * @param {object} socket 
+ * @param {string} user 
+ * @param {string} pass 
+ */
+var do_login = function (socket, user, pass) {
+
+    socket.emit('user login', {
+        user: user,
+        pass: pass
+    });
+};
+
+/**
+ * 
+ */
+var do_logout = function () {
+
+    reset_cookie("vitUser");
+    reset_cookie("vitPass");
+    location.reload();
+};
+
+
+
+/**
+ *      Global Variables
+ */
+var usr = get_cookieByName('vitUser') || null; //local saved user name
+var pass = get_cookieByName('vitPass') || null; //pass
+
+var scrollToBottom = true;
+
+/**
+ *      Auto login if user already logged
+ */
+if (!usr && !pass) {
+    $login.show();
+    $login__userInput.focus();
+} else {
+    do_login(socket, usr, pass);
+}
+
+
+
+/**
+ * 
+ * @param {string} u 
+ * @param {string} m 
+ */
 var template_message = function (u, m) {
 
     var t = '<li><span class="chat__messageUser">' + u + '</span>:<span class="chat__message"> ' + m + '</span></li>';
@@ -93,7 +152,11 @@ var template_message = function (u, m) {
     return t;
 };
 
-//
+/**
+ * 
+ * @param {number} id 
+ * @param {string} u 
+ */
 var template_userlistItem = function (id, u) {
 
     var t = '<li data-userId=' + id + '>' + u + '</li>';
@@ -101,7 +164,11 @@ var template_userlistItem = function (id, u) {
     return t;
 };
 
-//
+/**
+ * 
+ * @param {string} user 
+ * @param {string} content 
+ */
 var template_imageTransfer = function (user, content) {
 
     var t, d;
@@ -118,7 +185,11 @@ var template_imageTransfer = function (user, content) {
     return t;
 };
 
-//
+/**
+ * 
+ * @param {string} user 
+ * @param {string} content 
+ */
 var template_txtTransfer = function (user, content) {
 
     var t, d;
@@ -135,21 +206,12 @@ var template_txtTransfer = function (user, content) {
     return t;
 };
 
-//
-function do_login(socket, user) {
 
-    socket.emit('user login', user);
-};
-
-//
-function do_logout() {
-    reset_cookie("user");
-    location.reload();
-}
-
-
-
-//
+/**
+ * 
+ * @param {string} action 
+ * @param {string} user 
+ */
 var update_usersList = function (action, user) {
 
     switch (action) {
@@ -166,10 +228,18 @@ var update_usersList = function (action, user) {
             break;
     };
 
+    /**
+     * 
+     * @param {object} user 
+     */
     function add(user) {
         $users__list.append(template_userlistItem(user.id, user.name));
     };
 
+    /**
+     * 
+     * @param {*} users 
+     */
     function addAll(users) {
 
         $users__list.empty();
@@ -179,6 +249,10 @@ var update_usersList = function (action, user) {
         });
     }
 
+    /**
+     * 
+     * @param {object} user 
+     */
     function remove(user) {
 
         $users__list.find("[data-userId='" + user.id + "']").remove();
@@ -186,18 +260,11 @@ var update_usersList = function (action, user) {
 
 };
 
+
 /**
- *      Global Variables
+ *
  */
-var usr = get_cookieByName('user') || null; //local saved user name
-var scrollToBottom = true;
-
 function updateScroll() {
-
-    // console.log('scrolltop', $chat__allMessages.scrollTop());
-    // console.log('scrollHeight', $chat__allMessages[0].scrollHeight);
-    // console.log("height", $chat__allMessages.height())
-    // console.log('minus', $chat__allMessages[0].scrollHeight - $chat__allMessages.height());
 
     var h = $chat__allMessages.height();
     var s = $chat__allMessages[0].scrollHeight;
@@ -208,7 +275,8 @@ function updateScroll() {
 
 
 /**
- *      Handle commands
+ * 
+ * @param {string} str Comand to execute
  */
 function get_cmd(str) {
 
@@ -218,6 +286,10 @@ function get_cmd(str) {
     return cmd[1];
 };
 
+/**
+ * 
+ * @param {string} cmd 
+ */
 function exec_cmd(cmd) {
 
     socket.emit('command', {
@@ -237,33 +309,25 @@ var handle_cmd = function (str) {
     return false;
 };
 
+/**
+ * 
+ */
 function clear_input() {
-
     //auto focus on input
     $chat__userInput.val('').focus();
 };
 
-/**
- *      Auto login if user already logged
- */
-if (!usr) {
-    $login.show();
-    $login__userInput.focus();
-} else {
-    do_login(socket, usr);
-    $chat.show();
-}
-
 
 /**
- *      Login form
+ * Login form
  */
 $login__form.submit(function (e) {
 
     var user = $login__userInput.val();
+    var pass = $login__passInput.val();
 
     //check if user is allowed and send login info to server
-    user && do_login(socket, user);
+    user && pass && do_login(socket, user, pass);
 
     e.preventDefault();
     return false;
@@ -271,7 +335,7 @@ $login__form.submit(function (e) {
 
 
 /**
- *      Handle user input
+ * Handle user input
  */
 $chat__form.submit(function (e) {
 
@@ -322,7 +386,9 @@ $chat.on('click.msgUser', '.chat__messageUser', function () {
     });
 });
 
-//
+/**
+ * 
+ */
 $users__list.on('click.msgUser', 'li', function () {
 
     var user = $(this).text();
@@ -384,6 +450,10 @@ function displayUserslist(e1) {
     $(this).unbind(e1);
 }
 
+/**
+ * 
+ * @param {object} ev 
+ */
 function hideUsersList(ev) {
 
     if (ev.target.id == "chat__users")
@@ -421,33 +491,44 @@ $tools__signOut.off('click.triggerSignOut').on('click.triggerSignOut', do_logout
 /**
  *      Catching server events
  */
+//
 socket.on('connection', function () {
     //we need potato connection here
     update_usersList('add all', allUsers);
 });
-
-socket.on('disconnect', function () {
-    //
-});
+//
+socket.on('disconnect', function () {});
 
 
 /////////////////////////////////////////////
 
-socket.on('connection success', function (users) {
+socket.on('login success', function (users) {
 
     var all = users.all;
-    var thisUser = users.thisUser;
+    var thisUser = users.thisUser.user;
+    var thisPass = users.thisUser.pass;
 
     update_usersList('add all', all);
 
-    set_cookie('user', thisUser);
-    usr = thisUser || usr;
+    set_cookie('vitUser', thisUser);
+    set_cookie('vitPass', thisPass);
 
     //DOM update
     $login.remove();
     $tools.show();
     $chat.show();
     $chat__userInput.focus();
+});
+
+socket.on('login failed', function (err) {
+
+    $login.show();
+    $login__submit.fadeOut(function () {
+        $register__submit.fadeIn();
+    });
+
+    $login__userInput.focus();
+    $login__error.text(err.message);
 });
 
 socket.on('a client disconnected', function (user) {
@@ -459,6 +540,8 @@ socket.on('a user logged in', function (user) {
 
     update_usersList('add', user);
 });
+
+
 
 
 ///////////////////////////////////////////////

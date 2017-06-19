@@ -1,0 +1,20 @@
+{
+    "users": [{
+        "user": "ghita",
+        "pass": "12345"
+    }, {
+        "user": "buni",
+        "pass": "11111"
+    }, {
+        "type": null,
+        "username": "Mihai",
+        "pass": "123#123"
+    }],
+    "admin": [{
+        "type": "admin",
+        "username": "Victor",
+        "pass": "###333###"
+    }],
+    "sys": [],
+    "owners": []
+}

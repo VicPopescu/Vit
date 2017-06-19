@@ -4,7 +4,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server, {
     path: '/socket.io',
     //transports: ['websocket'],
-   //upgrade: false
+    //upgrade: false
 });
 const path = require('path');
 const fs = require('fs');
@@ -21,6 +21,9 @@ const profanityFilter = require('./custom_modules/profanity_filter/index.js');
 const commandHandler = require('./custom_modules/command_handler/index.js');
 //server logging
 const log = require('./custom_modules/custom_logging/index.js');
+//user login
+const login = require('./custom_modules/login/index.js');
+
 
 
 /**
@@ -138,7 +141,7 @@ io.on('connection', function (client) {
     /**
      * 
      */
-    client.on('user login', function (user) {
+    client.on('user login', function (userDetails) {
 
         // for (var id in allUsers) {
         //     if (allUsers[id] = user) {
@@ -147,30 +150,48 @@ io.on('connection', function (client) {
         //     }
         // }
 
-        client.username = user;
+        var userName = userDetails.user;
+        var password = userDetails.pass;
+        var user = {
+            type: null,
+            user: userName,
+            pass: password
+        };
 
-        if (client.username) {
-
-            console.log(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Joined!');
-            log.write(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Joined!');
-        } else {
-
-            console.log(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Joined!');
-            log.write(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Joined!');
-        }
+        client.username = userName;
+        client.password = password;
 
         allClients[client.id] = client;
-        allUsers[client.id] = user;
+        allUsers[client.id] = userName;
 
-        client.broadcast.emit('a user logged in', {
-            id: client.id,
-            name: user
-        });
+        if (login.findUser(user)) {
 
-        client.emit('connection success', {
-            all: allUsers,
-            thisUser: user
-        });
+            if (client.username) {
+
+                console.log(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Joined!');
+                log.write(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Joined!');
+            } else {
+
+                console.log(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Joined!');
+                log.write(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Joined!');
+            }
+
+            client.broadcast.emit('a user logged in', {
+                id: client.id,
+                name: userName
+            });
+
+            client.emit('login success', {
+                all: allUsers,
+                thisUser: {
+                    user: userName,
+                    pass: password
+                }
+            });
+        } else {
+            client.emit('login failed', {message: "Login failed!\n User not found! Please register before login!"});
+        }
+
     });
 
     /**

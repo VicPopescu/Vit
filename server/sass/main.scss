@@ -5,7 +5,7 @@ $color-Red: #F60E13;
 $color-Gray: #808080;
 $color-Transparent: rgba(0, 0, 0, 0);
 $color-TransparentBlack: rgba(0, 0, 0, 0.2);
-$color-TransparentWhite: rgba(255,255, 255, 0.5);
+$color-TransparentWhite: rgba(255, 255, 255, 0.5);
 //          --/COLORS/--          //
 $color-WineBerry: #4B1B3B;
 $color-Olivetone: #7B760F;
@@ -17,6 +17,7 @@ $color-Malibu: #72D0F3;
 $border-Default: 1px solid $color-Olivetone;
 $border-White: 1px solid $color-White;
 $border-Transparent: 1px solid $color-Transparent;
+$border-TransparentWhite: 1px solid $color-TransparentWhite;
 //           --/FONTS/--          //
 $font-xs: 8px; //extra-small
 $font-sm: 12px; //small
@@ -52,7 +53,7 @@ li {
         overflow-y: auto;
         margin: 0;
         padding: 0;
-        border: $border-Default;
+        border: $border-TransparentWhite;
         background-color: $color-TransparentBlack;
         -webkit-transition: all 0.2s ease-in-out 0s;
         -moz-transition: all 0.2s ease-in-out 0s;
@@ -107,7 +108,7 @@ li {
             width: 100%;
             height: 30px;
             text-align: center;
-            &:hover{
+            &:hover {
                 //border: $border-Transparent;
             }
         }
@@ -122,8 +123,15 @@ li {
     right: 0;
     top: 0;
     background-color: $color-TransparentBlack;
-    border-left: $border-White;
-    
+    border-left: $border-TransparentWhite;
+    -webkit-transition: all 0.2s ease-in-out 0s;
+    -moz-transition: all 0.2s ease-in-out 0s;
+    -o-transition: all 0.2s ease-in-out 0s;
+    -ms-transition: all 0.2s ease-in-out 0s;
+    transition: all 0.2s ease-in-out 0s;
+    &:hover {
+        border-left: $border-White;
+    }
     .tools__item {
         border-bottom: $border-Transparent;
         border-top: $border-Transparent;
@@ -142,8 +150,7 @@ li {
             margin: 10px;
         }
     }
-
-    &__signOut{
+    &__signOut {
         position: absolute;
         bottom: 0;
     }
@@ -151,7 +158,7 @@ li {
 
 #login {
     width: 20%;
-    height: 100px;
+    height: 230px;
     display: none;
     position: absolute;
     left: 0;
@@ -159,12 +166,53 @@ li {
     top: 40%;
     bottom: 0;
     margin: 0 auto;
+    padding-top: 20px;
     max-width: 100%;
     max-height: 100%;
     overflow: auto;
-    border: $border-White;
+    border: $border-TransparentWhite;
+    background-color: $color-TransparentBlack;
+    &:hover,
+    &:focus {
+        border: $border-White;
+    }
     &__form {
+        position: relative;
         margin: 10px;
+        text-align: center;
+    }
+    input {
+        padding: 8px;
+        display: block;
+        margin: 10px auto;
+        width: 64%;
+        max-width: 150px;
+        background-color: $color-White;
+        border: none;
+        outline: none;
+        color: $color-Black;
+    }
+    button {
+        display: inline-block;
+        margin: 0 auto;
+        margin-top: 30px;
+        cursor: pointer;
+        width: 40%;
+        max-width: 100px;        
+        padding: 5px;
+        background-color: $color-White;
+        border: none;
+        outline: none;
+        color: $color-Black;
+    }
+    #register__submit{
+        display: none;
+    }
+    &__error{
+        font-weight: bold;
+        height: auto;
+        margin-top: 20px;
+        color: $color-Red;
     }
 }
 
