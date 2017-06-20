@@ -1,7 +1,7 @@
 /**
- *      Login Module
+ *      Users Management Module
  */
-var Login = (function () {
+var Users = (function () {
 
     /**
      *      Dependencies
@@ -29,6 +29,41 @@ var Login = (function () {
         }
 
         return JSON.parse(fs.readFileSync(users_location, 'utf8', fsCallback));
+    };
+
+    /**
+     * 
+     */
+    var getOfflineUsers = function () {
+
+        function fsCallback(err, usersList) {
+
+            //check for config reading errors
+            if (err) {
+                return console.log("Read users list file error: ", err);
+            }
+
+            return usersList;
+        };
+
+        var usersList = JSON.parse(fs.readFileSync(users_location, 'utf8', fsCallback));
+        var response = {};
+
+        for(userType in usersList){
+
+            var userGroup = usersList[userType];
+            var temp = [];
+
+            for(var i = 0; i < userGroup.length; i++){
+
+                var user = userGroup[i];
+                temp.push(user.user);
+            };
+
+          response[userType] = temp;
+        };
+
+        return response;
     };
 
     /**
@@ -99,6 +134,7 @@ var Login = (function () {
      */
     var PUBLIC_METHODS = {
         getUsersJSON: getUsersJSON,
+        getOfflineUsers: getOfflineUsers,
         findUser: findUser,
         registerUser: registerUser
     };
@@ -107,4 +143,4 @@ var Login = (function () {
 
 })();
 
-module.exports = Login;
+module.exports = Users;

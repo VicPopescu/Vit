@@ -16,15 +16,17 @@ app.set('port', process.env.PORT || 4400);
  *      Custom modules
  */
 //profanity filter
-const profanityFilter = require('./custom_modules/profanity_filter/index.js');
+const ProfanityFilter = require('./custom_modules/profanity_filter/index.js');
 //command handler
-const commandHandler = require('./custom_modules/command_handler/index.js');
+const CommandHandler = require('./custom_modules/command_handler/index.js');
 //server logging
-const log = require('./custom_modules/custom_logging/index.js');
-//user login
-const login = require('./custom_modules/login/index.js');
-//history
-const history = require('./custom_modules/history/index.js');
+const Log = require('./custom_modules/custom_logging/index.js');
+//users management
+const Users = require('./custom_modules/users/index.js');
+//Application History
+const ApplicationHistory = require('./custom_modules/history/index.js');
+
+
 
 
 
@@ -147,7 +149,7 @@ io.on('connection', function (client) {
 
         user.type = user.type || 'user';
 
-        login.registerUser(user, function () {
+        Users.registerUser(user, function () {
             client.emit('register success', user);
         });
     });
@@ -171,7 +173,7 @@ io.on('connection', function (client) {
             }
         }
 
-        if (login.findUser(user)) {
+        if (Users.findUser(user)) {
 
             var userName = userDetails.user;
             var password = userDetails.pass;
@@ -186,11 +188,11 @@ io.on('connection', function (client) {
             if (client.username) {
 
                 console.log(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Joined!');
-                log.write(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Joined!');
+                Log.write(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Joined!');
             } else {
 
                 console.log(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Joined!');
-                log.write(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Joined!');
+                Log.write(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Joined!');
             }
 
             client.broadcast.emit('a user logged in', {
@@ -200,11 +202,12 @@ io.on('connection', function (client) {
 
             client.emit('login success', {
                 all: allUsers,
+                offline: Users.getOfflineUsers(),
                 thisUser: {
                     user: userName,
                     pass: password
                 },
-                history: history.getHistory()
+                history: ApplicationHistory.getMessageHistory()
             });
         } else {
             client.emit('login failed', {
@@ -223,11 +226,11 @@ io.on('connection', function (client) {
         if (client.username) {
 
             console.log(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Disconnected!');
-            log.write(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Disconnected!');
+            Log.write(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Disconnected!');
         } else {
 
             console.log(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Disconnected!');
-            log.write(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Disconnected!');
+            Log.write(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Disconnected!');
         }
 
         delete allClients[id];
@@ -244,12 +247,12 @@ io.on('connection', function (client) {
     client.on('user message', function (o) {
 
         //profanity check and replace
-        o.msg = profanityFilter.filterReplace(o.msg);
+        o.msg = ProfanityFilter.filterReplace(o.msg);
         //saving messages history
-        history.logHistory(null, o);
+        ApplicationHistory.logMessageHistory(null, o);
         //logs
         console.log('(CLIENT): [' + o.usr + ']: ' + o.msg);
-        log.write(get_date('date and hour') + ' (CLIENT): [' + o.usr + ']: ' + o.msg);
+        Log.write(get_date('date and hour') + ' (CLIENT): [' + o.usr + ']: ' + o.msg);
         //broadcast message to all users
         io.emit('new message', o);
     });

@@ -69,8 +69,8 @@ var HistoryHandler = (function () {
      *      Public exports
      */
     var PUBLIC_METHODS = {
-        logHistory: logHistory,
-        getHistory: getHistory
+        logMessageHistory: logHistory,
+        getMessageHistory: getHistory
     };
 
     return PUBLIC_METHODS;

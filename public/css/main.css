@@ -48,7 +48,8 @@ li {
   #chat__form {
     margin: 10px; }
 
-#chat__users {
+#chat__users,
+#offline__users {
   height: 100%;
   width: 20%;
   position: absolute;
@@ -59,17 +60,37 @@ li {
   color: #FFFFFF;
   font-size: 18px;
   font-weight: bold; }
-  #chat__users #users__list {
+  #chat__users [data-userRole="user"],
+  #offline__users [data-userRole="user"] {
+    color: #FFFFFF; }
+  #chat__users [data-userRole="admin"],
+  #offline__users [data-userRole="admin"] {
+    color: #72D0F3; }
+  #chat__users [data-userRole="sys"],
+  #offline__users [data-userRole="sys"] {
+    color: #4B1B3B; }
+  #chat__users [data-userRole="owner"],
+  #offline__users [data-userRole="owner"] {
+    color: #09D391; }
+  #chat__users ul,
+  #offline__users ul {
     list-style-type: none;
     padding: 0;
     margin: 0; }
-    #chat__users #users__list li {
-      display: block;
-      cursor: pointer;
-      border-bottom: 1px solid #FFFFFF;
-      width: 100%;
-      height: 30px;
-      text-align: center; }
+  #chat__users li,
+  #offline__users li {
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    box-sizing: border-box;
+    border: 0.5px solid rgba(255, 255, 255, 0.5);
+    width: auto;
+    height: auto;
+    text-align: center;
+    padding: 10px; }
 
 #tools {
   position: fixed;

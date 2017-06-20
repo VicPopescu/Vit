@@ -40,13 +40,16 @@ var $login = $('#login'),
     $login__error = $('#login__error'),
     $register__submit = $('#register__submit');
 
-var $users = $('#chat__users');
-var $users__list = $('#users__list');
+var $users = $('#chat__users'),
+    $offline__users = $('#offline__users'),
+    $users__list = $('#users__list'),
+    $offline__list = $('#offline__list');
 
-var $tools = $('#tools');
-var $tools__toggleUsers = $('#tools__toggleUsers');
-var $tools__fileSend = $('#tools__fileSend');
-var $tools__signOut = $('#tools__signOut');
+var $tools = $('#tools'),
+    $tools__toggleUsers = $('#tools__toggleUsers'),
+    $tools__toggleOfflineUsers = $('#tools__toggleOfflineUsers'),
+    $tools__fileSend = $('#tools__fileSend'),
+    $tools__signOut = $('#tools__signOut');
 
 
 
@@ -169,9 +172,13 @@ var template_message = function (u, m) {
  * @param {number} id 
  * @param {string} u 
  */
-var template_userlistItem = function (id, u) {
+var template_userlistItem = function (id, u, role) {
 
-    var t = '<li data-userId=' + id + '>' + u + '</li>';
+    var id = id || "N/A";
+    var role = role || "user";
+    var u = u || "Anonymous User";
+
+    var t = '<li data-userId=' + id + ' data-userRole=' + role + '>' + u + '</li>';
 
     return t;
 };
@@ -288,7 +295,7 @@ var update_usersList = function (action, user) {
         $.each(users, function (id, name) {
             $users__list.append(template_userlistItem(id, name));
         });
-    }
+    };
 
     /**
      * 
@@ -298,7 +305,21 @@ var update_usersList = function (action, user) {
 
         $users__list.find("[data-userId='" + user.id + "']").remove();
     };
+};
 
+/**
+ * 
+ */
+var update_offlineUsersList = function (offlineUsers) {
+
+    $offline__list.empty();
+
+    $.each(offlineUsers, function (usersGroup, users) {
+
+        for (var i = 0; i < users.length; i++) {
+            $offline__list.append(template_userlistItem(null, users[i], usersGroup));
+        };
+    });
 };
 
 /**
@@ -526,15 +547,30 @@ $file__input.on('change', function (e) {
  * 
  * @param {object} e1 
  */
-function displayUserslist(e1) {
+var displayUserslist = function (e1) {
 
     $users.animate({
         right: "+=30%"
-    }, 300, function () {
+    }, 200, function () {
         $document.on('click.hideUsersList', hideUsersList);
     });
     $(this).unbind(e1);
-}
+};
+
+/**
+ * 
+ * @param {*} e 
+ */
+var displayOfflineUserslist = function (e) {
+
+    $offline__users.animate({
+        right: "+=30%"
+    }, 200, function () {
+        $document.on('click.hideOfflineUsersList', hideOfflineUsersList);
+    });
+
+    $(this).unbind(e);
+};
 
 /**
  * 
@@ -542,7 +578,7 @@ function displayUserslist(e1) {
  */
 function hideUsersList(ev) {
 
-    if (ev.target.id == "chat__users")
+    if (ev.target.id == "chat__users" || ev.target.id == "offline__users")
         return;
     //For descendants of menu_content being clicked
     if ($(ev.target).closest('#chat__users').length)
@@ -550,10 +586,30 @@ function hideUsersList(ev) {
 
     $users.animate({
         right: "-=30%"
-    }, 300, function () {
+    }, 200, function () {
         $tools__toggleUsers.off('click.displayUsers').one('click.displayUsers', displayUserslist);
     });
     $(this).unbind(ev);
+};
+
+/**
+ * 
+ * @param {*} e 
+ */
+var hideOfflineUsersList = function (e) {
+
+    if (e.target.id == "chat__users" || e.target.id == "offline__users")
+        return;
+    //For descendants of menu_content being clicked
+    if ($(e.target).closest('#offline__users').length)
+        return;
+
+    $offline__users.animate({
+        right: "-=30%"
+    }, 200, function () {
+        $tools__toggleOfflineUsers.off('click.displayOfflineUsers').one('click.displayOfflineUsers', displayOfflineUserslist);
+    });
+    $(this).unbind(e);
 };
 
 
@@ -578,6 +634,7 @@ function visibilityChanged() {
  *      Attach handlers
  */
 $tools__toggleUsers.one('click.displayUsers', displayUserslist);
+$tools__toggleOfflineUsers.one('click.displayOfflineUsers', displayOfflineUserslist);
 $tools__fileSend.off('click.fileSend').on('click.fileSend', fileUploadTrigger);
 $tools__signOut.off('click.triggerSignOut').on('click.triggerSignOut', do_logout);
 if (document.addEventListener) document.addEventListener("visibilitychange", visibilityChanged);
@@ -599,12 +656,14 @@ socket.on('disconnect', function () {});
 
 socket.on('login success', function (users) {
 
-    var all = users.all;
+    var onlineUsers = users.all;
+    var offlineUsers = users.offline;
     var history = users.history;
     var thisUser = users.thisUser.user;
     var thisPass = users.thisUser.pass;
 
-    update_usersList('add all', all);
+    update_usersList('add all', onlineUsers);
+    update_offlineUsersList(offlineUsers);
     update_history(history);
 
     set_cookie('vitUser', thisUser);

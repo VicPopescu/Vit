@@ -1,0 +1,30 @@
+{
+    "user": [{
+        "user": "test1",
+        "pass": "testter",
+        "type": "user"
+    }, {
+        "user": "gigi",
+        "pass": "234234234234",
+        "type": "user"
+    }],
+    "admin": [{
+        "type": "admin",
+        "user": "Admin Test",
+        "pass": "###333###"
+    }],
+    "sys": [{
+        "type": "sys",
+        "user": "Test System Admin",
+        "pass": "###333###"
+    }, {
+        "type": "sys",
+        "user": "Sys 2",
+        "pass": "###333###"
+    }],
+    "owner": [{
+        "type": "owner",
+        "user": "Almighty Owner",
+        "pass": "###333###"
+    }]
+}
