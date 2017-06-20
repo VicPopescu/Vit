@@ -1,10 +1,21 @@
+html, body {
+  height: 100%; }
+
 body {
   background: linear-gradient(135deg, #002e3a, #017796);
   background-size: cover;
-  height: 100%;
   font-family: 'Nunito Sans', sans-serif;
   font-size: 80%;
   overflow: hidden; }
+
+body::after {
+  content: url("../images/logo_1.png");
+  position: absolute;
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  padding-top: 20%; }
 
 div,
 section,
@@ -26,7 +37,7 @@ li {
     margin: 0;
     padding: 0;
     border: 1px solid rgba(255, 255, 255, 0.5);
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.5);
     -webkit-transition: all 0.2s ease-in-out 0s;
     -moz-transition: all 0.2s ease-in-out 0s;
     -o-transition: all 0.2s ease-in-out 0s;
@@ -56,7 +67,7 @@ li {
   top: 0;
   bottom: 0;
   right: -25%;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.5);
   color: #FFFFFF;
   font-size: 18px;
   font-weight: bold; }
@@ -68,7 +79,7 @@ li {
     color: #72D0F3; }
   #chat__users [data-userRole="sys"],
   #offline__users [data-userRole="sys"] {
-    color: #4B1B3B; }
+    color: #7B760F; }
   #chat__users [data-userRole="owner"],
   #offline__users [data-userRole="owner"] {
     color: #09D391; }
@@ -76,7 +87,8 @@ li {
   #offline__users ul {
     list-style-type: none;
     padding: 0;
-    margin: 0; }
+    margin: 0;
+    text-align: right; }
   #chat__users li,
   #offline__users li {
     display: inline-block;
@@ -92,6 +104,20 @@ li {
     text-align: center;
     padding: 10px; }
 
+#weather {
+  position: absolute;
+  display: none;
+  right: 6%;
+  height: 93%;
+  width: 750px;
+  border: none;
+  overflow: hidden; }
+  #weather__info {
+    height: 100%;
+    width: 100%;
+    margin-top: -72px;
+    border: none; }
+
 #tools {
   position: fixed;
   display: none;
@@ -99,7 +125,7 @@ li {
   width: 5%;
   right: 0;
   top: 0;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.5);
   border-left: 1px solid rgba(255, 255, 255, 0.5);
   -webkit-transition: all 0.2s ease-in-out 0s;
   -moz-transition: all 0.2s ease-in-out 0s;
@@ -118,9 +144,10 @@ li {
     cursor: pointer;
     text-align: center; }
     #tools .tools__item:hover {
+      background-color: #FFFFFF;
       border-bottom: 1px solid #FFFFFF;
       border-top: 1px solid #FFFFFF;
-      color: #FFFFFF; }
+      color: rgba(0, 0, 0, 0.5); }
     #tools .tools__item .fa {
       margin: 10px; }
   #tools__signOut {
@@ -142,7 +169,7 @@ li {
   max-height: 100%;
   overflow: auto;
   border: 1px solid rgba(255, 255, 255, 0.5);
-  background-color: rgba(0, 0, 0, 0.2); }
+  background-color: rgba(0, 0, 0, 0.5); }
   #login:hover, #login:focus {
     border: 1px solid #FFFFFF; }
   #login__form {

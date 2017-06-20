@@ -45,10 +45,15 @@ var $users = $('#chat__users'),
     $users__list = $('#users__list'),
     $offline__list = $('#offline__list');
 
+var $weather = $('#weather');
+
 var $tools = $('#tools'),
     $tools__toggleUsers = $('#tools__toggleUsers'),
     $tools__toggleOfflineUsers = $('#tools__toggleOfflineUsers'),
     $tools__fileSend = $('#tools__fileSend'),
+    $tools__streaming = $('#tools__streaming'),
+    $tools__games = $('#tools__games'),
+    $tools__weather = $('#tools__weather'),
     $tools__signOut = $('#tools__signOut');
 
 
@@ -574,14 +579,14 @@ var displayOfflineUserslist = function (e) {
 
 /**
  * 
- * @param {object} ev 
+ * @param {object} e
  */
-function hideUsersList(ev) {
+function hideUsersList(e) {
 
-    if (ev.target.id == "chat__users" || ev.target.id == "offline__users")
+    if (e.target.id == "chat__users")
         return;
     //For descendants of menu_content being clicked
-    if ($(ev.target).closest('#chat__users').length)
+    if ($(e.target).closest('#chat__users').length)
         return;
 
     $users.animate({
@@ -589,7 +594,7 @@ function hideUsersList(ev) {
     }, 200, function () {
         $tools__toggleUsers.off('click.displayUsers').one('click.displayUsers', displayUserslist);
     });
-    $(this).unbind(ev);
+    $(this).unbind(e);
 };
 
 /**
@@ -598,7 +603,7 @@ function hideUsersList(ev) {
  */
 var hideOfflineUsersList = function (e) {
 
-    if (e.target.id == "chat__users" || e.target.id == "offline__users")
+    if (e.target.id == "offline__users")
         return;
     //For descendants of menu_content being clicked
     if ($(e.target).closest('#offline__users').length)
@@ -621,6 +626,48 @@ function fileUploadTrigger() {
     $file__input.trigger('click');
 };
 
+
+/**
+ * 
+ */
+var displayStreamingOptions = function () {
+
+    alert("Sorry... Streaming channels are not available yet...");
+};
+
+
+/**
+ * 
+ */
+var displayGames = function () {
+
+    alert("Sorry... Games are not available yet...");
+};
+/**
+ * 
+ */
+var displayWeather = function () {
+
+    $weather.fadeIn(500, function(){
+         $document.one('click.hideWeather', hideWeatherInfo);
+    });
+};
+
+/**
+ * 
+ * @param {*} e 
+ */
+var hideWeatherInfo = function (e) {
+
+    if (e.target.id == "weather__info")
+        return;
+    //For descendants of menu_content being clicked
+    if ($(e.target).closest('#weather__info').length)
+        return;
+
+    $weather.fadeOut();
+};
+
 /**
  * 
  */
@@ -636,6 +683,9 @@ function visibilityChanged() {
 $tools__toggleUsers.one('click.displayUsers', displayUserslist);
 $tools__toggleOfflineUsers.one('click.displayOfflineUsers', displayOfflineUserslist);
 $tools__fileSend.off('click.fileSend').on('click.fileSend', fileUploadTrigger);
+$tools__streaming.off('click.displayStreamingOptions').on('click.displayStreamingOptions', displayStreamingOptions);
+$tools__games.off('click.displayGames').on('click.displayGames', displayGames);
+$tools__weather.off('click.displayWeather').on('click.displayWeather', displayWeather);
 $tools__signOut.off('click.triggerSignOut').on('click.triggerSignOut', do_logout);
 if (document.addEventListener) document.addEventListener("visibilitychange", visibilityChanged);
 

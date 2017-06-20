@@ -4,7 +4,7 @@ $color-White: #FFFFFF;
 $color-Red: #F60E13;
 $color-Gray: #808080;
 $color-Transparent: rgba(0, 0, 0, 0);
-$color-TransparentBlack: rgba(0, 0, 0, 0.2);
+$color-TransparentBlack: rgba(0, 0, 0, 0.5);
 $color-TransparentWhite: rgba(255, 255, 255, 0.5);
 //          --/COLORS/--          //
 $color-WineBerry: #4B1B3B;
@@ -24,13 +24,26 @@ $font-sm: 12px; //small
 $font-nm: 16px; //normal
 $font-lg: 22px; //large
 $font-xl: 32px; //extra-large
+
+html, body{
+    height: 100%;
+}
 body {
     background: linear-gradient(135deg, #002e3a, #017796);
     background-size: cover;
-    height: 100%;
     font-family: 'Nunito Sans', sans-serif;
     font-size: 80%;
     overflow: hidden;
+}
+
+body::after{
+    content: url('../images/logo_1.png');
+    position: absolute;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    padding-top: 20%;
 }
 
 div,
@@ -105,7 +118,7 @@ li {
         color: $color-Malibu;
     }
     [data-userRole="sys"] {
-        color: $color-WineBerry;
+        color: $color-Olivetone;
     }
     [data-userRole="owner"] {
         color: $color-CaribbeanGreen;
@@ -114,6 +127,7 @@ li {
         list-style-type: none;
         padding: 0;
         margin: 0;
+        text-align: right;
     }
     li {
         display: inline-block;
@@ -134,6 +148,23 @@ li {
     }
 }
 
+#weather {
+    position: absolute;
+    display: none;
+    right: 6%;
+    height: 93%;
+    width: 750px;
+    border: none;
+    overflow: hidden;
+    &__info{
+        height: 100%;
+        width: 100%;
+        margin-top: -72px;
+        border: none;
+    }
+}
+
+;
 #tools {
     position: fixed;
     display: none;
@@ -161,9 +192,10 @@ li {
         cursor: pointer;
         text-align: center;
         &:hover {
+            background-color: $color-White;
             border-bottom: $border-White;
             border-top: $border-White;
-            color: $color-White;
+            color: $color-TransparentBlack;
         }
         .fa {
             margin: 10px;

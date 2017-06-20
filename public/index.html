@@ -44,6 +44,9 @@
             <button id="chat__submit">Say Something!</button>
         </form>
     </section>
+    <section id="weather">
+        <iframe id="weather__info" scrolling="no" src="https://codepen.io/VicPopescu/full/RVLQBL/"></iframe>
+    </section>
 
     <section id="chat__users">
         <ul id="users__list"></ul>
@@ -54,8 +57,10 @@
 
     <section id="login">
         <form id="login__form" action="">
-            <input id="login__userInput" autocomplete="on" minlength=3 maxlength="20" placeholder="User" required="required" title="At least 3 characters and max 20 characters!" />
-            <input type="password" id="login__passInput" autocomplete="on" minlength=6 maxlength="20" placeholder="Password" required="required" title="At least 6 characters and max 20 characters!" />
+            <input id="login__userInput" autocomplete="on" minlength=3 maxlength="20" placeholder="User" required="required" title="At least 3 characters and max 20 characters!"
+            />
+            <input type="password" id="login__passInput" autocomplete="on" minlength=6 maxlength="20" placeholder="Password" required="required"
+                title="At least 6 characters and max 20 characters!" />
             <button id="login__submit">LOGIN</button>
             <button id="register__submit">REGISTER</button>
             <div id="login__error"></div>
@@ -69,13 +74,13 @@
 
     <section id="tools">
         <div id="tools__toggleUsers" class="tools__item tools__toggleUsers" title="Online Users">
-            <i class="fa fa-user-o fa-2x" aria-hidden="true"></i>
+            <i class="fa fa-users fa-2x" aria-hidden="true"></i>
         </div>
         <div id="tools__toggleOfflineUsers" class="tools__item tools__toggleOfflineUsers" title="Offline Users">
             <i class="fa fa-user-times fa-2x" aria-hidden="true"></i>
         </div>
         <div id="tools__fileSend" class="tools__item tools__fileSend" title="Send file!">
-            <i class="fa fa-file-o fa-2x" aria-hidden="true"></i>
+            <i class="fa fa-file fa-2x" aria-hidden="true"></i>
         </div>
         <div id="tools__streaming" class="tools__item tools__streaming" title="Watch streams!">
             <i class="fa fa-play fa-2x" aria-hidden="true"></i>
