@@ -147,7 +147,7 @@ io.on('connection', function (client) {
      */
     client.on('user register', function (user) {
 
-        user.type = user.type || 'user';
+        user.type = user.type || 'user'; //TODO: dont let client chose use type
 
         Users.registerUser(user, function () {
             client.emit('register success', user);
@@ -164,7 +164,7 @@ io.on('connection', function (client) {
             user: userDetails.user,
             pass: userDetails.pass
         };
-        
+
         //disconnect duplicate sockets
         for (var id in allUsers) {
             if (allUsers[id] === userDetails.user) {
@@ -177,6 +177,7 @@ io.on('connection', function (client) {
 
             var userName = userDetails.user;
             var password = userDetails.pass;
+            var role = userDetails.role || "user";
 
 
             client.username = userName;
@@ -205,7 +206,8 @@ io.on('connection', function (client) {
                 offline: Users.getOfflineUsers(),
                 thisUser: {
                     user: userName,
-                    pass: password
+                    pass: password,
+                    role: role
                 },
                 history: ApplicationHistory.getMessageHistory()
             });
@@ -263,20 +265,28 @@ io.on('connection', function (client) {
      */
     client.on('command', function (cmd) {
 
-        var id = client.id;
+        var clientId = client.id;
+        var user = client.username;
+        var cmd = cmd.cmd;
 
-        fs.readFile(__dirname + '/public/images/logo_1.png', function (err, buf) {
-
-            if (err) {
-                console.log(err);
-                return false;
-            }
-
-            client.emit('image', {
-                buffer: buf.toString('base64')
-            });
-            console.log('image file is initialized');
+        CommandHandler.executeCommand({
+            clientId: clientId,
+            user: user,
+            cmd: cmd
         });
+
+        // fs.readFile(__dirname + '/public/images/logo_1.png', function (err, buf) {
+
+        //     if (err) {
+        //         console.log(err);
+        //         return false;
+        //     }
+
+        //     client.emit('image', {
+        //         buffer: buf.toString('base64')
+        //     });
+        //     console.log('image file is initialized');
+        // });
 
         console.log('(COMMAND) [' + client.username + ']: ' + cmd.cmd);
     });

@@ -139,6 +139,7 @@ var do_logout = function () {
  * Global Variables
  */
 var usr = get_cookieByName('vitUser') || null; //local saved user name
+//var role = get_cookieByName('vitPermissionLevel') || null; //user role
 var pass = get_cookieByName('vitPass') || null; //pass
 var windowFocused = true;
 var scrollToBottom = true;
@@ -178,7 +179,7 @@ var template_message = function (u, m) {
 var template_userlistItem = function (id, u, role) {
 
     var id = id || "N/A";
-    var role = role || "user";
+    //var role = role || "user";
     var u = u || "Anonymous User";
 
     var t = '<li data-userId=' + id + ' data-userRole=' + role + '>' + u + '</li>';
@@ -254,7 +255,7 @@ var notify = function (message) {
                 });
         }
     }
-}
+};
 
 
 
@@ -379,17 +380,19 @@ function get_cmd(str) {
 function exec_cmd(cmd) {
 
     socket.emit('command', {
+        //'permLevel': role,
         'cmd': cmd
     });
 };
 
 /**
  *      Check for commands and return it
- *      @param {string} str User input that need to be checked for commands
+ *      @param {string} cmd Command
  */
-var handle_cmd = function (str) {
+var handle_cmd = function (msg) {
 
-    var cmd = get_cmd(str);
+    var cmd = get_cmd(msg);
+
     exec_cmd(cmd);
 
     return false;
@@ -451,15 +454,18 @@ $chat__form.submit(function (e) {
 
     //user input
     var msg = $chat__userInput.val();
+    //test for commands regex
+    var testCmd = /^!cmd\s(.*)/;
+    //hold the test result true/false
+    var inputCmd;
 
     //handle early exit in case user or message is undefined
     if (!msg || !usr) return false;
-
-    var testReg = /^!cmd\s/;
-    var inputCmd = testReg.test(msg);
-
-    //check for user commands
+    //test for comands in chat
+    inputCmd = testCmd.test(msg);
+    //if comands are requested
     if (inputCmd) {
+        //get command
         handle_cmd(msg);
         clear_input();
         return false;
@@ -567,6 +573,7 @@ var displayUserslist = function (e1) {
     }, 200, function () {
         $document.on('click.hideUsersList', hideUsersList);
     });
+
     $(this).unbind(e1);
 };
 
@@ -617,6 +624,7 @@ function hideUsersList(e) {
     }, 200, function () {
         $tools__toggleUsers.off('click.displayUsers').one('click.displayUsers', displayUserslist);
     });
+
     $(this).unbind(e);
 };
 
@@ -637,6 +645,7 @@ var hideOfflineUsersList = function (e) {
     }, 200, function () {
         $tools__toggleOfflineUsers.off('click.displayOfflineUsers').one('click.displayOfflineUsers', displayOfflineUserslist);
     });
+
     $(this).unbind(e);
 };
 
@@ -657,6 +666,7 @@ var hideStreamingList = function (e) {
     }, 200, function () {
         $tools__streaming.off('click.displayOfflineUsers').one('click.displayOfflineUsers', displayStreamingOptions);
     });
+
     $(this).unbind(e);
 };
 
@@ -754,8 +764,10 @@ socket.on('login success', function (users) {
 
     set_cookie('vitUser', thisUser);
     set_cookie('vitPass', thisPass);
+    //set_cookie('vitPermissionLevel', thisUserRole);
 
     usr = thisUser || null;
+    //role = thisUserRole || "user";
 
     //DOM update
     $login.remove();
