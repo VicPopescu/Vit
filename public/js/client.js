@@ -48,6 +48,7 @@ var $users = $('#chat__users'),
 var $weather = $('#weather');
 
 var $tools = $('#tools'),
+    $tools__toogleChat = $('#tools__toogleChat'),
     $tools__toggleUsers = $('#tools__toggleUsers'),
     $tools__toggleOfflineUsers = $('#tools__toggleOfflineUsers'),
     $tools__fileSend = $('#tools__fileSend'),
@@ -550,6 +551,15 @@ $file__input.on('change', function (e) {
 
 /**
  * 
+ */
+var toogleChatDisplay = function(e){
+
+    $chat.fadeToggle(200);
+    $chat__userInput.focus();
+};
+
+/**
+ * 
  * @param {object} e1 
  */
 var displayUserslist = function (e1) {
@@ -648,8 +658,8 @@ var displayGames = function () {
  */
 var displayWeather = function () {
 
-    $weather.fadeIn(500, function(){
-         $document.one('click.hideWeather', hideWeatherInfo);
+    $weather.fadeIn(500, function () {
+        $document.one('click.hideWeather', hideWeatherInfo);
     });
 };
 
@@ -680,6 +690,7 @@ function visibilityChanged() {
 /**
  *      Attach handlers
  */
+$tools__toogleChat.off('click.toggleChat').on('click.toggleChat', toogleChatDisplay);
 $tools__toggleUsers.one('click.displayUsers', displayUserslist);
 $tools__toggleOfflineUsers.one('click.displayOfflineUsers', displayOfflineUserslist);
 $tools__fileSend.off('click.fileSend').on('click.fileSend', fileUploadTrigger);
@@ -724,8 +735,8 @@ socket.on('login success', function (users) {
     //DOM update
     $login.remove();
     $tools.show();
-    $chat.show();
-    $chat__userInput.focus();
+    //$chat.show();
+    //$chat__userInput.focus();
     notify("Welcome " + thisUser + "!");
     updateScroll();
 });
