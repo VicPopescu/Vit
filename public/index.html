@@ -35,8 +35,8 @@
 
 <body>
     <section id="header">
-
     </section>
+
     <section id="chat">
         <ul id="chat__allMessages"></ul>
         <form id="chat__form" action="">
@@ -44,6 +44,7 @@
             <button id="chat__submit">Say Something!</button>
         </form>
     </section>
+
     <section id="weather">
         <iframe id="weather__info" scrolling="no" src="https://codepen.io/VicPopescu/full/RVLQBL/"></iframe>
     </section>
@@ -53,6 +54,18 @@
     </section>
     <section id="offline__users">
         <ul id="offline__list"></ul>
+    </section>
+
+    <section id="streaming">
+        <ul>
+            <li>
+                <p>Rock Fm</p>
+                <audio controls>
+                    <source src="http://80.86.106.143:9128/rockfm.aacp" type="audio/ogg"> Your browser does not support the audio element.
+                </audio>
+            </li>
+        </ul>
+
     </section>
 
     <section id="login">
@@ -85,7 +98,7 @@
         <div id="tools__fileSend" class="tools__item tools__fileSend" title="Send file!">
             <i class="fa fa-file fa-2x" aria-hidden="true"></i>
         </div>
-        <div id="tools__streaming" class="tools__item tools__streaming" title="Watch streams!">
+        <div id="tools__streaming" class="tools__item tools__streaming" title="Radio and streaming!">
             <i class="fa fa-play fa-2x" aria-hidden="true"></i>
         </div>
         <div id="tools__games" class="tools__item tools__games" title="Play games!">

@@ -46,6 +46,7 @@ var $users = $('#chat__users'),
     $offline__list = $('#offline__list');
 
 var $weather = $('#weather');
+var $streaming = $('#streaming');
 
 var $tools = $('#tools'),
     $tools__toogleChat = $('#tools__toogleChat'),
@@ -552,7 +553,7 @@ $file__input.on('change', function (e) {
 /**
  * 
  */
-var toogleChatDisplay = function(e){
+var toogleChatDisplay = function (e) {
 
     $chat.fadeToggle(200);
     $chat__userInput.focus();
@@ -582,6 +583,21 @@ var displayOfflineUserslist = function (e) {
         right: "+=30%"
     }, 200, function () {
         $document.on('click.hideOfflineUsersList', hideOfflineUsersList);
+    });
+
+    $(this).unbind(e);
+};
+
+/**
+ * 
+ * @param {*} e 
+ */
+var displayStreamingOptions = function (e) {
+
+    $streaming.animate({
+        right: "+=30%"
+    }, 200, function () {
+        $document.on('click.hideUsersList', hideStreamingList);
     });
 
     $(this).unbind(e);
@@ -627,6 +643,26 @@ var hideOfflineUsersList = function (e) {
     $(this).unbind(e);
 };
 
+/**
+ * 
+ * @param {*} e 
+ */
+var hideStreamingList = function (e) {
+
+    if (e.target.id == "streaming")
+        return;
+    //For descendants of menu_content being clicked
+    if ($(e.target).closest('#streaming').length)
+        return;
+
+    $streaming.animate({
+        right: "-=30%"
+    }, 200, function () {
+        $tools__streaming.off('click.displayOfflineUsers').one('click.displayOfflineUsers', displayStreamingOptions);
+    });
+    $(this).unbind(e);
+};
+
 
 /**
  * 
@@ -636,14 +672,6 @@ function fileUploadTrigger() {
     $file__input.trigger('click');
 };
 
-
-/**
- * 
- */
-var displayStreamingOptions = function () {
-
-    alert("Sorry... Streaming channels are not available yet...");
-};
 
 
 /**

@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   height: 100%; }
 
 body {
@@ -103,6 +104,38 @@ li {
     height: auto;
     text-align: center;
     padding: 10px; }
+
+#streaming {
+  height: 100%;
+  width: 20%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -25%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #FFFFFF;
+  font-size: 18px;
+  font-weight: bold; }
+  #streaming ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-align: right; }
+  #streaming li {
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    box-sizing: border-box;
+    border: 0.5px solid rgba(255, 255, 255, 0.5);
+    width: 100%;
+    height: auto;
+    text-align: center;
+    padding: 10px; }
+    #streaming li audio {
+      width: 100%; }
 
 #weather {
   position: absolute;

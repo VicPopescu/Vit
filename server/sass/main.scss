@@ -24,10 +24,11 @@ $font-sm: 12px; //small
 $font-nm: 16px; //normal
 $font-lg: 22px; //large
 $font-xl: 32px; //extra-large
-
-html, body{
+html,
+body {
     height: 100%;
 }
+
 body {
     background: linear-gradient(135deg, #002e3a, #017796);
     background-size: cover;
@@ -36,7 +37,7 @@ body {
     overflow: hidden;
 }
 
-body::after{
+body::after {
     content: url('../images/logo_1.png');
     position: absolute;
     z-index: -1;
@@ -148,6 +149,45 @@ li {
     }
 }
 
+#streaming {
+    height: 100%;
+    width: 20%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: -25%;
+    background-color: $color-TransparentBlack;
+    color: $color-White;
+    font-size: 18px;
+    font-weight: bold;
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        text-align: right;
+    }
+    li {
+        display: inline-block;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        box-sizing: border-box;
+        border: 0.5px solid $color-TransparentWhite;
+        width: 100%;
+        height: auto;
+        text-align: center;
+        padding: 10px;
+        &:hover {
+            //border: $border-Transparent;
+        }
+        audio {
+            width: 100%;
+        }
+    }
+}
+
 #weather {
     position: absolute;
     display: none;
@@ -156,12 +196,12 @@ li {
     width: 750px;
     border: none;
     overflow: hidden;
-    &__info{
+    &__info {
         height: 100%;
         width: 100%;
         margin-top: -72px;
         border: none;
-        border: 0.5px solid $color-TransparentWhite;        
+        border: 0.5px solid $color-TransparentWhite;
     }
 }
 
