@@ -8,10 +8,6 @@ var opt = {
     //upgrade: false
 };
 
-// const opt = {
-//     transports: ['websocket'],
-//     upgrade: false
-// }
 const socket = io.connect(url, opt);
 
 /**
@@ -169,7 +165,7 @@ if (!usr && !pass) {
  */
 var template_message = function (u, m) {
 
-    var t = '<li><span class="chat__messageUser">' + u + '</span>:<span class="chat__message"> ' + m + '</span></li>';
+    var t = '<li><p class="chat__messageUser">' + u + '</p><p class="chat__message"> ' + m + '</p></li>';
 
     return t;
 };
@@ -332,7 +328,7 @@ var update_offlineUsersList = function (offlineUsers) {
 /**
  *
  */
-function updateScroll() {
+function update_scroll() {
 
     var h = $chat__allMessages.height();
     var s = $chat__allMessages[0].scrollHeight;
@@ -557,6 +553,7 @@ var toogleChatDisplay = function (e) {
 
     $chat.fadeToggle(200);
     $chat__userInput.focus();
+    update_scroll();
 };
 
 /**
@@ -566,7 +563,7 @@ var toogleChatDisplay = function (e) {
 var displayUserslist = function (e1) {
 
     $users.animate({
-        right: "+=30%"
+        right: "+=400px"
     }, 200, function () {
         $document.on('click.hideUsersList', hideUsersList);
     });
@@ -580,7 +577,7 @@ var displayUserslist = function (e1) {
 var displayOfflineUserslist = function (e) {
 
     $offline__users.animate({
-        right: "+=30%"
+        right: "+=400px"
     }, 200, function () {
         $document.on('click.hideOfflineUsersList', hideOfflineUsersList);
     });
@@ -595,7 +592,7 @@ var displayOfflineUserslist = function (e) {
 var displayStreamingOptions = function (e) {
 
     $streaming.animate({
-        right: "+=30%"
+        right: "+=400px"
     }, 200, function () {
         $document.on('click.hideUsersList', hideStreamingList);
     });
@@ -616,7 +613,7 @@ function hideUsersList(e) {
         return;
 
     $users.animate({
-        right: "-=30%"
+        right: "-=400px"
     }, 200, function () {
         $tools__toggleUsers.off('click.displayUsers').one('click.displayUsers', displayUserslist);
     });
@@ -636,7 +633,7 @@ var hideOfflineUsersList = function (e) {
         return;
 
     $offline__users.animate({
-        right: "-=30%"
+        right: "-=400px"
     }, 200, function () {
         $tools__toggleOfflineUsers.off('click.displayOfflineUsers').one('click.displayOfflineUsers', displayOfflineUserslist);
     });
@@ -656,7 +653,7 @@ var hideStreamingList = function (e) {
         return;
 
     $streaming.animate({
-        right: "-=30%"
+        right: "-=400px"
     }, 200, function () {
         $tools__streaming.off('click.displayOfflineUsers').one('click.displayOfflineUsers', displayStreamingOptions);
     });
@@ -766,7 +763,7 @@ socket.on('login success', function (users) {
     //$chat.show();
     //$chat__userInput.focus();
     notify("Welcome " + thisUser + "!");
-    updateScroll();
+    update_scroll();
 });
 
 
@@ -807,7 +804,7 @@ socket.on('new message', function (o) {
 
     $chat__allMessages.append(template_message(o.usr, o.msg));
     !windowFocused && notify(o.usr + ' : ' + o.msg);
-    updateScroll();
+    update_scroll();
 });
 
 socket.on("image", function (imgInfo) {
