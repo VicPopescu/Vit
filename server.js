@@ -275,18 +275,18 @@ io.on('connection', function (client) {
             cmd: cmd
         });
 
-        // fs.readFile(__dirname + '/public/images/logo_1.png', function (err, buf) {
+        fs.readFile(__dirname + '/public/images/logo_1.png', function (err, buf) {
 
-        //     if (err) {
-        //         console.log(err);
-        //         return false;
-        //     }
+            if (err) {
+                console.log(err);
+                return false;
+            }
 
-        //     client.emit('image', {
-        //         buffer: buf.toString('base64')
-        //     });
-        //     console.log('image file is initialized');
-        // });
+            client.emit('image', {
+                buffer: buf.toString('base64')
+            });
+            console.log('image file is initialized');
+        });
 
         console.log('(COMMAND) [' + client.username + ']: ' + cmd.cmd);
     });

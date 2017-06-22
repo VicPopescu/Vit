@@ -100,6 +100,15 @@ li {
             .chat__message {
                 color: $color-White;
             }
+            .fileTransfer__image,
+            .fileTransfer__text {
+                display: block;
+                margin: 5px auto;
+            }
+
+            .fileTransfer__image{
+                text-align: center;
+            }
         }
         .chat__messageUser {
             font-size: $font-nm;

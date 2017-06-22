@@ -65,6 +65,12 @@ li {
         color: #FFFFFF; }
       #chat__allMessages li .chat__message {
         color: #FFFFFF; }
+      #chat__allMessages li .fileTransfer__image,
+      #chat__allMessages li .fileTransfer__text {
+        display: block;
+        margin: 5px auto; }
+      #chat__allMessages li .fileTransfer__image {
+        text-align: center; }
     #chat__allMessages .chat__messageUser {
       font-size: 16px;
       font-weight: bold;

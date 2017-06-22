@@ -202,7 +202,7 @@ var template_imageTransfer = function (user, content) {
     img.style.height = '100px';
     img.style.imageRendering = '-webkit-optimize-contrast';
 
-    d = $('<a download="' + content.name + '" href=' + content.data + ' title="' + content.name + '">' + content.name + '</a>').append(img);
+    d = $('<a class="fileTransfer__image" download="' + content.name + '" href=' + content.data + ' title="' + content.name + '"></a>').append(img);
     t = $('<li><span class="chat__messageUser">' + user + ': </span></li>').append(d);
 
     return t;
@@ -223,7 +223,7 @@ var template_txtTransfer = function (user, content) {
 
     file.src = content.data;
 
-    d = $('<a class="fileTransfer__text" download="' + content.name + '" href=' + content.data + ' title="' + content.name + '">' + content.name + '</a>').append(file);
+    d = $('<a class="fileTransfer__text" download="' + content.name + '" href=' + content.data + ' title="' + content.name + '"></a>').append(file);
     t = $('<li><span class="chat__messageUser">' + user + ': </span></li>').append(d);
 
     return t;
