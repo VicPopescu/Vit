@@ -555,17 +555,21 @@ var Charts = (function () {
 
             for (var key in weatherChart.data.datasets[datasetIndex]._meta) {
                 var i = key;
-            }
+            };
 
             var a = weatherChart.data.datasets[datasetIndex]._meta[i];
 
             if (a.hidden) {
+
                 a.hidden = false;
                 weatherChart.scales[datasetId].options.scaleLabel.display = true;
+
             } else {
+
                 a.hidden = true;
                 weatherChart.scales[datasetId].options.scaleLabel.display = false;
-            }
+            };
+
             weatherChart.update();
         };
 
@@ -707,8 +711,8 @@ var Display = (function () {
 
         //template construction
         var template = '';
-        template += '<p>Apparent Temperature: <span class="lightblue">' + apparentTemp + Weather.get_weatherUnits().t + '</span></p>';
-        template += '<p>Temperature: <span class="lightblue">' + temperature + Weather.get_weatherUnits().t + '</span></p>';
+        template += '<p>Apparent Temperature: <span class="lightblue">' + apparentTemp.toFixed() + Weather.get_weatherUnits().t + '</span></p>';
+        template += '<p>Temperature: <span class="lightblue">' + temperature.toFixed() + Weather.get_weatherUnits().t + '</span></p>';
         template += '<p>Humidity: <span class="lightblue">' + (humidity * 100).toFixed() + '%</span></p>';
         template += '<p>Precipitations Probability: <span class="lightblue">' + (precipProbability * 100).toFixed() + '%</span></p>';
         precipIntensity && (template += '<p>Precipitations Intensity: <span class="lightblue">' + precipIntensity + Weather.get_weatherUnits().p + '</span></p>');
