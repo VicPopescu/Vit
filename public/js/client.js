@@ -632,7 +632,7 @@ var displayGames = function () {
 var displayQuotes = function () {
 
     $quoteGenerator.fadeIn(500, function () {
-        $document.one('click.hideWeather', hideQuotes);
+        $document.one('click.hideQuote', hideQuotes);
     });
 };
 

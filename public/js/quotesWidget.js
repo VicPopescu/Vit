@@ -4,6 +4,7 @@
  * Background images are provided by {@link https://source.unsplash.com/}
  */
 var quotesWidget = (function () {
+
     //Global DOM selectors
     var $root = $('main'),
         $background = $('#backgroundChange'),
@@ -14,6 +15,24 @@ var quotesWidget = (function () {
         $quote_source = $('#source'),
         $quote_getquote = $('#getQuote'),
         $quote_twittershare = $('#tweetQuote');
+
+    var $tools__quotes = $('#tools__quotes');
+    var $quoteGenerator = $('#guoteGenerator');
+    //Global variables
+    var ifActiveWidget = false;//keep track if this widget is active|not
+
+    //bind a listener to watch if widget is active or not, to avoid useless calls
+    $tools__quotes.on('click.toggleWidgetActive', function () {
+
+        if ($quoteGenerator.is(":visible")) {
+
+            ifActiveWidget = false;
+        } else {
+
+            ifActiveWidget = true;
+        }
+    });
+
 
     /**
      * @public
@@ -74,10 +93,20 @@ var quotesWidget = (function () {
          * @param {array} images Array holding images src's
          * @param {number} index Keep track of image index in array
          */
-        var images_preload = function (images, index) {
+        var images_preload = function (images, index, firstImageFetch) {
 
             //keep track of image index in array
             index = index || 0;
+            //fetch new background images only if this widget is active
+            if (!ifActiveWidget && !firstImageFetch) {
+                //postpose next image preload for certain time
+                setTimeout(function () {
+                    //recursive call to preload next image. ifActiveWidget tells if the user is curently using this widget, to avoid useless image fetch
+                    images_preload(images, index);
+                }, 10000);
+
+                return false;
+            };
 
             //till the end of images array
             if (images && images.length > index) {
@@ -269,7 +298,7 @@ var quotesWidget = (function () {
         ];
 
         //preload background images
-        Helpers.images_preload(images);
+        Helpers.images_preload(images, 0, true);
 
         //attach event handlers
         $quote_getquote.on("click.getNewQuote", displayRandomQuote);
