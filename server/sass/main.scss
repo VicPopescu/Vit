@@ -1,29 +1,9 @@
-//          --/COLORS/--          //
-$color-Black: #000000;
-$color-White: #FFFFFF;
-$color-Red: #F60E13;
-$color-Gray: #808080;
-$color-Transparent: rgba(0, 0, 0, 0);
-$color-TransparentBlack: rgba(0, 0, 0, 0.5);
-$color-TransparentWhite: rgba(255, 255, 255, 0.5);
-//          --/COLORS/--          //
-$color-WineBerry: #4B1B3B;
-$color-Olivetone: #7B760F;
-$color-HeavyMetal: #282A28;
-$color-Lima: #37C91D;
-$color-CaribbeanGreen: #09D391;
-$color-Malibu: #72D0F3;
-//          --/BORDERS/--         //
-$border-Default: 1px solid $color-Olivetone;
-$border-White: 1px solid $color-White;
-$border-Transparent: 1px solid $color-Transparent;
-$border-TransparentWhite: 1px solid $color-TransparentWhite;
-//           --/FONTS/--          //
-$font-xs: 8px; //extra-small
-$font-sm: 12px; //small
-$font-nm: 16px; //normal
-$font-lg: 22px; //large
-$font-xl: 32px; //extra-large
+//          --/IMPORTS/--         //
+@import "colors.scss";
+@import "fonts.scss";
+@import "borders.scss";
+
+
 html,
 body {
     height: 100%;
@@ -40,7 +20,7 @@ body {
 }
 
 body::after {
-    content: url('../images/logo_1.png');
+    content: url('../../images/logo_1.png');
     position: absolute;
     z-index: -1;
     height: 100%;
@@ -105,8 +85,7 @@ li {
                 display: block;
                 margin: 5px auto;
             }
-
-            .fileTransfer__image{
+            .fileTransfer__image {
                 text-align: center;
             }
         }
@@ -213,24 +192,6 @@ li {
     }
 }
 
-#weather {
-    position: absolute;
-    display: none;
-    right: 6%;
-    height: 93%;
-    width: 750px;
-    border: none;
-    overflow: hidden;
-    &__info {
-        height: 100%;
-        width: 100%;
-        margin-top: -72px;
-        border: none;
-        border: 0.5px solid $color-TransparentWhite;
-    }
-}
-
-;
 #tools {
     position: fixed;
     display: none;

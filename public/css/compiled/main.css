@@ -12,7 +12,7 @@ body {
   overflow: hidden; }
 
 body::after {
-  content: url("../images/logo_1.png");
+  content: url("../../images/logo_1.png");
   position: absolute;
   z-index: -1;
   height: 100%;
@@ -155,21 +155,6 @@ li {
     padding: 10px; }
     #streaming li audio {
       width: 100%; }
-
-#weather {
-  position: absolute;
-  display: none;
-  right: 6%;
-  height: 93%;
-  width: 750px;
-  border: none;
-  overflow: hidden; }
-  #weather__info {
-    height: 100%;
-    width: 100%;
-    margin-top: -72px;
-    border: none;
-    border: 0.5px solid rgba(255, 255, 255, 0.5); }
 
 #tools {
   position: fixed;

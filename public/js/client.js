@@ -704,10 +704,10 @@ var displayWeather = function () {
  */
 var hideWeatherInfo = function (e) {
 
-    if (e.target.id == "weather__info")
+    if (e.target.id == "weather")
         return;
     //For descendants of menu_content being clicked
-    if ($(e.target).closest('#weather__info').length)
+    if ($(e.target).closest('#weather').length)
         return;
 
     $weather.fadeOut();

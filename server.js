@@ -51,10 +51,10 @@ var allUsers = {};
 app.use(sassMiddleware({
     /* Options */
     src: path.join(__dirname, 'server/sass'),
-    dest: path.join(__dirname, 'public/css'),
+    dest: path.join(__dirname, 'public/css/compiled'),
     debug: false,
     outputStyle: 'extended',
-    prefix: '/css'
+    prefix: '/css/compiled'
 }));
 //set static public folder
 app.use(express.static(path.join(__dirname, 'public')));
