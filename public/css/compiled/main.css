@@ -25,6 +25,13 @@ section,
 li {
   box-sizing: border-box; }
 
+::-webkit-input-placeholder,
+:-moz-placeholder,
+::-moz-placeholder,
+:-ms-input-placeholder,
+::-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.5); }
+
 #chat {
   height: 98%;
   width: 85%;
@@ -35,7 +42,7 @@ li {
   top: 1%; }
   #chat__allMessages {
     width: 100%;
-    height: 95%;
+    height: 90%;
     list-style: none;
     overflow-y: auto;
     margin: 0;
@@ -77,7 +84,20 @@ li {
       color: black;
       cursor: pointer; }
   #chat__form {
-    margin: 10px; }
+    margin: 0; }
+  #chat__userInput {
+    border: none;
+    margin-top: 5px;
+    padding: 5px;
+    border-bottom: 1.5px solid #08352E;
+    background-color: transparent;
+    outline: none;
+    color: white;
+    width: 80%; }
+  #chat__submitPlaceholder {
+    color: #08352E;
+    font-size: 24px;
+    line-height: 50%; }
 
 #chat__users,
 #offline__users {

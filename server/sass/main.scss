@@ -2,8 +2,6 @@
 @import "colors.scss";
 @import "fonts.scss";
 @import "borders.scss";
-
-
 html,
 body {
     height: 100%;
@@ -35,6 +33,14 @@ li {
     box-sizing: border-box;
 }
 
+::-webkit-input-placeholder,
+:-moz-placeholder,
+::-moz-placeholder,
+:-ms-input-placeholder,
+::-ms-input-placeholder {
+    color: $color-TransparentWhite;
+}
+
 #chat {
     height: 98%;
     width: 85%;
@@ -45,7 +51,7 @@ li {
     top: 1%;
     &__allMessages {
         width: 100%;
-        height: 95%;
+        height: 90%;
         list-style: none;
         overflow-y: auto;
         margin: 0;
@@ -97,7 +103,22 @@ li {
         }
     }
     &__form {
-        margin: 10px;
+        margin: 0;
+    }
+    &__userInput {
+        border: none;
+        margin-top: 5px;
+        padding: 5px;
+        border-bottom: 1.5px solid $color-BottleGreen;
+        background-color: transparent;
+        outline: none;
+        color: white;
+        width: 80%;
+    }
+
+    &__submitPlaceholder{
+        color: $color-BottleGreen;
+        font-size: 24px;
     }
     &__submit {
         //
