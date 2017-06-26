@@ -1,0 +1,152 @@
+/*          Available Fonts
+
+    --handwritten
+    font-family: 'Dancing Script', cursive;
+    font-family: 'Tangerine', cursive;
+*/
+
+
+/*  Resets   */
+
+blockquote,
+q {
+    quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: '';
+    content: none;
+}
+
+
+/*  End - Resets   */
+
+#guoteGenerator {
+    position: absolute;
+    display: none;
+    right: -webkit-calc(100% - (100% - 50px));
+    right: -moz-calc(100% - (100% - 50px));
+    right: calc(100% - (100% - 50px));
+    width: -webkit-calc(100% - 50px);
+    width: -moz-calc(100% - 50px);
+    width: calc(100% - 50px);
+    min-height: 100%;
+    border: none;
+    overflow: hidden;
+    font-family: 'Dancing Script', cursive;
+}
+
+#backgroundChange {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -10;
+    height: 100%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    -webkit-transform: translate3d(0, 0, 0);
+    /*delay background image change by few seconds so it wont flicker (works only for Chrome)*/
+    -webkit-transition: all 1s ease-in-out 4s;
+    -moz-transition: all 1s ease-in-out 4s;
+    -o-transition: all 1s ease-in-out 4s;
+    -ms-transition: all 1s ease-in-out 4s;
+    transition: all 1s ease-in-out 4s;
+}
+
+#randomQuote {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    margin-top: 5%;
+    width: 40%;
+    max-width: 40%;
+    max-height: 70%;
+    padding: 5%;
+    padding-bottom: 15%;
+    border-radius: 3px;
+    background-color: rgba(0, 0, 0, 0.6);
+    filter: alpha(opacity=60);
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.9), 1px 1px 3px rgba(0, 0, 0, 0.3) inset, -1px -1px 3px rgba(0, 0, 0, 0.3) inset;
+    /*delay background-color change to create a fade effect*/
+    -moz-transition: background-color 1s ease .15s;
+    -o-transition: background-color 1s ease .15s;
+    -ms-transition: background-color 1s ease .15s;
+    transition: background-color 1s ease .15s;
+}
+
+#content,
+#source {
+    color: white;
+}
+
+#quote {
+    font-size: 4vh;
+}
+
+cite {
+    display: block;
+    margin-top: 45px;
+    font-size: 3vh;
+    text-align: right;
+}
+
+#footerButtonContainer {
+    position: absolute;
+    bottom: 20px;
+    width: 80%;
+    text-align: center;
+}
+
+#getQuote {
+    border: 0;
+    padding: 10px 20px;
+    outline: none;
+    font-family: 'Tangerine', cursive;
+    font-size: 3vh;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border-radius: 2%;
+    cursor: pointer;
+}
+
+#getQuote:hover {
+    opacity: 0.8;
+}
+
+#tweetQuote {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    color: #00ace6;
+    font-size: 19px;
+    cursor: pointer;
+    line-height: 80%;
+}
+
+#tweetQuote:hover {
+    -ms-transform: scale(1.1, 1.1);
+    /* IE 9 */
+    -webkit-transform: scale(1.1, 1.1);
+    /* Safari */
+    transform: scale(1.1, 1.1);
+}
+
+#tweetQuote img {
+    width: 2vw;
+    padding: 5px;
+    border: 0;
+    box-shadow: 0;
+    display: inline;
+}
+
+@media (max-width: 1200px) {
+    #randomQuote {
+        padding-top: 10%;
+    }
+}

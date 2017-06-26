@@ -337,10 +337,10 @@
   right: -webkit-calc(100% - (100% - 50px));
   right: -moz-calc(100% - (100% - 50px));
   right: calc(100% - (100% - 50px));
-  min-height: 100%;
   width: -webkit-calc(100% - 50px);
   width: -moz-calc(100% - 50px);
   width: calc(100% - 50px);
+  min-height: 100%;
   border: none;
   overflow: hidden; }
   #weather__info {

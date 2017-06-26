@@ -43,6 +43,7 @@ var $users = $('#chat__users'),
 
 var $weather = $('#weather');
 var $streaming = $('#streaming');
+var $quoteGenerator = $('#guoteGenerator');
 
 var $tools = $('#tools'),
     $tools__toogleChat = $('#tools__toogleChat'),
@@ -51,6 +52,7 @@ var $tools = $('#tools'),
     $tools__fileSend = $('#tools__fileSend'),
     $tools__streaming = $('#tools__streaming'),
     $tools__games = $('#tools__games'),
+    $tools__quotes = $('#tools__quotes'),
     $tools__weather = $('#tools__weather'),
     $tools__signOut = $('#tools__signOut');
 
@@ -609,6 +611,43 @@ var displayStreamingOptions = function (e) {
 
 /**
  * 
+ */
+function fileUploadTrigger() {
+
+    $file__input.trigger('click');
+};
+
+/**
+ * 
+ */
+var displayGames = function () {
+
+    alert("Sorry... Games are not available yet...");
+};
+
+
+/**
+ * 
+ */
+var displayQuotes = function () {
+
+    $quoteGenerator.fadeIn(500, function () {
+        $document.one('click.hideWeather', hideQuotes);
+    });
+};
+
+/**
+ * 
+ */
+var displayWeather = function () {
+
+    $weather.fadeIn(500, function () {
+        $document.one('click.hideWeather', hideWeatherInfo);
+    });
+};
+
+/**
+ * 
  * @param {object} e
  */
 function hideUsersList(e) {
@@ -670,34 +709,6 @@ var hideStreamingList = function (e) {
     $(this).unbind(e);
 };
 
-
-/**
- * 
- */
-function fileUploadTrigger() {
-
-    $file__input.trigger('click');
-};
-
-
-
-/**
- * 
- */
-var displayGames = function () {
-
-    alert("Sorry... Games are not available yet...");
-};
-/**
- * 
- */
-var displayWeather = function () {
-
-    $weather.fadeIn(500, function () {
-        $document.one('click.hideWeather', hideWeatherInfo);
-    });
-};
-
 /**
  * 
  * @param {*} e 
@@ -711,6 +722,21 @@ var hideWeatherInfo = function (e) {
         return;
 
     $weather.fadeOut();
+};
+
+/**
+ * 
+ * @param {*} e 
+ */
+var hideQuotes = function (e) {
+
+    if (e.target.id == "guoteGenerator")
+        return;
+    //For descendants of menu_content being clicked
+    if ($(e.target).closest('#guoteGenerator').length)
+        return;
+
+    $quoteGenerator.fadeOut();
 };
 
 /**
@@ -731,6 +757,7 @@ $tools__toggleOfflineUsers.one('click.displayOfflineUsers', displayOfflineUsersl
 $tools__fileSend.off('click.fileSend').on('click.fileSend', fileUploadTrigger);
 $tools__streaming.off('click.displayStreamingOptions').on('click.displayStreamingOptions', displayStreamingOptions);
 $tools__games.off('click.displayGames').on('click.displayGames', displayGames);
+$tools__quotes.off('click.displayQuotes').on('click.displayQuotes', displayQuotes);
 $tools__weather.off('click.displayWeather').on('click.displayWeather', displayWeather);
 $tools__signOut.off('click.triggerSignOut').on('click.triggerSignOut', do_logout);
 if (document.addEventListener) document.addEventListener("visibilitychange", visibilityChanged);

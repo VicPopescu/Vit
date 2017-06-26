@@ -33,11 +33,12 @@
 
     <!--Fonts-->
     <link href="css/vendor/normalize.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans|Rubik" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans|Rubik|Dancing+Script:400,700|Tangerine:400,700" rel="stylesheet">
     <link rel="stylesheet" href="css/vendor/font-awesome-4.7.0.min.css">
     <!--Stylesheet-->
-    <link rel="stylesheet" type="text/css" href="css/compiled/main.css">    
+    <link rel="stylesheet" type="text/css" href="css/compiled/main.css">
     <link rel="stylesheet" type="text/css" href="css/compiled/weatherWidget.css">
+    <link rel="stylesheet" type="text/css" href="css/compiled/quotesWidget.css">
 </head>
 
 <body>
@@ -56,7 +57,7 @@
         <!--<iframe id="weather__info" scrolling="no" src="https://codepen.io/VicPopescu/full/RVLQBL/"></iframe>-->
         <section id="welcome">
             <h1>Local Weather Informations</h1>
-            <ul id="unitsChange">Selected Units: 
+            <ul id="unitsChange">Selected Units:
                 <li data-unit='auto'>AUTO</li>
                 <li data-unit='si'>SI</li>
                 <li data-unit='ca'>CA</li>
@@ -161,6 +162,25 @@
         </section>
     </section>
 
+    <section id="guoteGenerator">
+        <section id="backgroundChange"></section>
+        <article id="randomQuote" data-quote-id="">
+            <blockquote id="content">
+                <section id="quote"></section>
+                <cite>
+                    <a id="source" href="" target="_blank" ></a>
+                </cite>
+            </blockquote>
+            <div id="footerButtonContainer">
+                <input id="getQuote" type="button" value="New Awesome Quote">
+            </div>
+            <div id='tweetQuote'>
+                <img src="https://www.shareicon.net/download/128x128//2015/09/02/94715_logo_512x512.png" alt="Twitter" />
+                <p>Tweet it!</span>
+            </div>
+        </article>
+    </section>
+
     <section id="chat__users">
         <ul id="users__list"></ul>
     </section>
@@ -246,7 +266,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.js"></script>
     <script type="text/javascript" async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEL4nc9-nR6QHFRQL-9t7mxQdlgJ9bwfU"></script>
     <script src="socket.io/socket.io.js"></script>
-    <script src="js/weatherWidget.js"></script>    
+    <script src="js/weatherWidget.js"></script>
+    <script src="js/quotesWidget.js"></script>
     <script src="js/client.js"></script>
 </body>
 
