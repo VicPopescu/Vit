@@ -631,8 +631,8 @@ var displayGames = function () {
  */
 var displayQuotes = function () {
 
-    $quoteGenerator.fadeIn(500, function () {
-        $document.one('click.hideQuote', hideQuotes);
+    $quoteGenerator.fadeIn(200, function () {
+        $document.on('click.hideQuote', hideQuotes);
     });
 };
 
@@ -641,8 +641,8 @@ var displayQuotes = function () {
  */
 var displayWeather = function () {
 
-    $weather.fadeIn(500, function () {
-        $document.one('click.hideWeather', hideWeatherInfo);
+    $weather.fadeIn(200, function () {
+        $document.on('click.hideWeather', hideWeatherInfo);
     });
 };
 
@@ -709,20 +709,6 @@ var hideStreamingList = function (e) {
     $(this).unbind(e);
 };
 
-/**
- * 
- * @param {*} e 
- */
-var hideWeatherInfo = function (e) {
-
-    if (e.target.id == "weather")
-        return;
-    //For descendants of menu_content being clicked
-    if ($(e.target).closest('#weather').length)
-        return;
-
-    $weather.fadeOut();
-};
 
 /**
  * 
@@ -737,7 +723,26 @@ var hideQuotes = function (e) {
         return;
 
     $quoteGenerator.fadeOut();
+    $(this).unbind(e);
 };
+
+
+/**
+ * 
+ * @param {*} e 
+ */
+var hideWeatherInfo = function (e) {
+
+    if (e.target.id == "weather")
+        return;
+    //For descendants of menu_content being clicked
+    if ($(e.target).closest('#weather').length)
+        return;
+
+    $weather.fadeOut();
+    $(this).unbind(e);
+};
+
 
 /**
  * 

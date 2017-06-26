@@ -40,12 +40,16 @@ q:after {
 }
 
 #backgroundChange {
+    -webkit-transform:translate3d(0,0,0);
+    -webkit-backface-visibility: hidden;
+    -webkit-perspective: 1000;
+
     position: absolute;
     top: 0;
     left: 0;
     z-index: -10;
     height: 100%;
-    width: 100%;
+    min-width: 100%;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -56,6 +60,9 @@ q:after {
     -o-transition: all 1s ease-in-out 4s;
     -ms-transition: all 1s ease-in-out 4s;
     transition: all 1s ease-in-out 4s;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
 }
 
 #randomQuote {
@@ -124,9 +131,9 @@ cite {
     right: 20px;
     top: 10px;
     color: #00ace6;
-    font-size: 19px;
+    font-size: 16px;
     cursor: pointer;
-    line-height: 80%;
+    line-height: 0;
 }
 
 #tweetQuote:hover {
