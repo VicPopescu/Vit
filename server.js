@@ -56,8 +56,11 @@ app.use(sassMiddleware({
     outputStyle: 'extended',
     prefix: '/css/compiled'
 }));
-//set static public folder
+
+//set static routes
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
+app.use('/chartjs', express.static(__dirname + '/node_modules/chart.js/dist/'));
 
 /**
  *      Returns a random integer between min and max, if provided, or use default numbers

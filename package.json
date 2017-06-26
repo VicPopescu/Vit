@@ -1,7 +1,9 @@
 {
   "name": "vit",
   "version": "1.0.0",
-  "engines":{"node": "6.10.0"},
+  "engines": {
+    "node": "6.10.0"
+  },
   "description": "Node.Js, Socket.io chat application",
   "main": "server.js",
   "scripts": {
@@ -22,7 +24,9 @@
   },
   "homepage": "https://github.com/VicPopescu/Vit#readme",
   "dependencies": {
+    "chart.js": "^2.6.0",
     "express": "^4.15.3",
+    "jquery": "^3.2.1",
     "node-sass-middleware": "^0.11.0",
     "nodemon": "^1.11.0",
     "passport": "^0.3.2",

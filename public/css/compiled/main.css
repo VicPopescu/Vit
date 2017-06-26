@@ -249,7 +249,7 @@ li {
   display: inline-block;
   height: 100px;
   width: 75px;
-  background-image: url("../images/textType.png");
+  background-image: url("../../images/textType.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center; }
