@@ -35,26 +35,29 @@ li {
 }
 
 input::-webkit-input-placeholder {
-  color: $color-TransparentWhite;
-  font-style: italic;
-}
-input:-moz-placeholder {
-  color: $color-TransparentWhite;
-  font-style: italic;
-}
-input::-moz-placeholder {
-  color: $color-TransparentWhite;
-  font-style: italic;
-}
-input:-ms-input-placeholder {
-  color: $color-TransparentWhite;
-  font-style: italic;
-}
-input::-ms-input-placeholder {
-  color: $color-TransparentWhite;
-  font-style: italic;
+    color: $color-TransparentWhite;
+    font-style: italic;
 }
 
+input:-moz-placeholder {
+    color: $color-TransparentWhite;
+    font-style: italic;
+}
+
+input::-moz-placeholder {
+    color: $color-TransparentWhite;
+    font-style: italic;
+}
+
+input:-ms-input-placeholder {
+    color: $color-TransparentWhite;
+    font-style: italic;
+}
+
+input::-ms-input-placeholder {
+    color: $color-TransparentWhite;
+    font-style: italic;
+}
 
 #chat {
     height: 98%;
@@ -80,11 +83,15 @@ input::-ms-input-placeholder {
         &:hover {
             border-color: $color-White;
             overflow-y: auto;
+            li {
+                width: 98.5%;
+            }
         }
         li {
             padding: 15px;
             margin: 4px;
             min-height: 70px;
+            width: 97%;
             background-color: #082C31; //border: $border-Default;
             font-size: 14px;
             color: $color-White;

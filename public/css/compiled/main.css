@@ -83,10 +83,13 @@ input::-ms-input-placeholder {
     #chat__allMessages:hover {
       border-color: #FFFFFF;
       overflow-y: auto; }
+      #chat__allMessages:hover li {
+        width: 98.5%; }
     #chat__allMessages li {
       padding: 15px;
       margin: 4px;
       min-height: 70px;
+      width: 97%;
       background-color: #082C31;
       font-size: 14px;
       color: #FFFFFF;
