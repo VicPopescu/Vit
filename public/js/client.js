@@ -766,23 +766,6 @@ var triggerMessageSend = function () {
 
 
 /**
- *      Attach handlers
- */
-$tools__toogleChat.off('click.toggleChat').on('click.toggleChat', toogleChatDisplay);
-$tools__toggleUsers.one('click.displayUsers', displayUserslist);
-$tools__toggleOfflineUsers.one('click.displayOfflineUsers', displayOfflineUserslist);
-$tools__fileSend.off('click.fileSend').on('click.fileSend', fileUploadTrigger);
-$tools__streaming.off('click.displayStreamingOptions').on('click.displayStreamingOptions', displayStreamingOptions);
-$tools__games.off('click.displayGames').on('click.displayGames', displayGames);
-$tools__quotes.off('click.displayQuotes').on('click.displayQuotes', displayQuotes);
-$tools__weather.off('click.displayWeather').on('click.displayWeather', displayWeather);
-$tools__signOut.off('click.triggerSignOut').on('click.triggerSignOut', do_logout);
-if (document.addEventListener) document.addEventListener("visibilitychange", visibilityChanged);
-
-$chat__submitPlaceholder.on('click.triggerMessageSend', triggerMessageSend);
-
-
-/**
  *      Catching server events
  */
 //
@@ -859,12 +842,24 @@ socket.on('a user logged in', function (user) {
 ///////////////////////////////////////////////
 
 socket.on('new message', function (o) {
+    //number of messages displayed in chat
+    var msgCount = $chat__allMessages[0].childElementCount;
+    //remove oldest message when message count exceeds the limit
+    if(msgCount >=50){
+        $chat__allMessages[0].removeChild($chat__allMessages[0].childNodes[0]);    
+    }
 
+    //display the new message to users
     $chat__allMessages.append(template_message(o.usr, o.msg));
+    //user notification if application window is out of focus
     !windowFocused && notify(o.usr + ' : ' + o.msg);
+    //scroll chat messages to bottom
     update_scroll();
 });
 
+/**
+ * 
+ */
 socket.on("image", function (imgInfo) {
 
     var img = new Image();
@@ -878,7 +873,9 @@ socket.on("image", function (imgInfo) {
 });
 
 
-//
+/**
+ * 
+ */
 socket.on("file broadcast all", function (file) {
 
     var fileType = file.content.type;
@@ -897,3 +894,20 @@ socket.on("file broadcast all", function (file) {
 
     update_scroll();
 });
+
+
+/**
+ *      Attach event listeners
+ */
+$tools__toogleChat.off('click.toggleChat').on('click.toggleChat', toogleChatDisplay);
+$tools__toggleUsers.one('click.displayUsers', displayUserslist);
+$tools__toggleOfflineUsers.one('click.displayOfflineUsers', displayOfflineUserslist);
+$tools__fileSend.off('click.fileSend').on('click.fileSend', fileUploadTrigger);
+$tools__streaming.off('click.displayStreamingOptions').on('click.displayStreamingOptions', displayStreamingOptions);
+$tools__games.off('click.displayGames').on('click.displayGames', displayGames);
+$tools__quotes.off('click.displayQuotes').on('click.displayQuotes', displayQuotes);
+$tools__weather.off('click.displayWeather').on('click.displayWeather', displayWeather);
+$tools__signOut.off('click.triggerSignOut').on('click.triggerSignOut', do_logout);
+if (document.addEventListener) document.addEventListener("visibilitychange", visibilityChanged);
+
+$chat__submitPlaceholder.on('click.triggerMessageSend', triggerMessageSend);
