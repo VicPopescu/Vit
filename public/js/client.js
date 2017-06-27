@@ -869,9 +869,10 @@ socket.on("image", function (imgInfo) {
 
     img.onload = function () {
         $chat__allMessages.append(img);
+        update_scroll(); 
     };
 
-    img.src = 'data:image/jpeg;base64,' + imgInfo.buffer;
+    img.src = 'data:image/jpeg;base64,' + imgInfo.buffer;     
 });
 
 
@@ -891,4 +892,6 @@ socket.on("file broadcast all", function (file) {
 
         $chat__allMessages.append(template_txtTransfer(file.user, file.content));
     }
+
+    update_scroll();
 });
