@@ -460,6 +460,8 @@ $chat__form.submit(function (e) {
     var msg = $chat__userInput.val();
     //test for commands
     var testCmd = /^!cmd\s(.*)/;
+    //test for, and replace, code injections
+    msg = msg.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     //hold the test result true/false
     var inputCmd;
 

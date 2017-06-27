@@ -251,6 +251,7 @@ io.on('connection', function (client) {
      */
     client.on('user message', function (o) {
 
+        o.msg = o.msg.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         //profanity check and replace
         o.msg = ProfanityFilter.filterReplace(o.msg);
         //saving messages history
