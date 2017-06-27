@@ -389,7 +389,7 @@
 #weather {
     position: absolute;
     display: none;
-    background-color: $color-TransparentBlack;
+    background-color: $color-TransparentBlack6;
     right: -webkit-calc(100% - (100% - 50px));
     right:    -moz-calc(100% - (100% - 50px));
     right:         calc(100% - (100% - 50px));
@@ -481,6 +481,7 @@
 
 #nextDaysWeather {
     display: inline-block;
+    background-color: $color-TransparentBlack6;
     margin-right: 20px;
     user-select: none;
     -moz-user-select: none;

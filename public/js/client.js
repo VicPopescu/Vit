@@ -148,7 +148,6 @@ var scrollToBottom = true;
 
 
 
-
 /**
  * Auto login if user already logged
  */
@@ -331,7 +330,7 @@ var update_offlineUsersList = function (offlineUsers) {
 /**
  *
  */
-function update_scroll() {
+var update_scroll = function () {
 
     var h = $chat__allMessages.height();
     var s = $chat__allMessages[0].scrollHeight;
@@ -367,7 +366,7 @@ var update_history = function (history) {
  * 
  * @param {string} str Comand to execute
  */
-function get_cmd(str) {
+var get_cmd = function (str) {
 
     var reg = /^!cmd\s(.*)/;
     var cmd = str.match(reg);
@@ -379,7 +378,7 @@ function get_cmd(str) {
  * 
  * @param {string} cmd 
  */
-function exec_cmd(cmd) {
+var exec_cmd = function (cmd) {
 
     socket.emit('command', {
         //'permLevel': role,
@@ -408,9 +407,11 @@ var clear_input = function () {
     $chat__userInput.val('').focus();
 };
 
-
-
-$login__submit.on('click.doLogin', function (e) {
+/**
+ * 
+ * @param {*} e 
+ */
+var doLogin = function (e) {
 
     var user = $login__userInput.val();
     var pass = $login__passInput.val();
@@ -420,9 +421,13 @@ $login__submit.on('click.doLogin', function (e) {
 
     e.preventDefault();
     return false;
-})
+};
 
-$register__submit.on('click.doRegister', function (e) {
+/**
+ * 
+ * @param {*} e 
+ */
+var doRegister = function (e) {
 
     var user = $login__userInput.val();
     var pass = $login__passInput.val();
@@ -432,27 +437,13 @@ $register__submit.on('click.doRegister', function (e) {
 
     e.preventDefault();
     return false;
-});
-/**
- * Login form
- */
-// $login__form.submit(function (e) {
-
-//     var user = $login__userInput.val();
-//     var pass = $login__passInput.val();
-
-//     //check if user is allowed and send login info to server
-//     user && pass && do_login(socket, user, pass);
-
-//     e.preventDefault();
-//     return false;
-// });
-
+};
 
 /**
- * Handle user input
+ * 
+ * @param {*} e 
  */
-$chat__form.submit(function (e) {
+var doSubmit = function (e) {
 
     //keep focus on input
     $chat__userInput.focus();
@@ -492,13 +483,13 @@ $chat__form.submit(function (e) {
 
     e.preventDefault();
     return false;
-});
+};
 
 
 /**
- *      User @mentioning
+ *      Get user for @mentioning, when user name is clicked
  */
-$chat.on('click.msgUser', '.chat__messageUser', function () {
+var getUserForMention = function () {
 
     var user = $(this).text();
 
@@ -506,25 +497,13 @@ $chat.on('click.msgUser', '.chat__messageUser', function () {
         $(this).focus();
         return msg + " @" + user + " ";
     });
-});
+};
 
 /**
  * 
+ * @param {*} e 
  */
-$users__list.on('click.msgUser', 'li', function () {
-
-    var user = $(this).text();
-
-    $chat__userInput.val(function (index, msg) {
-        $(this).focus();
-        return msg + " @" + user + " ";
-    });
-});
-
-/**
- *
- */
-$file__input.on('change', function (e) {
+var getInputedFile = function (e) {
 
     var reader;
 
@@ -555,11 +534,11 @@ $file__input.on('change', function (e) {
 
         reader.readAsDataURL(file);
     };
-});
-
+};
 
 /**
  * 
+ * @param {*} e 
  */
 var toogleChatDisplay = function (e) {
 
@@ -570,9 +549,9 @@ var toogleChatDisplay = function (e) {
 
 /**
  * 
- * @param {object} e1 
+ * @param {object} e 
  */
-var displayUserslist = function (e1) {
+var displayUserslist = function (e) {
 
     $users.animate({
         right: "+=400px"
@@ -580,7 +559,7 @@ var displayUserslist = function (e1) {
         $document.on('click.hideUsersList', hideUsersList);
     });
 
-    $(this).unbind(e1);
+    $(this).unbind(e);
 };
 
 /**
@@ -616,7 +595,7 @@ var displayStreamingOptions = function (e) {
 /**
  * 
  */
-function fileUploadTrigger() {
+var fileUploadTrigger = function () {
 
     $file__input.trigger('click');
 };
@@ -628,7 +607,6 @@ var displayGames = function () {
 
     alert("Sorry... Games are not available yet...");
 };
-
 
 /**
  * 
@@ -654,7 +632,7 @@ var displayWeather = function () {
  * 
  * @param {object} e
  */
-function hideUsersList(e) {
+var hideUsersList = function (e) {
 
     if (e.target.id == "chat__users")
         return;
@@ -713,7 +691,6 @@ var hideStreamingList = function (e) {
     $(this).unbind(e);
 };
 
-
 /**
  * 
  * @param {*} e 
@@ -729,7 +706,6 @@ var hideQuotes = function (e) {
     $quoteGenerator.fadeOut();
     $(this).unbind(e);
 };
-
 
 /**
  * 
@@ -747,11 +723,10 @@ var hideWeatherInfo = function (e) {
     $(this).unbind(e);
 };
 
-
 /**
  * 
  */
-function visibilityChanged() {
+var visibilityChanged = function () {
 
     document.visibilityState === "visible" ? windowFocused = true : windowFocused = false;
 };
@@ -764,7 +739,6 @@ var triggerMessageSend = function () {
     $chat__form.submit();
 };
 
-
 /**
  *      Catching server events
  */
@@ -775,7 +749,6 @@ socket.on('connection', function () {
 });
 //
 socket.on('disconnect', function () {});
-
 
 /////////////////////////////////////////////
 
@@ -806,7 +779,6 @@ socket.on('login success', function (users) {
     notify("Welcome " + thisUser + "!");
     update_scroll();
 });
-
 
 socket.on('register success', function (user) {
 
@@ -845,8 +817,8 @@ socket.on('new message', function (o) {
     //number of messages displayed in chat
     var msgCount = $chat__allMessages[0].childElementCount;
     //remove oldest message when message count exceeds the limit
-    if(msgCount >=50){
-        $chat__allMessages[0].removeChild($chat__allMessages[0].childNodes[0]);    
+    if (msgCount >= 50) {
+        $chat__allMessages[0].removeChild($chat__allMessages[0].childNodes[0]);
     }
 
     //display the new message to users
@@ -866,12 +838,11 @@ socket.on("image", function (imgInfo) {
 
     img.onload = function () {
         $chat__allMessages.append(img);
-        update_scroll(); 
+        update_scroll();
     };
 
-    img.src = 'data:image/jpeg;base64,' + imgInfo.buffer;     
+    img.src = 'data:image/jpeg;base64,' + imgInfo.buffer;
 });
-
 
 /**
  * 
@@ -897,8 +868,9 @@ socket.on("file broadcast all", function (file) {
 
 
 /**
- *      Attach event listeners
+ *      Event listeners
  */
+//          --/TOOLS/--         //
 $tools__toogleChat.off('click.toggleChat').on('click.toggleChat', toogleChatDisplay);
 $tools__toggleUsers.one('click.displayUsers', displayUserslist);
 $tools__toggleOfflineUsers.one('click.displayOfflineUsers', displayOfflineUserslist);
@@ -908,6 +880,16 @@ $tools__games.off('click.displayGames').on('click.displayGames', displayGames);
 $tools__quotes.off('click.displayQuotes').on('click.displayQuotes', displayQuotes);
 $tools__weather.off('click.displayWeather').on('click.displayWeather', displayWeather);
 $tools__signOut.off('click.triggerSignOut').on('click.triggerSignOut', do_logout);
+
+//          --/DOCUMENT/--         //
 if (document.addEventListener) document.addEventListener("visibilitychange", visibilityChanged);
 
+//          --/OTHER/--         //
+$register__submit.on('click.doRegister', doRegister);
+$login__submit.on('click.doLogin', doLogin);
+$chat__form.submit(doSubmit);
+$file__input.on('change.getInputedFile', getInputedFile);
 $chat__submitPlaceholder.on('click.triggerMessageSend', triggerMessageSend);
+
+$chat.on('click.msgUser', '.chat__messageUser', getUserForMention);
+$users__list.on('click.msgUser', 'li', getUserForMention);
