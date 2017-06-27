@@ -117,6 +117,7 @@
   -webkit-transform: rotate(35deg);
   -ms-transform: rotate(35deg);
   -o-transform: rotate(35deg);
+  transform: rotate(-70deg);
   animation: spin 12s infinite linear; }
 
 .star:before {
@@ -133,7 +134,8 @@
   -webkit-transform: rotate(-35deg);
   -moz-transform: rotate(-35deg);
   -ms-transform: rotate(-35deg);
-  -o-transform: rotate(-35deg); }
+  -o-transform: rotate(-35deg);
+  transform: rotate(-70deg); }
 
 .star:after {
   position: absolute;
@@ -150,6 +152,7 @@
   -moz-transform: rotate(-70deg);
   -ms-transform: rotate(-70deg);
   -o-transform: rotate(-70deg);
+  transform: rotate(-70deg);
   content: ''; }
 
 .star1 {

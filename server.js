@@ -76,7 +76,8 @@ function get_intRandom(min, max) {
 
 
 /**
- *      Get current date and time
+ * 
+ * @param {*} format 
  */
 function get_date(format) {
 
@@ -254,6 +255,9 @@ io.on('connection', function (client) {
         o.msg = o.msg.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         //profanity check and replace
         o.msg = ProfanityFilter.filterReplace(o.msg);
+        //add full date for history save
+        o.date = get_date('date');
+        o.time = get_date('hour');
         //saving messages history
         ApplicationHistory.logMessageHistory(null, o);
         //logs

@@ -158,16 +158,63 @@ if (!usr && !pass) {
     do_login(socket, usr, pass);
 };
 
+/**
+ * 
+ * @param {string} format 
+ */
+var get_date = function (format) {
 
+    var date = new Date();
+
+    var day = date.getDate(),
+        month = date.getMonth() + 1,
+        year = date.getFullYear();
+
+    var h = date.getHours(),
+        m = date.getMinutes();
+
+    day < 10 ? day = '0' + day : day;
+    month < 10 ? month = '0' + month : month;
+    h < 10 ? h = '0' + h : h;
+    m < 10 ? m = '0' + m : m;
+
+    switch (format) {
+        case 'hour':
+
+            var time = h + 'h:' + m + 'm';
+            break;
+
+        case 'date':
+
+            var time = day + '/' + month + '/' + year;
+            break;
+        case 'date and hour':
+
+            var time = day + '/' + month + '/' + year + '  ' + h + 'h:' + m + 'm';
+            break;
+
+        default:
+            break;
+    }
+
+    return time;
+};
 
 /**
  * 
  * @param {string} u 
  * @param {string} m 
  */
-var template_message = function (u, m) {
+var template_message = function (o) {
 
-    var t = '<li><p class="chat__messageUser">' + u + '</p><p class="chat__message"> ' + m + '</p></li>';
+    var u = o.usr,
+        m = o.msg,
+        d = o.date,
+        t = o.time;
+
+    if (d === get_date("date")) d = "";
+
+    var t = '<li><p class="chat__messageUser">' + u + '</p><span class="chat__messageDate">' + d + ' ' + t + '</span><p class="chat__message"> ' + m + '</p></li>';
 
     return t;
 };
@@ -354,10 +401,8 @@ var update_history = function (history) {
     };
 
     for (var i = startHistory; i < history.length; i++) {
-        var user = history[i].usr;
-        var message = history[i].msg;
 
-        $chat__allMessages.append(template_message(user, message));
+        $chat__allMessages.append(template_message(history[i]));
     };
 };
 
@@ -822,7 +867,7 @@ socket.on('new message', function (o) {
     }
 
     //display the new message to users
-    $chat__allMessages.append(template_message(o.usr, o.msg));
+    $chat__allMessages.append(template_message(o));
     //user notification if application window is out of focus
     !windowFocused && notify(o.usr + ' : ' + o.msg);
     //scroll chat messages to bottom

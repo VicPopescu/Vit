@@ -85,10 +85,11 @@ input::-ms-input-placeholder {
             border-color: $color-White;
             overflow-y: auto;
             li {
-                width: 98.5%;
+                width: 98.475%;
             }
         }
         li {
+            position: relative;
             padding: 15px;
             margin: 4px;
             min-height: 70px;
@@ -109,6 +110,13 @@ input::-ms-input-placeholder {
             }
             .chat__message {
                 color: $color-White;
+            }
+            .chat__messageDate{
+                position: absolute;
+                top: 35px;
+                right: 5px;
+                float: right;
+                font-size: 12px;
             }
             .fileTransfer__image,
             .fileTransfer__text {
