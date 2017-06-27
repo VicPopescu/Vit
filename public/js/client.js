@@ -18,15 +18,15 @@ var $document = $(document);
 
 var $chat = $('#chat'),
     $chat__allMessages = $('#chat__allMessages'),
-    $chat__form = $('#chat__form'),
+    $chat_messageUser = $('.chat__messageUser');
+$chat__form = $('#chat__form'),
     $chat__userInput = $('#chat__userInput'),
-    $chat__submit = $('#chat__submit');
+    $chat__submit = $('#chat__submit'),
+    $chat__submitPlaceholder = $('#chat__submitPlaceholder');
 
 var $file = $('#file'),
     $file__input = $('#file__input'),
     $file__submit = $('#file__submit');
-
-var $chat_messageUser = $('.chat__messageUser');
 
 var $login = $('#login'),
     $login__form = $('#login__form'),
@@ -403,7 +403,7 @@ var handle_cmd = function (msg) {
 /**
  * 
  */
-function clear_input() {
+var clear_input = function () {
     //auto focus on input
     $chat__userInput.val('').focus();
 };
@@ -454,9 +454,11 @@ $register__submit.on('click.doRegister', function (e) {
  */
 $chat__form.submit(function (e) {
 
+    //keep focus on input
+    $chat__userInput.focus();
     //user input
     var msg = $chat__userInput.val();
-    //test for commands regex
+    //test for commands
     var testCmd = /^!cmd\s(.*)/;
     //hold the test result true/false
     var inputCmd;
@@ -473,7 +475,7 @@ $chat__form.submit(function (e) {
         return false;
     };
 
-    //delete cookie and log out, jsut for testing purpose
+    //delete cookie and log out, just for testing purpose
     if (msg === "logout") {
         do_logout();
     };
@@ -752,6 +754,14 @@ function visibilityChanged() {
     document.visibilityState === "visible" ? windowFocused = true : windowFocused = false;
 };
 
+/**
+ *
+ */
+var triggerMessageSend = function () {
+
+    $chat__form.submit();
+};
+
 
 /**
  *      Attach handlers
@@ -766,6 +776,8 @@ $tools__quotes.off('click.displayQuotes').on('click.displayQuotes', displayQuote
 $tools__weather.off('click.displayWeather').on('click.displayWeather', displayWeather);
 $tools__signOut.off('click.triggerSignOut').on('click.triggerSignOut', do_logout);
 if (document.addEventListener) document.addEventListener("visibilitychange", visibilityChanged);
+
+$chat__submitPlaceholder.on('click.triggerMessageSend', triggerMessageSend);
 
 
 /**

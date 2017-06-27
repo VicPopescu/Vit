@@ -1,3 +1,17 @@
+::-webkit-scrollbar {
+  width: 6px; }
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: transparent;
+  border: none; }
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 100%; }
+
 html,
 body {
   height: 100%;
@@ -44,7 +58,7 @@ li {
     width: 100%;
     height: 90%;
     list-style: none;
-    overflow-y: auto;
+    overflow-y: hidden;
     margin: 0;
     padding: 0;
     background-color: rgba(0, 0, 0, 0.5);
@@ -54,7 +68,8 @@ li {
     -ms-transition: all 0.2s ease-in-out 0s;
     transition: all 0.2s ease-in-out 0s; }
     #chat__allMessages:hover {
-      border-color: #FFFFFF; }
+      border-color: #FFFFFF;
+      overflow-y: auto; }
     #chat__allMessages li {
       padding: 15px;
       margin: 4px;
@@ -87,17 +102,18 @@ li {
     margin: 0; }
   #chat__userInput {
     border: none;
-    margin-top: 5px;
+    margin-top: 25px;
     padding: 5px;
     border-bottom: 1.5px solid #08352E;
     background-color: transparent;
     outline: none;
+    font-style: italic;
     color: white;
-    width: 80%; }
+    width: 90%; }
   #chat__submitPlaceholder {
     color: #08352E;
-    font-size: 24px;
-    line-height: 50%; }
+    font-size: 20px;
+    cursor: pointer; }
 
 #chat__users,
 #offline__users {
