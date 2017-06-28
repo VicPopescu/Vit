@@ -142,183 +142,215 @@ function get_date(format) {
 // // sending to individual socketid
 // socket.broadcast.to(socketid).emit('message', 'now you see me!');
 
+/**
+ * 
+ * @param {*} user 
+ */
+var on_userRegister = function (user) {
 
-//test connection
-io.on('connection', function (client) {
+    var client = this;
 
-    /**
-     * 
-     */
-    client.on('user register', function (user) {
+    user.type = user.type || 'user'; //TODO: dont let client chose use type
 
-        user.type = user.type || 'user'; //TODO: dont let client chose use type
-
-        Users.registerUser(user, function () {
-            client.emit('register success', user);
-        });
+    Users.registerUser(user, function () {
+        client.emit('register success', user);
     });
+};
 
-    /**
-     * 
-     */
-    client.on('user login', function (userDetails) {
+/**
+ * 
+ * @param {*} userDetails 
+ */
+var on_userLogin = function (userDetails) {
 
-        var user = {
-            type: userDetails.type || 'user',
-            user: userDetails.user,
-            pass: userDetails.pass
-        };
+    var client = this;
 
-        //disconnect duplicate sockets
-        for (var id in allUsers) {
-            if (allUsers[id] === userDetails.user) {
-                io.sockets.connected[id].disconnect();
-                break;
-            }
+    var user = {
+        type: userDetails.type || 'user',
+        user: userDetails.user,
+        pass: userDetails.pass
+    };
+
+    //disconnect duplicate sockets
+    for (var id in allUsers) {
+        if (allUsers[id] === userDetails.user) {
+            io.sockets.connected[id].disconnect();
+            break;
         }
+    }
 
-        if (Users.findUser(user)) {
+    if (Users.findUser(user)) {
 
-            var userName = userDetails.user;
-            var password = userDetails.pass;
-            var role = userDetails.role || "user";
+        var userName = userDetails.user;
+        var password = userDetails.pass;
+        var role = userDetails.role || "user";
 
 
-            client.username = userName;
-            client.password = password;
+        client.username = userName;
+        client.password = password;
 
-            allClients[client.id] = client;
-            allUsers[client.id] = userName;
-
-            if (client.username) {
-
-                console.log(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Joined!');
-                Log.write(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Joined!');
-            } else {
-
-                console.log(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Joined!');
-                Log.write(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Joined!');
-            }
-
-            client.broadcast.emit('a user logged in', {
-                id: client.id,
-                name: userName
-            });
-
-            client.emit('login success', {
-                all: allUsers,
-                offline: Users.getOfflineUsers(),
-                thisUser: {
-                    user: userName,
-                    pass: password,
-                    role: role
-                },
-                history: ApplicationHistory.getMessageHistory()
-            });
-        } else {
-            client.emit('login failed', {
-                message: "Login failed!\n User not found! Please register before login!"
-            });
-        }
-    });
-
-    /**
-     * 
-     */
-    client.on('disconnect', function () {
-
-        var id = client.id;
+        allClients[client.id] = client;
+        allUsers[client.id] = userName;
 
         if (client.username) {
 
-            console.log(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Disconnected!');
-            Log.write(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Disconnected!');
+            console.log(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Joined!');
+            Log.write(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Joined!');
         } else {
 
-            console.log(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Disconnected!');
-            Log.write(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Disconnected!');
+            console.log(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Joined!');
+            Log.write(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Joined!');
         }
 
-        delete allClients[id];
-        delete allUsers[id];
-
-        io.emit('a client disconnected', {
-            id: client.id
-        });
-    });
-
-    /**
-     * 
-     */
-    client.on('user message', function (o) {
-
-        o.msg = o.msg.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        //profanity check and replace
-        o.msg = ProfanityFilter.filterReplace(o.msg);
-        //add full date for history save
-        o.date = get_date('date');
-        o.time = get_date('hour');
-        //saving messages history
-        ApplicationHistory.logMessageHistory(null, o);
-        //logs
-        console.log('(CLIENT): [' + o.usr + ']: ' + o.msg);
-        Log.write(get_date('date and hour') + ' (CLIENT): [' + o.usr + ']: ' + o.msg);
-        //broadcast message to all users
-        io.emit('new message', o);
-    });
-
-
-    /**
-     * 
-     */
-    client.on('command', function (cmd) {
-
-        var clientId = client.id;
-        var user = client.username;
-        var cmd = cmd.cmd;
-
-        CommandHandler.executeCommand({
-            clientId: clientId,
-            user: user,
-            cmd: cmd
+        client.broadcast.emit('a user logged in', {
+            id: client.id,
+            name: userName
         });
 
-        fs.readFile(__dirname + '/public/images/logo_1.png', function (err, buf) {
-
-            if (err) {
-                console.log(err);
-                return false;
-            }
-
-            client.emit('image', {
-                buffer: buf.toString('base64')
-            });
-            console.log('image file is initialized');
+        client.emit('login success', {
+            all: allUsers,
+            offline: Users.getOfflineUsers(),
+            thisUser: {
+                user: userName,
+                pass: password,
+                role: role
+            },
+            history: ApplicationHistory.getMessageHistory()
         });
+    } else {
+        client.emit('login failed', {
+            message: "Login failed!\n User not found! Please register before login!"
+        });
+    }
+};
 
-        console.log('(COMMAND) [' + client.username + ']: ' + cmd.cmd);
+/**
+ * 
+ * @param {*} stateInfo 
+ */
+var on_disconnect = function (stateInfo) {
+
+    console.log(stateInfo);
+
+    var client = this;
+
+    var id = client.id;
+
+    if (client.username) {
+
+        console.log(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Disconnected!');
+        Log.write(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Disconnected!');
+    } else {
+
+        console.log(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Disconnected!');
+        Log.write(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Disconnected!');
+    }
+
+    delete allClients[id];
+    delete allUsers[id];
+
+    io.emit('a client disconnected', {
+        id: client.id
+    });
+};
+
+/**
+ * 
+ * @param {*} o 
+ */
+var on_userMessage = function (o) {
+
+    var client = this;
+
+    o.msg = o.msg.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    //profanity check and replace
+    o.msg = ProfanityFilter.filterReplace(o.msg);
+    //add full date for history save
+    o.date = get_date('date');
+    o.time = get_date('hour');
+    //saving messages history
+    ApplicationHistory.logMessageHistory(null, o);
+    //logs
+    console.log('(CLIENT): [' + o.usr + ']: ' + o.msg);
+    Log.write(get_date('date and hour') + ' (CLIENT): [' + o.usr + ']: ' + o.msg);
+    //broadcast message to all users
+    io.emit('new message', o);
+};
+
+/**
+ * 
+ * @param {*} cmd 
+ */
+var on_command = function (cmd) {
+
+    var client = this;
+
+    var clientId = client.id;
+    var user = client.username;
+    var cmd = cmd.cmd;
+
+    CommandHandler.executeCommand({
+        clientId: clientId,
+        user: user,
+        cmd: cmd
     });
 
+    fs.readFile(__dirname + '/public/images/logo_1.png', function (err, buf) {
 
-    /**
-     * 
-     */
-    client.on('file send', function (file) {
+        if (err) {
+            console.log(err);
+            return false;
+        }
 
-        //file description:
-        //
-        //name: 'file name',
-        //size: '10',
-        //type: 'text/plain',
-        //data: 'data:text/plain;base64,dGVzdA=='
-
-        io.emit('file broadcast all', {
-            'user': client.username,
-            'content': file
+        client.emit('image', {
+            buffer: buf.toString('base64')
         });
+        console.log('image file is initialized');
     });
 
-});
+    console.log('(COMMAND) [' + client.username + ']: ' + cmd.cmd);
+};
+
+/**
+ * 
+ * @param {*} file 
+ */
+var on_fileSend = function (file) {
+
+    var client = this;
+
+    //file description:
+    //
+    //name: 'file name',
+    //size: '10',
+    //type: 'text/plain',
+    //data: 'data:text/plain;base64,dGVzdA=='
+    io.emit('file broadcast all', {
+        'user': client.username,
+        'content': file
+    });
+};
+
+
+/**
+ * 
+ * @param {object} client 
+ */
+var handleClientConnection = function (client) {
+
+    client.on('user register', on_userRegister);
+    client.on('user login', on_userLogin);
+    client.on('disconnect', on_disconnect);
+    client.on('user message', on_userMessage);
+    client.on('command', on_command);
+    client.on('file send', on_fileSend);
+};
+
+
+/**
+ * 
+ */
+io.on('connection', handleClientConnection)
 
 
 /**
