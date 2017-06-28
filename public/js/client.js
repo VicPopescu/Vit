@@ -545,16 +545,25 @@ var getUserForMention = function () {
 };
 
 /**
- * Automatically capitalize first letter of the provided sentence or word
- * @param {*} str Any string that need first letter capitalized
+ * Automatically capitalize first letter of each sentence of the provided string.
+ * Sentences are splitted by ".", so every dot will mark a new sentence.
+ * @param {string} str Any string that need first letter capitalized  
  */
-var capitalizeSentence = function(str){
-    var l = str.charAt(0);
-    var str = str.replace(l, l.toUpperCase());
+var capitalizeSentence = function (str) {
 
-    return str;
+    var splited = str.split(".");
+    var newStr;
+    
+    for (var i = 0; i < splited.length; i++) {
+
+        var l = splited[i].match(/[a-z]/)[0];
+        splited[i] = splited[i].replace(l, l.toUpperCase());
+    };
+
+    newStr = splited.join(". ");
+
+    return newStr;
 };
-
 
 /**
  * 

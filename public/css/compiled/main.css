@@ -100,7 +100,12 @@ input::-ms-input-placeholder {
         border-color: #FFFFFF; }
       #chat__allMessages li .chat__messageUser,
       #chat__allMessages li .chat__message {
-        word-break: break-all; }
+        -ms-word-break: break-all;
+        word-break: break-all;
+        word-break: break-word;
+        -webkit-hyphens: auto;
+        -moz-hyphens: auto;
+        hyphens: auto; }
       #chat__allMessages li .chat__messageUser {
         color: #FFFFFF; }
       #chat__allMessages li .chat__message {
