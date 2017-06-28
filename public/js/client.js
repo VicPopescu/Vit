@@ -212,7 +212,7 @@ var template_message = function (o) {
         d = o.date,
         t = o.time;
 
-    if (d === get_date("date")) d = "";
+    if (d === get_date("date")) d = "Today";
 
     var t = '<li><p class="chat__messageUser">' + u + '</p><span class="chat__messageDate">' + d + ' ' + t + '</span><p class="chat__message"> ' + m + '</p></li>';
 
@@ -304,8 +304,6 @@ var notify = function (message) {
         }
     }
 };
-
-
 
 /**
  * 
@@ -494,6 +492,8 @@ var doSubmit = function (e) {
     $chat__userInput.focus();
     //user input
     var msg = $chat__userInput.val();
+    //title case sentence
+    msg = capitalizeSentence(msg);
     //test for commands
     var testCmd = /^!cmd\s(.*)/;
     //test for, and replace, code injections
@@ -543,6 +543,18 @@ var getUserForMention = function () {
         return msg + " @" + user + " ";
     });
 };
+
+/**
+ * Automatically capitalize first letter of the provided sentence or word
+ * @param {*} str Any string that need first letter capitalized
+ */
+var capitalizeSentence = function(str){
+    var l = str.charAt(0);
+    var str = str.replace(l, l.toUpperCase());
+
+    return str;
+};
+
 
 /**
  * 
