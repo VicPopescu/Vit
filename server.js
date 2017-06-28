@@ -265,9 +265,8 @@ var on_userMessage = function (o) {
     o.msg = o.msg.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     //profanity check and replace
     o.msg = ProfanityFilter.filterReplace(o.msg);
-    //add full date for history save
-    o.date = get_date('date');
-    o.time = get_date('hour');
+    //add full date in UTC format
+    o.utcDate = new Date().toISOString();
     //saving messages history
     ApplicationHistory.logMessageHistory(null, o);
     //logs

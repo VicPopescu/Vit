@@ -162,9 +162,13 @@ if (!usr && !pass) {
  * 
  * @param {string} format 
  */
-var get_date = function (format) {
+var get_date = function (format, providedDate) {
 
-    var date = new Date();
+    if (providedDate) {
+        var date = new Date(providedDate);
+    } else {
+        var date = new Date();
+    }
 
     var day = date.getDate(),
         month = date.getMonth() + 1,
@@ -202,19 +206,22 @@ var get_date = function (format) {
 
 /**
  * 
- * @param {string} u 
- * @param {string} m 
+ * @param {object} o 
  */
 var template_message = function (o) {
 
+    var utcDate = o.utcDate;
+
+    var date = get_date("date", utcDate);
+    var time = get_date("hour", utcDate);
+
     var u = o.usr,
-        m = o.msg,
-        d = o.date,
-        t = o.time;
+        m = o.msg;
 
-    if (d === get_date("date")) d = "Today";
+    //if the message date is the same as today's date, then just display "today"
+    if (date === get_date("date")) date = "Today";
 
-    var t = '<li><p class="chat__messageUser">' + u + '</p><span class="chat__messageDate">' + d + ' ' + t + '</span><p class="chat__message"> ' + m + '</p></li>';
+    var t = '<li><p class="chat__messageUser">' + u + '</p><span class="chat__messageDate">' + date + ' ' + time + '</span><p class="chat__message"> ' + m + '</p></li>';
 
     return t;
 };
@@ -553,7 +560,7 @@ var capitalizeSentence = function (str) {
 
     var splited = str.split(".");
     var newStr;
-    
+
     for (var i = 0; i < splited.length; i++) {
 
         var l = splited[i].match(/[a-z]/)[0];
