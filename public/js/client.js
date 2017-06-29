@@ -499,15 +499,12 @@ var doSubmit = function (e) {
     $chat__userInput.focus();
     //user input
     var msg = $chat__userInput.val();
-    //title case sentence
-    msg = capitalizeSentence(msg);
     //test for commands
     var testCmd = /^!cmd\s(.*)/;
     //test for, and replace, code injections
     msg = msg.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     //hold the test result true/false
     var inputCmd;
-
     //handle early exit in case user or message is undefined
     if (!msg || !usr) return false;
     //test for comands in chat
@@ -524,6 +521,9 @@ var doSubmit = function (e) {
     if (msg === "logout") {
         do_logout();
     };
+
+    //title case sentence
+    msg = capitalizeSentence(msg);
 
     //send the message to the server
     socket.emit('user message', {
@@ -563,8 +563,10 @@ var capitalizeSentence = function (str) {
 
     for (var i = 0; i < splited.length; i++) {
 
-        var l = splited[i].match(/[a-z]/)[0];
-        splited[i] = splited[i].replace(l, l.toUpperCase());
+        if (/[a-z]/.test(splited[i])) {
+            var l = splited[i].match(/[a-z]/)[0];
+            splited[i] = splited[i].replace(l, l.toUpperCase());
+        }
     };
 
     newStr = splited.join(". ");

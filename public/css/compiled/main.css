@@ -270,12 +270,12 @@ input::-ms-input-placeholder {
   position: absolute;
   left: 0;
   right: 0;
-  top: 40%;
+  top: 35%;
   bottom: 0;
   margin: 0 auto;
   padding-top: 20px;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.8); }
+  background-color: rgba(0, 0, 0, 0.5); }
   #login__form {
     position: relative;
     margin: 10px;
