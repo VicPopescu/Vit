@@ -563,7 +563,7 @@ var capitalizeSentence = function (str) {
 
     for (var i = 0; i < splited.length; i++) {
 
-        if (/[a-z]/.test(splited[i])) {
+        if (/^[a-z]|^\s+[a-z]/.test(splited[i])) {
             var l = splited[i].match(/[a-z]/)[0];
             splited[i] = splited[i].replace(l, l.toUpperCase());
         }
