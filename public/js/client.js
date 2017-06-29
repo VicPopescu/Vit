@@ -45,6 +45,10 @@ var $weather = $('#weather');
 var $streaming = $('#streaming');
 var $quoteGenerator = $('#guoteGenerator');
 
+var $playground__gamesList = $('#playground__gamesList');
+var $playground__activitySpace = $('#playground__activitySpace');
+
+
 var $tools = $('#tools'),
     $tools__toogleChat = $('#tools__toogleChat'),
     $tools__toggleUsers = $('#tools__toggleUsers'),
@@ -55,6 +59,8 @@ var $tools = $('#tools'),
     $tools__quotes = $('#tools__quotes'),
     $tools__weather = $('#tools__weather'),
     $tools__signOut = $('#tools__signOut');
+
+var $closeWindow = $('.closeWindow');
 
 
 
@@ -677,10 +683,17 @@ var fileUploadTrigger = function () {
 
 /**
  * 
+ * @param {*} e 
  */
-var displayGames = function () {
+var displayGamesList = function (e) {
 
-    alert("Sorry... Games are not available yet...");
+    $playground__gamesList.animate({
+        right: "+=400px"
+    }, 200, function () {
+        $document.on('click.hideGamesList', hideGamesList);
+    });
+
+    $(this).unbind(e);
 };
 
 /**
@@ -770,6 +783,27 @@ var hideStreamingList = function (e) {
  * 
  * @param {*} e 
  */
+var hideGamesList = function (e) {
+
+    if (e.target.id == "playground__gamesList")
+        return;
+    //For descendants of menu_content being clicked
+    // if ($(e.target).closest('#playground__gamesList').length)
+    //     return;
+
+    $playground__gamesList.animate({
+        right: "-=400px"
+    }, 200, function () {
+        $tools__games.off('click.displayGamesList').one('click.displayGamesList', displayGamesList);
+    });
+
+    $(this).unbind(e);
+};
+
+/**
+ * 
+ * @param {*} e 
+ */
 var hideQuotes = function (e) {
 
     if (e.target.id == "guoteGenerator")
@@ -812,6 +846,14 @@ var visibilityChanged = function () {
 var triggerMessageSend = function () {
 
     $chat__form.submit();
+};
+
+/**
+ * 
+ */
+var closeWindow = function(){
+
+    $(this).parent().fadeOut();
 };
 
 /**
@@ -951,7 +993,7 @@ $tools__toggleUsers.one('click.displayUsers', displayUserslist);
 $tools__toggleOfflineUsers.one('click.displayOfflineUsers', displayOfflineUserslist);
 $tools__fileSend.off('click.fileSend').on('click.fileSend', fileUploadTrigger);
 $tools__streaming.off('click.displayStreamingOptions').on('click.displayStreamingOptions', displayStreamingOptions);
-$tools__games.off('click.displayGames').on('click.displayGames', displayGames);
+$tools__games.off('click.displayGamesList').on('click.displayGamesList', displayGamesList);
 $tools__quotes.off('click.displayQuotes').on('click.displayQuotes', displayQuotes);
 $tools__weather.off('click.displayWeather').on('click.displayWeather', displayWeather);
 $tools__signOut.off('click.triggerSignOut').on('click.triggerSignOut', do_logout);
@@ -968,3 +1010,5 @@ $chat__submitPlaceholder.on('click.triggerMessageSend', triggerMessageSend);
 
 $chat.on('click.msgUser', '.chat__messageUser', getUserForMention);
 $users__list.on('click.msgUser', 'li', getUserForMention);
+
+$closeWindow.on('click.closeWindow', closeWindow);

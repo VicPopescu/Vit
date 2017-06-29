@@ -330,6 +330,44 @@ var on_fileSend = function (file) {
     });
 };
 
+/**
+ * 
+ * @param {*} opponent 
+ */
+var on_activityChallenge = function (activityDetails) {
+
+    var user1 = {
+        id: this.id,
+        name : this.username
+    };
+
+    var user2 = activityDetails.opponent;
+
+    var challengeDetails = {
+        challenger: user1,
+        activityId: activityDetails.activityId
+    };
+
+    io.to(user2.id).emit('activity challenge', challengeDetails);
+};
+
+/**
+ * 
+ * @param {*} opponentId 
+ */
+var on_activityAccepted = function(opponentId){
+
+    io.to(opponentId).emit('activity accepted');
+};
+
+/**
+ * 
+ * @param {*} opponentId 
+ */
+var on_activityDeclined = function(opponentId){
+
+    io.to(opponentId).emit('activity declined');
+};
 
 /**
  * 
@@ -343,6 +381,9 @@ var handleClientConnection = function (client) {
     client.on('user message', on_userMessage);
     client.on('command', on_command);
     client.on('file send', on_fileSend);
+    client.on('activity challenge', on_activityChallenge);
+    client.on('activity accepted', on_activityAccepted);
+    client.on('activity declined', on_activityDeclined);
 };
 
 

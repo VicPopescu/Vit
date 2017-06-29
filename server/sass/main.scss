@@ -73,6 +73,12 @@ input::-ms-input-placeholder {
     position: absolute;
     left: 1%;
     top: 1%;
+    background-color: $color-TransparentBlack5;
+    &:hover {
+        .closeWindow {
+            display: block;
+        }
+    }
     &__allMessages {
         width: 100%;
         height: 90%;
@@ -80,7 +86,6 @@ input::-ms-input-placeholder {
         overflow-y: hidden;
         margin: 0;
         padding: 0; //border: $border-TransparentWhite;
-        background-color: $color-TransparentBlack;
         -webkit-transition: all 0.2s ease-in-out 0s;
         -moz-transition: all 0.2s ease-in-out 0s;
         -o-transition: all 0.2s ease-in-out 0s;
@@ -95,7 +100,7 @@ input::-ms-input-placeholder {
         }
         li {
             position: relative;
-            padding: 15px;
+            padding: 5px 15px 15px 15px;
             margin: 4px;
             min-height: 70px;
             width: 97%;
@@ -123,7 +128,7 @@ input::-ms-input-placeholder {
             }
             .chat__messageDate {
                 position: absolute;
-                top: 35px;
+                top: 25px;
                 right: 5px;
                 float: right;
                 font-size: 12px;
@@ -149,16 +154,16 @@ input::-ms-input-placeholder {
     }
     &__userInput {
         border: none;
-        margin-top: 25px;
+        margin: 25px 10px 0 15px;
         padding: 5px;
-        border-bottom: 1px solid $color-BottleGreen;
+        border-bottom: 1px solid $color-White;
         background-color: transparent;
         outline: none;
         color: white;
-        width: 90%;
+        width: 80%;
     }
     &__submitPlaceholder {
-        color: $color-BottleGreen;
+        color: $color-White;
         font-size: 20px;
         cursor: pointer;
     }
@@ -172,6 +177,7 @@ input::-ms-input-placeholder {
     height: 100%;
     width: 350px;
     position: absolute;
+    z-index: 4;
     top: 0;
     bottom: 0;
     right: -350px;
@@ -252,6 +258,82 @@ input::-ms-input-placeholder {
         audio {
             width: 100%;
         }
+    }
+}
+
+#playground__gamesList {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: -350px;
+    height: 100%;
+    width: 350px;
+    background-color: $color-TransparentBlack;
+    color: $color-White;
+    font-size: 18px;
+    font-weight: bold;
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        text-align: center;
+    }
+    li {
+        display: inline-block;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        box-sizing: border-box;
+        border: 0.5px solid $color-TransparentWhite;
+        width: 100%;
+        height: 100px;
+        text-align: center;
+        padding: 40px 10px 10px 10px;
+        background-color: $color-TransparentWhite6;
+        &:hover {
+            background-color: $color-TransparentWhite8;
+        }
+    }
+    #trigger__ticTacToe {
+        background-image: url("../../images/icon-tic-tac-toe.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+}
+
+#playground__activitySpace {
+    display: none;
+    position: absolute;
+    background-color: $color-TransparentBlack5;
+    height: 98%;
+    width: 64.5%;
+    max-width: 1400px;
+    top: 1%;
+    right: 60px;
+    color: $color-White;
+    text-align: center;
+    &:hover {
+        .closeWindow {
+            display: block;
+        }
+    }
+    #playground__selectOpponent {
+        display: block;
+        margin: 0 auto;
+        margin-top: 35%;
+        padding: 10px;
+        cursor: pointer;
+        background-color: $color-TransparentWhite8;
+        border: none;
+        &:hover {
+            background-color: $color-White;
+        }
+    }
+    #playground__activityStatus {
+        margin-top: 50px;
     }
 }
 
@@ -375,4 +457,14 @@ input::-ms-input-placeholder {
         background-repeat: no-repeat;
         background-position: center center;
     }
+}
+
+.closeWindow {
+    position: absolute;
+    display: none;
+    right: 5px;
+    top: 5px;
+    z-index: 5;
+    color: $color-White;
+    cursor: pointer;
 }

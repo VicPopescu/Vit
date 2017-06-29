@@ -42,10 +42,60 @@
 </head>
 
 <body>
+
+    <!--HEADER-->
     <section id="header">
     </section>
 
+    <!--LOGIN-->
+    <section id="login">
+        <form id="login__form" action="">
+            <input id="login__userInput" autocomplete="on" minlength=3 maxlength="20" placeholder="User" required="required" title="At least 3 characters and max 20 characters!"
+            />
+            <input type="password" id="login__passInput" autocomplete="on" minlength=6 maxlength="20" placeholder="Password" required="required"
+                title="At least 6 characters and max 20 characters!" />
+            <button id="login__submit">LOGIN</button>
+            <button id="register__submit">REGISTER</button>
+            <div id="login__error"></div>
+        </form>
+    </section>
+
+    <!--TOOLS-->
+    <section id="tools">
+        <div id="tools__toogleChat" class="tools__item tools__toogleChat" title="Chat">
+            <i class="fa fa-weixin fa-2x" aria-hidden="true"></i>
+        </div>
+        <div id="tools__toggleUsers" class="tools__item tools__toggleUsers" title="Online Users">
+            <i class="fa fa-users fa-2x" aria-hidden="true"></i>
+        </div>
+        <div id="tools__toggleOfflineUsers" class="tools__item tools__toggleOfflineUsers" title="Offline Users">
+            <i class="fa fa-user-times fa-2x" aria-hidden="true"></i>
+        </div>
+        <div id="tools__fileSend" class="tools__item tools__fileSend" title="Send file!">
+            <i class="fa fa-file fa-2x" aria-hidden="true"></i>
+        </div>
+        <div id="tools__streaming" class="tools__item tools__streaming" title="Radio and streaming!">
+            <i class="fa fa-play fa-2x" aria-hidden="true"></i>
+        </div>
+        <div id="tools__games" class="tools__item tools__games" title="Play games!">
+            <i class="fa fa-gamepad fa-2x" aria-hidden="true"></i>
+        </div>
+        <div id="tools__quotes" class="tools__item tools__quotes" title="Random quote!">
+            <i class="fa fa-quote-right fa-2x" aria-hidden="true"></i>
+        </div>
+        <div id="tools__weather" class="tools__item tools__weather" title="Weather info!">
+            <i class="fa fa-cloud fa-2x" aria-hidden="true"></i>
+        </div>
+        <div id="tools__signOut" class="tools__item tools__signOut" title="Sign Out!">
+            <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
+        </div>
+    </section>
+
+    <!--CHAT WIDGET-->
     <section id="chat">
+        <div class="closeWindow">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
         <ul id="chat__allMessages"></ul>
         <form id="chat__form" action="">
             <input id="chat__userInput" autocomplete="off" autofocus="on" placeholder="Your message..." />
@@ -54,6 +104,82 @@
         </form>
     </section>
 
+    <!--CHAT USERS LISTS-->
+    <section id="chat__users">
+        <ul id="users__list"></ul>
+    </section>
+    <section id="offline__users">
+        <ul id="offline__list"></ul>
+    </section>
+
+    <!--UPLOAD FILE -->
+    <form id="file" action="" style="position: absolute; bottom: 20px; right: 20px;" hidden="hidden">
+        <input id="file__input" type="file" name="uploads[]" accept="image/*,text/plain" multiple="multiple">
+        <div>Upload File</div>
+    </form>
+
+    <!--STREAMING-->
+    <section id="streaming">
+        <ul>
+            <li>
+                <p>Rock Fm</p>
+                <audio controls preload="none">
+                    <source src="http://80.86.106.143:9128/rockfm.aacp" type="audio/ogg">
+                </audio>
+                <li>
+                    <p>Magic Fm</p>
+                    <audio controls preload="none">
+                        <source src="http://live.magicfm.ro:9128/magicfm.aacp" type="audio/ogg">
+                    </audio>
+                </li>
+                <li>
+                    <p>Virgin Radio</p>
+                    <audio controls preload="none">
+                        <source src="http://astreaming.virginradio.ro:8000/virgin_aacp_64k" type="audio/ogg">
+                    </audio>
+                </li>
+            </li>
+        </ul>
+    </section>
+
+    <!--PLAYGROUND-->
+
+    <section id="playground__gamesList">
+        <ul>
+            <li id="trigger__ticTacToe" class="item playground__gameTrigger" data-activityId="1">Tic-Tac-Toe</li>
+            <li id="trigger__exampleGame" class="item playground__gameTrigger" data-activityId="2">Some other game</li>
+        </ul>
+    </section>
+
+    <section id="playground__activitySpace">
+        <div class="closeWindow">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
+        <div id="playground__activityStatus"></div>
+        <input id="playground__selectOpponent" type="button" value="Select your worthy opponent">
+    </section>
+
+    <!--QUOTE WIDGET-->
+    <section id="guoteGenerator">
+        <section id="backgroundChange"></section>
+        <article id="randomQuote" data-quote-id="">
+            <blockquote id="content">
+                <section id="quote"></section>
+                <cite>
+                    <a id="source" href="" target="_blank" ></a>
+                </cite>
+            </blockquote>
+            <div id="footerButtonContainer">
+                <input id="getQuote" type="button" value="New Awesome Quote">
+            </div>
+            <div id='tweetQuote'>
+                <img src="https://www.shareicon.net/download/128x128//2015/09/02/94715_logo_512x512.png" alt="Twitter" />
+                <p>Tweet it!</span>
+            </div>
+        </article>
+    </section>
+
+    <!--WEATHER WIDGET-->
     <section id="weather">
         <!--<iframe id="weather__info" scrolling="no" src="https://codepen.io/VicPopescu/full/RVLQBL/"></iframe>-->
         <section id="welcome">
@@ -163,103 +289,6 @@
         </section>
     </section>
 
-    <section id="guoteGenerator">
-        <section id="backgroundChange"></section>
-        <article id="randomQuote" data-quote-id="">
-            <blockquote id="content">
-                <section id="quote"></section>
-                <cite>
-                    <a id="source" href="" target="_blank" ></a>
-                </cite>
-            </blockquote>
-            <div id="footerButtonContainer">
-                <input id="getQuote" type="button" value="New Awesome Quote">
-            </div>
-            <div id='tweetQuote'>
-                <img src="https://www.shareicon.net/download/128x128//2015/09/02/94715_logo_512x512.png" alt="Twitter" />
-                <p>Tweet it!</span>
-            </div>
-        </article>
-    </section>
-
-    <section id="chat__users">
-        <ul id="users__list"></ul>
-    </section>
-    <section id="offline__users">
-        <ul id="offline__list"></ul>
-    </section>
-
-    <section id="streaming">
-        <ul>
-            <li>
-                <p>Rock Fm</p>
-                <audio controls preload="none">
-                    <source src="http://80.86.106.143:9128/rockfm.aacp" type="audio/ogg">
-                </audio>
-                <li>
-                    <p>Magic Fm</p>
-                    <audio controls preload="none">
-                        <source src="http://live.magicfm.ro:9128/magicfm.aacp" type="audio/ogg">
-                    </audio>
-                </li>
-                <li>
-                    <p>Virgin Radio</p>
-                    <audio controls preload="none">
-                        <source src="http://astreaming.virginradio.ro:8000/virgin_aacp_64k" type="audio/ogg">
-                    </audio>
-                </li>
-            </li>
-        </ul>
-
-    </section>
-
-    <section id="login">
-        <form id="login__form" action="">
-            <input id="login__userInput" autocomplete="on" minlength=3 maxlength="20" placeholder="User" required="required" title="At least 3 characters and max 20 characters!"
-            />
-            <input type="password" id="login__passInput" autocomplete="on" minlength=6 maxlength="20" placeholder="Password" required="required"
-                title="At least 6 characters and max 20 characters!" />
-            <button id="login__submit">LOGIN</button>
-            <button id="register__submit">REGISTER</button>
-            <div id="login__error"></div>
-        </form>
-    </section>
-
-    <form id="file" action="" style="position: absolute; bottom: 20px; right: 20px;" hidden="hidden">
-        <input id="file__input" type="file" name="uploads[]" accept="image/*,text/plain" multiple="multiple">
-        <div>Upload File</div>
-    </form>
-
-    <section id="tools">
-        <div id="tools__toogleChat" class="tools__item tools__toogleChat" title="Chat">
-            <i class="fa fa-weixin fa-2x" aria-hidden="true"></i>
-        </div>
-        <div id="tools__toggleUsers" class="tools__item tools__toggleUsers" title="Online Users">
-            <i class="fa fa-users fa-2x" aria-hidden="true"></i>
-        </div>
-        <div id="tools__toggleOfflineUsers" class="tools__item tools__toggleOfflineUsers" title="Offline Users">
-            <i class="fa fa-user-times fa-2x" aria-hidden="true"></i>
-        </div>
-        <div id="tools__fileSend" class="tools__item tools__fileSend" title="Send file!">
-            <i class="fa fa-file fa-2x" aria-hidden="true"></i>
-        </div>
-        <div id="tools__streaming" class="tools__item tools__streaming" title="Radio and streaming!">
-            <i class="fa fa-play fa-2x" aria-hidden="true"></i>
-        </div>
-        <div id="tools__games" class="tools__item tools__games" title="Play games!">
-            <i class="fa fa-gamepad fa-2x" aria-hidden="true"></i>
-        </div>
-        <div id="tools__quotes" class="tools__item tools__quotes" title="Random quote!">
-            <i class="fa fa-quote-right fa-2x" aria-hidden="true"></i>
-        </div>
-        <div id="tools__weather" class="tools__item tools__weather" title="Weather info!">
-            <i class="fa fa-cloud fa-2x" aria-hidden="true"></i>
-        </div>
-        <div id="tools__signOut" class="tools__item tools__signOut" title="Sign Out!">
-            <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
-        </div>
-    </section>
-
 
     <!--Scripts-->
     <script src="jquery/jquery.js"></script>
@@ -270,6 +299,8 @@
     <script src="js/weatherWidget.js"></script>
     <script src="js/quotesWidget.js"></script>
     <script src="js/client.js"></script>
+    <script src="js/activitiesWidget.js"></script>
+
 </body>
 
 

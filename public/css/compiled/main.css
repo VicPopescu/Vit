@@ -72,7 +72,10 @@ input::-ms-input-placeholder {
   display: none;
   position: absolute;
   left: 1%;
-  top: 1%; }
+  top: 1%;
+  background-color: rgba(0, 0, 0, 0.5); }
+  #chat:hover .closeWindow {
+    display: block; }
   #chat__allMessages {
     width: 100%;
     height: 90%;
@@ -80,7 +83,6 @@ input::-ms-input-placeholder {
     overflow-y: hidden;
     margin: 0;
     padding: 0;
-    background-color: rgba(0, 0, 0, 0.5);
     -webkit-transition: all 0.2s ease-in-out 0s;
     -moz-transition: all 0.2s ease-in-out 0s;
     -o-transition: all 0.2s ease-in-out 0s;
@@ -93,7 +95,7 @@ input::-ms-input-placeholder {
         width: 98.475%; }
     #chat__allMessages li {
       position: relative;
-      padding: 15px;
+      padding: 5px 15px 15px 15px;
       margin: 4px;
       min-height: 70px;
       width: 97%;
@@ -117,7 +119,7 @@ input::-ms-input-placeholder {
         color: #FFFFFF; }
       #chat__allMessages li .chat__messageDate {
         position: absolute;
-        top: 35px;
+        top: 25px;
         right: 5px;
         float: right;
         font-size: 12px; }
@@ -136,15 +138,15 @@ input::-ms-input-placeholder {
     margin: 0; }
   #chat__userInput {
     border: none;
-    margin-top: 25px;
+    margin: 25px 10px 0 15px;
     padding: 5px;
-    border-bottom: 1px solid #08352E;
+    border-bottom: 1px solid #FFFFFF;
     background-color: transparent;
     outline: none;
     color: white;
-    width: 90%; }
+    width: 80%; }
   #chat__submitPlaceholder {
-    color: #08352E;
+    color: #FFFFFF;
     font-size: 20px;
     cursor: pointer; }
 
@@ -153,6 +155,7 @@ input::-ms-input-placeholder {
   height: 100%;
   width: 350px;
   position: absolute;
+  z-index: 4;
   top: 0;
   bottom: 0;
   right: -350px;
@@ -224,6 +227,70 @@ input::-ms-input-placeholder {
     padding: 10px; }
     #streaming li audio {
       width: 100%; }
+
+#playground__gamesList {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -350px;
+  height: 100%;
+  width: 350px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #FFFFFF;
+  font-size: 18px;
+  font-weight: bold; }
+  #playground__gamesList ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-align: center; }
+  #playground__gamesList li {
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    box-sizing: border-box;
+    border: 0.5px solid rgba(255, 255, 255, 0.5);
+    width: 100%;
+    height: 100px;
+    text-align: center;
+    padding: 40px 10px 10px 10px;
+    background-color: rgba(255, 255, 255, 0.6); }
+    #playground__gamesList li:hover {
+      background-color: rgba(255, 255, 255, 0.8); }
+  #playground__gamesList #trigger__ticTacToe {
+    background-image: url("../../images/icon-tic-tac-toe.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover; }
+
+#playground__activitySpace {
+  display: none;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 98%;
+  width: 64.5%;
+  max-width: 1400px;
+  top: 1%;
+  right: 60px;
+  color: #FFFFFF;
+  text-align: center; }
+  #playground__activitySpace:hover .closeWindow {
+    display: block; }
+  #playground__activitySpace #playground__selectOpponent {
+    display: block;
+    margin: 0 auto;
+    margin-top: 35%;
+    padding: 10px;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none; }
+    #playground__activitySpace #playground__selectOpponent:hover {
+      background-color: #FFFFFF; }
+  #playground__activitySpace #playground__activityStatus {
+    margin-top: 50px; }
 
 #tools {
   position: fixed;
@@ -324,3 +391,12 @@ input::-ms-input-placeholder {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center; }
+
+.closeWindow {
+  position: absolute;
+  display: none;
+  right: 5px;
+  top: 5px;
+  z-index: 5;
+  color: #FFFFFF;
+  cursor: pointer; }
