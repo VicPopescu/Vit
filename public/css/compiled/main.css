@@ -21,14 +21,19 @@ body {
   margin: 0; }
 
 body {
-  background: linear-gradient(135deg, #002e3a, #017796);
+  background: linear-gradient(135deg, #593653, #188953);
   background-size: cover;
   font-family: 'Nunito Sans', sans-serif;
   overflow: hidden; }
 
 body::after {
-  content: url("../../images/logo_1.png");
+  content: "";
+  background-image: url("../../images/logo_4.png");
+  background-repeat: no-repeat;
+  background-size: 300px auto;
+  background-position: center 35%;
   position: absolute;
+  top: 0;
   z-index: -1;
   height: 100%;
   width: 100%;
