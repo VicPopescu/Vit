@@ -37,13 +37,17 @@ q:after {
     border: none;
     overflow: hidden;
     font-family: 'Dancing Script', cursive;
+    &:hover {
+        .closeWindow {
+            display: block;
+        }
+    }
 }
 
 #backgroundChange {
-    -webkit-transform:translate3d(0,0,0);
+    -webkit-transform: translate3d(0, 0, 0);
     -webkit-backface-visibility: hidden;
     -webkit-perspective: 1000;
-
     position: absolute;
     top: 0;
     left: 0;
@@ -69,10 +73,10 @@ q:after {
     position: relative;
     display: block;
     margin: 0 auto;
-    margin-top: 5%;
-    width: 40%;
-    max-width: 40%;
-    max-height: 70%;
+    margin-top: 3%;
+    width: 50%;
+    max-width: 800px;
+    height: 300px;
     padding: 5%;
     padding-bottom: 15%;
     border-radius: 3px;

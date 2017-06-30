@@ -346,6 +346,8 @@
   min-height: 100%;
   border: none;
   overflow: hidden; }
+  #weather:hover .closeWindow {
+    display: block; }
   #weather__info {
     height: 100%;
     width: 100%;

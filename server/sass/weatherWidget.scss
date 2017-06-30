@@ -1,9 +1,7 @@
 //          --/IMPORTS/--         //
 @import "colors.scss";
 @import "fonts.scss";
-@import "borders.scss";
-
- //          --/WEATHER ICONS/--         //
+@import "borders.scss"; //          --/WEATHER ICONS/--         //
 .icon {
     position: relative;
     display: inline-block;
@@ -394,14 +392,19 @@
     display: none;
     background-color: $color-TransparentBlack6;
     right: -webkit-calc(100% - (100% - 50px));
-    right:    -moz-calc(100% - (100% - 50px));
-    right:         calc(100% - (100% - 50px));
+    right: -moz-calc(100% - (100% - 50px));
+    right: calc(100% - (100% - 50px));
     width: -webkit-calc(100% - 50px);
-    width:    -moz-calc(100% - 50px);
-    width:         calc(100% - 50px);
-    min-height: 100%;    
+    width: -moz-calc(100% - 50px);
+    width: calc(100% - 50px);
+    min-height: 100%;
     border: none;
     overflow: hidden;
+    &:hover {
+        .closeWindow {
+            display: block;
+        }
+    }
     &__info {
         height: 100%;
         width: 100%;
@@ -553,6 +556,7 @@
     background-color: rgba(0, 0, 0, 0);
     background-color: transparent
 }
+
 
 /*  Media Queries */
 

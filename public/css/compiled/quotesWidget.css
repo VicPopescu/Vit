@@ -30,6 +30,8 @@ q:after {
   border: none;
   overflow: hidden;
   font-family: 'Dancing Script', cursive; }
+  #guoteGenerator:hover .closeWindow {
+    display: block; }
 
 #backgroundChange {
   -webkit-transform: translate3d(0, 0, 0);
@@ -59,10 +61,10 @@ q:after {
   position: relative;
   display: block;
   margin: 0 auto;
-  margin-top: 5%;
-  width: 40%;
-  max-width: 40%;
-  max-height: 70%;
+  margin-top: 3%;
+  width: 50%;
+  max-width: 800px;
+  height: 300px;
   padding: 5%;
   padding-bottom: 15%;
   border-radius: 3px;
