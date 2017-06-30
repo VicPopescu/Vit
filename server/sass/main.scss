@@ -167,9 +167,6 @@ input::-ms-input-placeholder {
         font-size: 20px;
         cursor: pointer;
     }
-    &__submit {
-        //
-    }
 }
 
 #chat__users,
@@ -216,9 +213,6 @@ input::-ms-input-placeholder {
         height: auto;
         text-align: center;
         padding: 15px;
-        &:hover {
-            //border: $border-Transparent;
-        }
     }
 }
 
@@ -252,9 +246,6 @@ input::-ms-input-placeholder {
         height: auto;
         text-align: center;
         padding: 10px;
-        &:hover {
-            //border: $border-Transparent;
-        }
         audio {
             width: 100%;
         }
@@ -394,10 +385,6 @@ input::-ms-input-placeholder {
     padding-top: 20px;
     overflow: auto;
     background-color: $color-TransparentBlack;
-    &:hover,
-    &:focus {
-        //border: $border-White;
-    }
     &__form {
         position: relative;
         margin: 10px;

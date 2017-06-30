@@ -1,3 +1,66 @@
+<style>
+
+    #ticTacToe__game ul {
+        box-sizing: border-box;
+        width: 320px;
+        margin: 0 auto;
+        list-style: none;
+        padding: 0;
+        user-select: none;
+    }
+
+    #ticTacToe__game ul li {
+        box-sizing: border-box;
+        border: 1px solid white;
+        height: 100px;
+        width: 100px;
+        cursor: pointer;
+        margin: 0;
+        font-size: 500%;
+        float: left;
+    }
+</style>
+
+
 <section id="ticTacToe" class="activity">
     <h1>TIC TAC TOE GAME HERE</h1>
+    <div id="ticTacToe__game">
+        <ul>
+            <li data-pos="1" class="square"></li>
+            <li data-pos="2" class="square"></li>
+            <li data-pos="3" class="square"></li>
+            <li data-pos="4" class="square"></li>
+            <li data-pos="5" class="square"></li>
+            <li data-pos="6" class="square"></li>
+            <li data-pos="7" class="square"></li>
+            <li data-pos="8" class="square"></li>
+            <li data-pos="9" class="square"></li>
+        </ul>
+    </div>
 </section>
+
+
+<script>
+    var activity = (function () {
+        var $ticTacToe = $('#ticTacToe');
+        var $ticTacToe__game = $('#ticTacToe__game');
+        var $list = $ticTacToe__game.find('ul');
+        var $square = $('.square');
+
+        var markSquare = function (e) {
+
+            var pos = $(this).index();
+            $(this).append("X");
+            $(this).unbind();
+            $square.off('click.getPosition', markSquare);
+
+            var data = {
+                pos: pos
+            };
+
+            socket.emit('player 1 selected', data);
+        };
+
+        $square.on('click.getPosition', markSquare);
+    })();
+</script>

@@ -45,9 +45,6 @@ q:after {
 }
 
 #backgroundChange {
-    -webkit-transform: translate3d(0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    -webkit-perspective: 1000;
     position: absolute;
     top: 0;
     left: 0;
@@ -58,6 +55,9 @@ q:after {
     background-position: center;
     background-size: cover;
     -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-perspective: 1000;
+    perspective: 1000;
     /*delay background image change by few seconds so it wont flicker (works only for Chrome)*/
     -webkit-transition: all 1s ease-in-out 4s;
     -moz-transition: all 1s ease-in-out 4s;
@@ -67,6 +67,7 @@ q:after {
     -webkit-backface-visibility: hidden;
     -moz-backface-visibility: hidden;
     -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 #randomQuote {
@@ -153,7 +154,6 @@ cite {
     padding: 5px;
     border: 0;
     box-shadow: 0;
-    display: inline;
 }
 
 @media (max-width: 1200px) {
