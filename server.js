@@ -61,6 +61,7 @@ app.use(sassMiddleware({
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 app.use('/chartjs', express.static(__dirname + '/node_modules/chart.js/dist/'));
+app.use('/views/activities', express.static(__dirname + '/server/views/activities/'));
 
 /**
  *      Returns a random integer between min and max, if provided, or use default numbers
@@ -117,6 +118,23 @@ function get_date(format) {
     return time;
 };
 
+
+/**
+ * 
+ * @param {*} actId 
+ */
+var get_ActivityNameById = function (actId) {
+
+    switch (actId) {
+
+        case 1:
+            return "ticTacToe.html";
+        case 2:
+            return "example.html";
+        default:
+            break;
+    };
+};
 
 // // sending to sender-client only
 // socket.emit('message', "test message");
@@ -294,7 +312,7 @@ var on_command = function (cmd) {
         cmd: cmd
     });
 
-    fs.readFile(__dirname + '/public/images/logo_1.png', function (err, buf) {
+    fs.readFile(__dirname + '/public/images/logo_1.png', function (err, file) {
 
         if (err) {
             console.log(err);
@@ -302,7 +320,7 @@ var on_command = function (cmd) {
         }
 
         client.emit('image', {
-            buffer: buf.toString('base64')
+            buffer: file.toString('base64')
         });
         console.log('image file is initialized');
     });
@@ -336,37 +354,60 @@ var on_fileSend = function (file) {
  */
 var on_activityChallenge = function (activityDetails) {
 
-    var user1 = {
+    var challenger = {
         id: this.id,
-        name : this.username
+        name: this.username
     };
 
-    var user2 = activityDetails.opponent;
+    var receiver = activityDetails.opponent;
 
     var challengeDetails = {
-        challenger: user1,
+        challenger: challenger,
+        players: [challenger, receiver],
         activityId: activityDetails.activityId
     };
 
-    io.to(user2.id).emit('activity challenge', challengeDetails);
+    io.to(receiver.id).emit('activity challenge', challengeDetails);
 };
 
 /**
  * 
  * @param {*} opponentId 
  */
-var on_activityAccepted = function(opponentId){
+var on_activityAccepted = function (challengeDetails) {
 
-    io.to(opponentId).emit('activity accepted');
+    var opponentId = challengeDetails.challenger.id;
+
+    io.to(opponentId).emit('activity accepted', challengeDetails);
 };
 
 /**
  * 
  * @param {*} opponentId 
  */
-var on_activityDeclined = function(opponentId){
+var on_activityDeclined = function (opponentId) {
 
     io.to(opponentId).emit('activity declined');
+};
+
+/**
+ * 
+ * @param {*} activityId 
+ */
+var get_activityPartialView = function (activityId) {
+
+    var client = this;
+    var activityView = get_ActivityNameById(activityId);
+
+    fs.readFile(__dirname + '/server/views/activities/' + activityView, 'utf8', function (err, html) {
+
+        if (err) {
+            console.log(err);
+            return false;
+        }
+
+        client.emit('receive activity partial view', html);
+    });
 };
 
 /**
@@ -384,6 +425,7 @@ var handleClientConnection = function (client) {
     client.on('activity challenge', on_activityChallenge);
     client.on('activity accepted', on_activityAccepted);
     client.on('activity declined', on_activityDeclined);
+    client.on('get activity partial view', get_activityPartialView);
 };
 
 

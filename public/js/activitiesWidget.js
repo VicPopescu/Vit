@@ -15,9 +15,63 @@ $(function () {
         var $tools__toggleUsers = $('#tools__toggleUsers');
         var $users__list = $('#users__list');
         var $chat__userInput = $('#chat__userInput');
+        var $playground__activityView = $('#playground__activityView');
 
 
         var activityId;
+
+
+        /**
+         * 
+         * @param {*} challengeDetails 
+         */
+        var buildPartialView = function (challengeDetails) {
+
+            socket.emit('get activity partial view', challengeDetails.activityId);
+        };
+
+        /**
+         * 
+         * @param {*} challengeDetails 
+         */
+        var playXO = function (challengeDetails) {
+
+            buildPartialView(challengeDetails);
+        };
+
+        /**
+         * 
+         * @param {*} challengeDetails 
+         */
+        var playPotato = function (challengeDetails) {
+
+            alert("This is just an example game...");
+        };
+
+        /**
+         * 
+         * @param {*} challengeDetails 
+         */
+        var activityStart = function (challengeDetails) {
+
+            var actId = challengeDetails.activityId;
+
+            //initActivityHeaders(challengeDetails);            
+
+            switch (actId) {
+
+                case 1:
+                    playXO(challengeDetails);
+                    break;
+
+                case 2:
+                    playPotato(challengeDetails);
+                    break;
+
+                default:
+                    break;
+            };
+        };
 
         /**
          * 
@@ -27,14 +81,18 @@ $(function () {
             var oppName = challengeDetails.challenger.name;
             var oppId = challengeDetails.challenger.id;
             var actName = challengeDetails.activityId;
+            var actId = challengeDetails.activityId;
 
             if (confirm(oppName + " challenged you to: " + actName)) {
 
-                socket.emit("activity accepted", oppId);
+                socket.emit("activity accepted", challengeDetails);
 
                 $playground__selectOpponent.hide();
                 $playground__activitySpace.fadeIn();
                 $playground__activityStatus.html("You are playing " + actName + " with " + oppName);
+
+                activityStart(challengeDetails);
+
             } else {
 
                 socket.emit("activity declined", oppId);
@@ -66,10 +124,10 @@ $(function () {
 
             var opponentId;
             var opponentName;
-            //var activityName = get_activityNameById(activityId);
 
             $tools__toggleUsers.trigger('click');
-            $users__list.on('click.getOpponent', 'li', function (e1) {
+
+            $users__list.off('click.getOpponent').on('click.getOpponent', 'li', function (e1) {
 
                 $playground__selectOpponent.hide();
 
@@ -79,7 +137,6 @@ $(function () {
                 $chat__userInput.val('');
                 $tools__toggleUsers.trigger('click');
                 $playground__activityStatus.html("You challenged " + opponentName + "! Waiting for opponent...");
-
 
                 beforeGameStart(opponentId, opponentName, activityId);
 
@@ -99,12 +156,26 @@ $(function () {
         };
 
         /**
+         * @param {*} view 
+         */
+        var receiveActivityPartialView = function (view) {
+
+            $playground__activityView.html(view);
+        };
+
+        /**
          * 
          */
-        var startActivity = function () {
+        var startActivity = function (challengeDetails) {
+
+            var oppName = challengeDetails.challenger.name;
+            var oppId = challengeDetails.challenger.id;
+            var actName = challengeDetails.activityId;
+            var actId = challengeDetails.activityId;
 
             $playground__activityStatus.html("Activity accepted!!!");
-            //start activity here
+
+            activityStart(challengeDetails);
         };
 
         /**
@@ -114,9 +185,13 @@ $(function () {
 
             activityId = $(this).data('activityid');
 
+            $playground__activityView.html('');
+            $playground__activityStatus.html('');
+
             $playground__activitySpace.fadeIn();
-            $playground__selectOpponent.one('click.selectOpponent', selectOpponent);
             $playground__selectOpponent.show();
+            
+            $playground__selectOpponent.off('click.selectOpponent').one('click.selectOpponent', selectOpponent);
         };
 
         $playground__gameTrigger.on('click.initGameSpace', initGameSpace);
@@ -124,6 +199,7 @@ $(function () {
         socket.on('activity challenge', displayChallenge);
         socket.on('activity accepted', startActivity);
         socket.on('activity declined', declinedActivity);
+        socket.on('receive activity partial view', receiveActivityPartialView);
 
     })();
 });
