@@ -1,0 +1,23 @@
+#ticTacToe__game {
+    ul {
+        box-sizing: border-box;
+        width: 320px;
+        margin: 0 auto;
+        list-style: none;
+        padding: 0;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        li {
+            box-sizing: border-box;
+            border: 1px solid white;
+            height: 100px;
+            width: 100px;
+            cursor: pointer;
+            margin: 0;
+            font-size: 500%;
+            float: left;
+        }
+    }
+}

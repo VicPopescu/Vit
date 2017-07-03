@@ -1,30 +1,8 @@
-<style>
-    #ticTacToe__game ul {
-        box-sizing: border-box;
-        width: 320px;
-        margin: 0 auto;
-        list-style: none;
-        padding: 0;
-        user-select: none;
-    }
-
-    #ticTacToe__game ul li {
-        box-sizing: border-box;
-        border: 1px solid white;
-        height: 100px;
-        width: 100px;
-        cursor: pointer;
-        margin: 0;
-        font-size: 500%;
-        float: left;
-    }
-</style>
-
-
 <section id="ticTacToe" class="activity">
-    <h1>TIC TAC TOE GAME HERE</h1>
+    <h1>TIC TAC TOE</h1>
     <div id="ticTacToe__game">
         <ul>
+            <li data-pos="0" class="square"></li>
             <li data-pos="1" class="square"></li>
             <li data-pos="2" class="square"></li>
             <li data-pos="3" class="square"></li>
@@ -33,35 +11,90 @@
             <li data-pos="6" class="square"></li>
             <li data-pos="7" class="square"></li>
             <li data-pos="8" class="square"></li>
-            <li data-pos="9" class="square"></li>
         </ul>
     </div>
-</section>
 
+    <script>
+        $(function () {
 
-<script>
-    $(function () {
-        var activity = (function () {
             var $ticTacToe = $('#ticTacToe');
             var $ticTacToe__game = $('#ticTacToe__game');
             var $list = $ticTacToe__game.find('ul');
             var $square = $('.square');
 
-            var markSquare = function (e) {
+            var thisPlayerId;
+            var oppPlayerId;
 
-                var pos = $(this).index();
-                $(this).append("X");
-                $(this).unbind();
-                $square.off('click.getPosition', markSquare);
+            var player1;
+            var player2;
 
-                var data = {
-                    pos: pos
-                };
+            var player1_name;
+            var player2_name;
 
-                socket.emit('player 1 selected', data);
+            var player1_id;
+            var player2_id;
+
+
+            var startActivity = function (challengeDetails) {
+
+                thisPlayerId = this.id;            
+
+                //console.log("PLAYER MARRARKKKKKKKK");
+                //TODO: fix multiple execution on this
+
+                player1 = challengeDetails.player1;
+                player2 = challengeDetails.player2;
+
+                player1_name = player1.name;
+                player2_name = player2.name;
+
+                player1_id = player1.id;
+                player2_id = player2.id;
+
+                (player1_id === thisPlayerId) ? oppPlayerId = player2_id : oppPlayerId = player1_id;
+
+
+                if (thisPlayerId === player1_id) {
+                    $square.off('click.getPosition').on('click.getPosition', markSquare);
+                }
             };
 
-            $square.on('click.getPosition', markSquare);
-        })();
-    });
-</script>
+            var markSquare = function () {
+
+                if ($(this).html() === "") {
+
+                    var pos = $(this).index();
+                    var turn = oppPlayerId;
+
+                    var data = {
+                        pos: pos,
+                        player1: player1_id,
+                        player2: player2_id,
+                        turn: turn
+                    };
+
+                    socket.emit('player mark', data);
+                    $square.off('click.getPosition');
+                }
+            };
+
+
+            var do_MarkTurn = function (data) {
+
+                var pos = data.pos;
+                var toMark = $list.find("[data-pos='" + pos + "']");
+
+                toMark.html(data.mark);
+
+                if (data.turn === thisPlayerId) {
+
+                    $square.off('click.getPosition').on('click.getPosition', markSquare);
+                }
+            };
+
+
+            socket.on('activity ready', startActivity);
+            socket.on('player mark', do_MarkTurn);
+        });
+    </script>
+</section>

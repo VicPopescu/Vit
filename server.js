@@ -2,9 +2,7 @@ const express = require('express');
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server, {
-    path: '/socket.io',
-    //transports: ['websocket'],
-    //upgrade: false
+    path: '/socket.io'
 });
 const path = require('path');
 const fs = require('fs');
@@ -123,7 +121,7 @@ function get_date(format) {
  * 
  * @param {*} actId 
  */
-var get_ActivityNameById = function (actId) {
+var get_ActivityViewById = function (actId) {
 
     switch (actId) {
 
@@ -354,20 +352,14 @@ var on_fileSend = function (file) {
  */
 var on_activityChallenge = function (activityDetails) {
 
-    var challenger = {
+    var player1 = {
         id: this.id,
         name: this.username
     };
 
-    var receiver = activityDetails.opponent;
+    activityDetails.player1 = player1;
 
-    var challengeDetails = {
-        challenger: challenger,
-        players: [challenger, receiver],
-        activityId: activityDetails.activityId
-    };
-
-    io.to(receiver.id).emit('activity challenge', challengeDetails);
+    io.to(activityDetails.player2.id).emit('activity challenge', activityDetails);
 };
 
 /**
@@ -376,9 +368,7 @@ var on_activityChallenge = function (activityDetails) {
  */
 var on_activityAccepted = function (challengeDetails) {
 
-    var opponentId = challengeDetails.challenger.id;
-
-    io.to(opponentId).emit('activity accepted', challengeDetails);
+    io.to(challengeDetails.player1.id).emit('activity accepted', challengeDetails);
 };
 
 /**
@@ -394,10 +384,10 @@ var on_activityDeclined = function (opponentId) {
  * 
  * @param {*} activityId 
  */
-var get_activityPartialView = function (activityId) {
+var get_activityPartialView = function (challengeDetails) {
 
     var client = this;
-    var activityView = get_ActivityNameById(activityId);
+    var activityView = get_ActivityViewById(challengeDetails.activity.id);
 
     fs.readFile(__dirname + '/server/views/activities/' + activityView, 'utf8', function (err, html) {
 
@@ -406,8 +396,36 @@ var get_activityPartialView = function (activityId) {
             return false;
         }
 
-        client.emit('receive activity partial view', html);
+        client.emit('receive activity partial view', {
+            partialView: html,
+            challengeDetails: challengeDetails
+        });
     });
+};
+
+/**
+ * 
+ * @param {*} details 
+ */
+var on_activityReady = function (challengeDetails) {
+
+    io.to(challengeDetails.player1.id).emit('activity ready', challengeDetails);
+    io.to(challengeDetails.player2.id).emit('activity ready', challengeDetails);
+};
+/**
+ * 
+ * @param {*} data 
+ */
+var on_playerMark = function (data) {
+
+    if (this.id == data.player1) {
+        data.mark = "X";
+    } else {
+        data.mark = "O";
+    }
+
+    io.to(data.player1).emit('player mark', data);
+    io.to(data.player2).emit('player mark', data);
 };
 
 /**
@@ -426,6 +444,8 @@ var handleClientConnection = function (client) {
     client.on('activity accepted', on_activityAccepted);
     client.on('activity declined', on_activityDeclined);
     client.on('get activity partial view', get_activityPartialView);
+    client.on('player mark', on_playerMark);
+    client.on('activity ready', on_activityReady);
 };
 
 
