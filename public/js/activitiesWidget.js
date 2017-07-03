@@ -35,8 +35,8 @@ $(function () {
          * @param {*} challengeDetails 
          */
         var playXO = function (challengeDetails) {
-
-            buildPartialView(challengeDetails);
+            alert("Not available yet...");
+            //buildPartialView(challengeDetails);
         };
 
         /**
@@ -190,7 +190,7 @@ $(function () {
 
             $playground__activitySpace.fadeIn();
             $playground__selectOpponent.show();
-            
+
             $playground__selectOpponent.off('click.selectOpponent').one('click.selectOpponent', selectOpponent);
         };
 
