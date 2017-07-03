@@ -1,5 +1,4 @@
-<!--<style>
-
+<style>
     #ticTacToe__game ul {
         box-sizing: border-box;
         width: 320px;
@@ -41,26 +40,28 @@
 
 
 <script>
-    var activity = (function () {
-        var $ticTacToe = $('#ticTacToe');
-        var $ticTacToe__game = $('#ticTacToe__game');
-        var $list = $ticTacToe__game.find('ul');
-        var $square = $('.square');
+    $(function () {
+        var activity = (function () {
+            var $ticTacToe = $('#ticTacToe');
+            var $ticTacToe__game = $('#ticTacToe__game');
+            var $list = $ticTacToe__game.find('ul');
+            var $square = $('.square');
 
-        var markSquare = function (e) {
+            var markSquare = function (e) {
 
-            var pos = $(this).index();
-            $(this).append("X");
-            $(this).unbind();
-            $square.off('click.getPosition', markSquare);
+                var pos = $(this).index();
+                $(this).append("X");
+                $(this).unbind();
+                $square.off('click.getPosition', markSquare);
 
-            var data = {
-                pos: pos
+                var data = {
+                    pos: pos
+                };
+
+                socket.emit('player 1 selected', data);
             };
 
-            socket.emit('player 1 selected', data);
-        };
-
-        $square.on('click.getPosition', markSquare);
-    })();
-</script>-->
+            $square.on('click.getPosition', markSquare);
+        })();
+    });
+</script>

@@ -35,8 +35,8 @@ $(function () {
          * @param {*} challengeDetails 
          */
         var playXO = function (challengeDetails) {
-            alert("Not available yet...");
-            //buildPartialView(challengeDetails);
+            //alert("Not available yet...");
+            buildPartialView(challengeDetails);
         };
 
         /**
