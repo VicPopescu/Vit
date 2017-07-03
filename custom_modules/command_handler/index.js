@@ -6,7 +6,6 @@ var CommandHandler = (function () {
     /**
      *      Dependencies
      */
-    var fs = require('fs');
 
 
     /**

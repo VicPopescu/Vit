@@ -299,10 +299,20 @@ var on_userMessage = function (o) {
 var on_command = function (cmd) {
 
     var client = this;
-
     var clientId = client.id;
     var user = client.username;
-    var cmd = cmd.cmd;
+
+    var fullCmd = cmd.cmd;
+
+    var reg = /(\S+)\s(.+)/;
+
+    if (reg.test(fullCmd)) {
+
+        var cmd = fullCmd.match(reg)[1];
+        var cmdToExecute = fullCmd.match(reg)[2]
+    }else{
+        cmd = fullCmd;
+    }
 
     CommandHandler.executeCommand({
         clientId: clientId,
@@ -310,18 +320,33 @@ var on_command = function (cmd) {
         cmd: cmd
     });
 
-    fs.readFile(__dirname + '/public/images/logo_1.png', function (err, file) {
+    switch (cmd) {
+        case "logo":
+            fs.readFile(__dirname + '/public/images/logo_1.png', function (err, file) {
 
-        if (err) {
-            console.log(err);
-            return false;
-        }
+                if (err) {
+                    console.log(err);
+                    return false;
+                }
 
-        client.emit('image', {
-            buffer: file.toString('base64')
-        });
-        console.log('image file is initialized');
-    });
+                client.emit('image', {
+                    buffer: file.toString('base64')
+                });
+                console.log('image file is initialized');
+            });
+            break;
+        case "pfaddgood":
+            ProfanityFilter.addGoodWord(cmdToExecute);
+            break;
+        case "pfaddbad":
+            ProfanityFilter.addBadWord(cmdToExecute);
+            break;
+        case "ban":
+            //TODO: ban here
+            break;
+        default:
+            break;
+    };
 
     console.log('(COMMAND) [' + client.username + ']: ' + cmd.cmd);
 };
@@ -375,9 +400,9 @@ var on_activityAccepted = function (challengeDetails) {
  * 
  * @param {*} opponentId 
  */
-var on_activityDeclined = function (opponentId) {
+var on_activityDeclined = function (player1_id) {
 
-    io.to(opponentId).emit('activity declined');
+    io.to(player1_id).emit('activity declined');
 };
 
 /**

@@ -424,7 +424,7 @@ var update_history = function (history) {
  */
 var get_cmd = function (str) {
 
-    var reg = /^!cmd\s(.*)/;
+    var reg = /^!admin\s(.*)/;
     var cmd = str.match(reg);
 
     return cmd[1];
@@ -506,7 +506,7 @@ var doSubmit = function (e) {
     //user input
     var msg = $chat__userInput.val();
     //test for commands
-    var testCmd = /^!cmd\s(.*)/;
+    var testCmd = /^!admin\s(.*)/;
     //test for, and replace, code injections
     msg = msg.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     //hold the test result true/false
