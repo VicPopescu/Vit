@@ -129,6 +129,10 @@ input::-ms-input-placeholder {
         margin: 5px auto; }
       #chat__allMessages li .fileTransfer__image {
         text-align: center; }
+      #chat__allMessages li .userMention {
+        color: #AF87CF;
+        font-weight: bold;
+        font-style: italic; }
     #chat__allMessages .chat__messageUser {
       font-size: 16px;
       font-weight: bold;

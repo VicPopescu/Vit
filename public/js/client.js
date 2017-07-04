@@ -224,6 +224,14 @@ var template_message = function (o) {
     var u = o.usr,
         m = o.msg;
 
+    var regMention = /@[^\s]*/;
+    if (regMention.test(m)) {
+        var mention = m.match(regMention)[0];
+        var customMention = '<span class="userMention">' + mention + '</span>';
+
+        m = m.replace(regMention, customMention);
+    }
+
     //if the message date is the same as today's date, then just display "today"
     if (date === get_date("date")) date = "Today";
 
@@ -851,7 +859,7 @@ var triggerMessageSend = function () {
 /**
  * 
  */
-var closeWindow = function(){
+var closeWindow = function () {
 
     $(this).parent().fadeOut();
 };

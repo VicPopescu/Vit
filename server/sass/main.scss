@@ -141,6 +141,11 @@ input::-ms-input-placeholder {
             .fileTransfer__image {
                 text-align: center;
             }
+            .userMention {
+                color: #AF87CF;
+                font-weight: bold;
+                font-style: italic;
+            }
         }
         .chat__messageUser {
             font-size: $font-nm;
