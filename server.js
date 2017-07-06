@@ -218,7 +218,7 @@ var on_userLogin = function (userDetails) {
             Log.write(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Joined!');
         }
 
-        client.broadcast.emit('a user logged in', {
+        client.broadcast.emit('new user login', {
             id: client.id,
             name: userName
         });
@@ -265,7 +265,7 @@ var on_disconnect = function (stateInfo) {
     delete allClients[id];
     delete allUsers[id];
 
-    io.emit('a client disconnected', {
+    io.emit('client disconnected', {
         id: client.id
     });
 };

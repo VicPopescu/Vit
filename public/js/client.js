@@ -3,9 +3,7 @@
  */
 const url = window.location.protocol + '//' + window.location.host;
 var opt = {
-    path: '/socket.io',
-    //transports: ['websocket'],
-    //upgrade: false
+    path: '/socket.io'
 };
 
 const socket = io.connect(url, opt);
@@ -867,17 +865,24 @@ var closeWindow = function () {
 /**
  *      Catching server events
  */
-//
-socket.on('connection', function () {
+
+/**
+ * 
+ */
+var onConnection =  function () {
     //we need potato connection here
-    //update_usersList('add all', allUsers);
-});
-//
-socket.on('disconnect', function () {});
+};
 
-/////////////////////////////////////////////
+/**
+ * Handle disconnections
+ */
+var onDisconnect = function () {};
 
-socket.on('login success', function (users) {
+/**
+ * Handle successful logins
+ * @param {object} users All users object
+ */
+var loginSuccess = function (users) {
 
     var onlineUsers = users.all;
     var offlineUsers = users.offline;
@@ -899,21 +904,27 @@ socket.on('login success', function (users) {
     //DOM update
     $login.remove();
     $tools.show();
-    //$chat.show();
-    //$chat__userInput.focus();
     notify("Welcome " + thisUser + "!");
     update_scroll();
-});
+};
 
-socket.on('register success', function (user) {
+/**
+ * Handle register successes
+ * @param {object} user The user object
+ */
+var registerSuccess = function (user) {
 
     var username = user.user;
     var password = user.pass;
 
     do_login(socket, username, password);
-});
+};
 
-socket.on('login failed', function (err) {
+/**
+ * Handle login fails
+ * @param {object} err The error object
+ */
+var loginFailed = function (err) {
 
     $login.show();
     $login__submit.fadeOut(function () {
@@ -922,43 +933,51 @@ socket.on('login failed', function (err) {
 
     $login__userInput.focus();
     $login__error.text(err.message);
-});
+};
 
-socket.on('a client disconnected', function (user) {
+/**
+ * Remove disconnected users from the users list
+ * @param {object} user The user info object
+ */
+var aClientDisconnected = function (user) {
 
     update_usersList('remove', user);
-});
+};
 
-socket.on('a user logged in', function (user) {
+/**
+ * Update the users list with the new joined user
+ * @param {object} user The user info object
+ */
+var newUserLogin = function (user) {
 
     update_usersList('add', user);
     notify(user.name + " joined!");
-});
+};
 
-
-///////////////////////////////////////////////
-
-socket.on('new message', function (o) {
+/**
+ * Display new messages from all users
+ * @param {object} o The message object
+ */
+var newMessage = function (o) {
     //number of messages displayed in chat
     var msgCount = $chat__allMessages[0].childElementCount;
     //remove oldest message when message count exceeds the limit
     if (msgCount >= 50) {
         $chat__allMessages[0].removeChild($chat__allMessages[0].childNodes[0]);
     }
-
     //display the new message to users
     $chat__allMessages.append(template_message(o));
     //user notification if application window is out of focus
     !windowFocused && notify(o.usr + ' : ' + o.msg);
     //scroll chat messages to bottom
     update_scroll();
-});
+};
 
 /**
- * 
- * @param {*} imgInfo 
+ * This is for testing purpose, appending the app logo in chat if user says "!admin logo"
+ * @param {object} imgInfo Image data
  */
-var imageTest =  function (imgInfo) {
+var imageTest = function (imgInfo) {
 
     var img = new Image();
 
@@ -972,7 +991,7 @@ var imageTest =  function (imgInfo) {
 
 /**
  * Decide the type of the tranferred file, then append it into chat widget
- * @param {*} file The file data and informations
+ * @param {object} file The file data and informations
  */
 var fileBroadcastAll = function (file) {
 
@@ -997,6 +1016,14 @@ var fileBroadcastAll = function (file) {
 /**
  *      IO listeners
  */
+socket.on('connection', onConnection);
+socket.on('disconnect', onDisconnect);
+socket.on('login success', loginSuccess);
+socket.on('register success', registerSuccess);
+socket.on('login failed', loginFailed);
+socket.on('client disconnected', aClientDisconnected);
+socket.on('new user login', newUserLogin);
+socket.on('new message', newMessage);
 socket.on("image", imageTest);
 socket.on("file broadcast all", fileBroadcastAll);
 
@@ -1023,8 +1050,6 @@ $login__submit.on('click.doLogin', doLogin);
 $chat__form.submit(doSubmit);
 $file__input.on('change.getInputedFile', getInputedFile);
 $chat__submitPlaceholder.on('click.triggerMessageSend', triggerMessageSend);
-
 $chat.on('click.msgUser', '.chat__messageUser', getUserForMention);
 $users__list.on('click.msgUser', 'li', getUserForMention);
-
 $closeWindow.on('click.closeWindow', closeWindow);
