@@ -3,11 +3,11 @@ Hang Out Space
 
 # What was used
 Server:
-- Node.js (V6.10.0) & NPM(V5.1.0) [->Link](https://nodejs.org/en/)
-- Express.js [->Link](https://expressjs.com/)
-- Socket.io [->Link](https://socket.io/)
-- Fs [->Link](https://nodejs.org/api/fs.html)
-- Node Sass Middleware [link](https://github.com/sass/node-sass-middleware)
+- Node.js (V6.10.0) & NPM(V5.1.0) <a href="https://nodejs.org/en/" target="_blank">-->[Link]</a>
+- Express.js <a href="https://expressjs.com/" target="_blank">-->[Link]</a>
+- Socket.io <a href="https://socket.io/" target="_blank">-->[Link]</a>
+- Fs <a href="https://nodejs.org/api/fs.html" target="_blank">-->[Link]</a>
+- Node Sass Middleware <a href="https://github.com/sass/node-sass-middleware" target="_blank">-->[Link]</a>
 -------------------------
 ## Running the application 
 - Download the solution   
