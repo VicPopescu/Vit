@@ -956,8 +956,9 @@ socket.on('new message', function (o) {
 
 /**
  * 
+ * @param {*} imgInfo 
  */
-socket.on("image", function (imgInfo) {
+var imageTest =  function (imgInfo) {
 
     var img = new Image();
 
@@ -967,18 +968,19 @@ socket.on("image", function (imgInfo) {
     };
 
     img.src = 'data:image/jpeg;base64,' + imgInfo.buffer;
-});
+};
 
 /**
- * 
+ * Decide the type of the tranferred file, then append it into chat widget
+ * @param {*} file The file data and informations
  */
-socket.on("file broadcast all", function (file) {
+var fileBroadcastAll = function (file) {
 
     var fileType = file.content.type;
     var image = /^image\//;
     var txt = /^text\//;
 
-
+    //decide the file MIME type and act accordingly
     if (image.test(fileType)) {
 
         $chat__allMessages.append(template_imageTransfer(file.user, file.content));
@@ -987,10 +989,16 @@ socket.on("file broadcast all", function (file) {
 
         $chat__allMessages.append(template_txtTransfer(file.user, file.content));
     }
-
+    //after file append, scroll down
     update_scroll();
-});
+};
 
+
+/**
+ *      IO listeners
+ */
+socket.on("image", imageTest);
+socket.on("file broadcast all", fileBroadcastAll);
 
 /**
  *      Event listeners

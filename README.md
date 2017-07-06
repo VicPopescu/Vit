@@ -69,4 +69,4 @@ A list of the widgets and what can they do.
 - The user can get new quotes each time he presses a button
 - The current quote can pe shared on Twitter
 
-## Games (`work in progress`)
+## Games (`work in progress...`)
