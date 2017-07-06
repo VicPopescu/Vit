@@ -1,12 +1,17 @@
+Title:	 VIT Application Description  
+Authors: Victor Popescu  
+Document Version: 2.0  
+Last Update: July 2017  
+
 # Vit
 Hang Out Space   
 A javascript application.  
-Thx [Jester](https://github.com/jester6san) for the awesome logo design 
+Thx <a href="https://github.com/jester6san" target="_blank">Jester</a> for the awesome logo design 
+
 
 <img src="https://github.com/VicPopescu/Vit/blob/master/public/images/logo_5.png?raw=true" height= "250px" alt="logo"/>
 
 ## What was used
-
 #### Server:
 - Node.js (V6.10.0) & NPM(V5.1.0) <a href="https://nodejs.org/en/" target="_blank">-->[Link]</a>
 - Express.js <a href="https://expressjs.com/" target="_blank">-->[Link]</a>
