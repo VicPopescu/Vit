@@ -860,7 +860,7 @@ var triggerMessageSend = function () {
 var closeWindow = function () {
 
     $(this).parent().fadeOut();
-    document.off('click');
+    $(document).off('click');
 };
 
 /**
