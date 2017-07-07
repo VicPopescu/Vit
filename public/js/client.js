@@ -1,17 +1,16 @@
 /**
  *      Global Constants
  */
-const url = window.location.protocol + '//' + window.location.host;
-const opt = {
+const url = window.location.protocol + "//" + window.location.host;
+var opt = {
     path: '/socket.io'
 };
-
+//socket connection to the server
 const socket = io.connect(url, opt);
 
 /**
  *      Caching selectors
  */
-
 var $document = $(document);
 
 var $chat = $('#chat'),
@@ -63,8 +62,8 @@ var $closeWindow = $('.closeWindow');
 
 
 /**
- * 
- * @param {string} name 
+ * Find a cookie and returns its value
+ * @param {string} name The cookie name
  */
 var get_cookieByName = function (name) {
 
@@ -76,7 +75,7 @@ var get_cookieByName = function (name) {
 };
 
 /**
- * 
+ * Get all cookies
  */
 var get_all = function () {
 
@@ -84,8 +83,8 @@ var get_all = function () {
 };
 
 /**
- * 
- * @param {string} name 
+ * Reset a specific cookie
+ * @param {string} name The cookie name
  */
 var reset_cookie = function (name) {
 
@@ -93,9 +92,9 @@ var reset_cookie = function (name) {
 };
 
 /**
- * 
- * @param {string} name 
- * @param {string} val 
+ * Create and store a new cookie with the provided data
+ * @param {string} name The cookie name
+ * @param {string} val The cookie value
  */
 var set_cookie = function (name, val) {
 
@@ -104,11 +103,10 @@ var set_cookie = function (name, val) {
 
 /**
  * Login user
- * @param {object} socket 
- * @param {string} user 
- * @param {string} pass 
+ * @param {string} user The user name
+ * @param {string} pass The user password
  */
-var do_login = function (socket, user, pass) {
+var do_login = function (user, pass) {
 
     socket.emit('user login', {
         user: user,
@@ -118,11 +116,10 @@ var do_login = function (socket, user, pass) {
 
 /**
  * Register new user
- * @param {object} socket 
- * @param {string} user 
- * @param {string} pass 
+ * @param {string} user The user name
+ * @param {string} pass The user password
  */
-var do_register = function (socket, user, pass) {
+var do_register = function (user, pass) {
 
     socket.emit('user register', {
         user: user,
@@ -146,10 +143,8 @@ var do_logout = function () {
  */
 var usr = get_cookieByName('vitUser') || null; //local saved user name
 //var role = get_cookieByName('vitPermissionLevel') || null; //user role
-var pass = get_cookieByName('vitPass') || null; //pass
-var windowFocused = true;
-var scrollToBottom = true;
-
+var pass = get_cookieByName('vitPass') || null; //password
+var windowFocused = true; //holds the state of the application window (focused or not)
 
 
 /**
@@ -159,12 +154,16 @@ if (!usr && !pass) {
     $login.show();
     $login__userInput.focus();
 } else {
-    do_login(socket, usr, pass);
+    do_login(usr, pass);
 };
 
+
+
 /**
- * 
- * @param {string} format 
+ * Parse the provided UTC datetime and returns the choosen format date or time
+ * @param {string} format The date format to be outputed: hour | date | date and hour
+ * @param {string} providedDate UTC date from server
+ * @return {string} time The date|time in the choosen format
  */
 var get_date = function (format, providedDate) {
 
@@ -209,8 +208,8 @@ var get_date = function (format, providedDate) {
 };
 
 /**
- * 
- * @param {object} o 
+ * Creates html templates for the chat widget mesages
+ * @param {object} o All the data for the message
  */
 var template_message = function (o) {
 
@@ -223,6 +222,7 @@ var template_message = function (o) {
         m = o.msg;
 
     var regMention = /@[^\s]*/;
+
     if (regMention.test(m)) {
         var mention = m.match(regMention)[0];
         var customMention = '<span class="userMention">' + mention + '</span>';
@@ -239,25 +239,26 @@ var template_message = function (o) {
 };
 
 /**
- * 
- * @param {number} id 
- * @param {string} u 
+ * Creates html templates for user list items
+ * @param {number} id The user id
+ * @param {string} n The user name
+ * @param {string} role The user role
  */
-var template_userlistItem = function (id, u, role) {
+var template_userlistItem = function (id, n, role) {
 
     var id = id || "N/A";
     //var role = role || "user";
-    var u = u || "Anonymous User";
+    var n = n || "Anonymous User";
 
-    var t = '<li data-userId=' + id + ' data-userRole=' + role + '>' + u + '</li>';
+    var t = '<li data-userId=' + id + ' data-userRole=' + role + '>' + n + '</li>';
 
     return t;
 };
 
 /**
- * 
- * @param {string} user 
- * @param {string} content 
+ * Creates html templates for image files, to be appended in the chat widget
+ * @param {string} user The name of the user that uploaded the image
+ * @param {object} content The image data
  */
 var template_imageTransfer = function (user, content) {
 
@@ -276,9 +277,9 @@ var template_imageTransfer = function (user, content) {
 };
 
 /**
- * 
- * @param {string} user 
- * @param {string} content 
+ * Creates html templates for text files, to be appended in the chat widget
+ * @param {string} user The name of the user that uploaded the file
+ * @param {object} content The file data
  */
 var template_txtTransfer = function (user, content) {
 
@@ -297,8 +298,8 @@ var template_txtTransfer = function (user, content) {
 };
 
 /**
- * 
- * @param {string} notification 
+ * Displays HTML 5 notifications
+ * @param {string} message The notification message that will be displayed
  */
 var notify = function (message) {
 
@@ -325,20 +326,33 @@ var notify = function (message) {
 };
 
 /**
- * 
- * @param {string} action 
- * @param {string} user 
+ * Update chat widget scroll (auto scroll down on new messages)
+ */
+var update_scroll = function () {
+
+    var h = $chat__allMessages.height();
+    var s = $chat__allMessages[0].scrollHeight;
+    var bot = Math.floor(s - h);
+
+    $chat__allMessages.scrollTop(bot);
+};
+
+/**
+ * Update the online users list
+ * @param {string} action The action to be taken: add | add all | remove from the list
+ * @param {object} user The user | users
  */
 var update_usersList = function (action, user) {
 
+    //decide which action need to be taken
     switch (action) {
-        case 'add':
-            add(user);
+        case 'add': //add one user to the list
+            addOne(user);
             break;
-        case 'add all':
+        case 'add all': //add all users to the list
             addAll(user);
             break;
-        case 'remove':
+        case 'remove': //remove the user from the list
             remove(user);
             break;
         default:
@@ -346,16 +360,16 @@ var update_usersList = function (action, user) {
     };
 
     /**
-     * 
-     * @param {object} user 
+     * Add the user to the online users list
+     * @param {object} user The user
      */
-    function add(user) {
+    function addOne(user) {
         $users__list.append(template_userlistItem(user.id, user.name));
     };
 
     /**
-     * 
-     * @param {*} users 
+     * Add all users to the online users list
+     * @param {object} users All users
      */
     function addAll(users) {
 
@@ -367,8 +381,8 @@ var update_usersList = function (action, user) {
     };
 
     /**
-     * 
-     * @param {object} user 
+     * Remove the user from the online users list
+     * @param {object} user The user
      */
     function remove(user) {
 
@@ -377,7 +391,8 @@ var update_usersList = function (action, user) {
 };
 
 /**
- * 
+ * Update the offline users list
+ * @param {object} offlineUsers The object that contains all users and the data about them
  */
 var update_offlineUsersList = function (offlineUsers) {
 
@@ -392,20 +407,8 @@ var update_offlineUsersList = function (offlineUsers) {
 };
 
 /**
- *
- */
-var update_scroll = function () {
-
-    var h = $chat__allMessages.height();
-    var s = $chat__allMessages[0].scrollHeight;
-    var bot = Math.floor(s - h);
-
-    $chat__allMessages.scrollTop(bot);
-};
-
-/**
- * 
- * @param {object} history Messages history
+ * Update chat widget messages history
+ * @param {object} history All messages from history
  */
 var update_history = function (history) {
 
@@ -425,20 +428,20 @@ var update_history = function (history) {
 
 
 /**
- * 
- * @param {string} str Comand to execute
+ * Get the command from the user inputed message
+ * @param {string} msg Comand to execute
  */
-var get_cmd = function (str) {
+var get_cmd = function (msg) {
 
     var reg = /^!admin\s(.*)/;
-    var cmd = str.match(reg);
+    var cmd = msg.match(reg);
 
     return cmd[1];
 };
 
 /**
- * 
- * @param {string} cmd 
+ * Execute the chat command by sending it to the server to handle it
+ * @param {string} cmd
  */
 var exec_cmd = function (cmd) {
 
@@ -449,8 +452,8 @@ var exec_cmd = function (cmd) {
 };
 
 /**
- *      Check for commands and return it
- *      @param {string} cmd Command
+ * Get the chat widget command and execute it
+ * @param {string} cmd Command
  */
 var handle_cmd = function (msg) {
 
@@ -462,7 +465,7 @@ var handle_cmd = function (msg) {
 };
 
 /**
- * 
+ * Clears the chat widget input
  */
 var clear_input = function () {
     //auto focus on input
@@ -470,8 +473,8 @@ var clear_input = function () {
 };
 
 /**
- * 
- * @param {*} e 
+ * User login
+ * @param {object} e The event handler
  */
 var doLogin = function (e) {
 
@@ -479,15 +482,15 @@ var doLogin = function (e) {
     var pass = $login__passInput.val();
 
     //check if user is allowed and send login info to server
-    user && pass && do_login(socket, user, pass);
+    user && pass && do_login(user, pass);
 
     e.preventDefault();
     return false;
 };
 
 /**
- * 
- * @param {*} e 
+ * New user register
+ * @param {object} e The event handler
  */
 var doRegister = function (e) {
 
@@ -495,15 +498,15 @@ var doRegister = function (e) {
     var pass = $login__passInput.val();
 
     //check if user is allowed and send login info to server
-    user && pass && do_register(socket, user, pass);
+    user && pass && do_register(user, pass);
 
     e.preventDefault();
     return false;
 };
 
 /**
- * 
- * @param {*} e 
+ * Chat messages handling
+ * @param {object} e The event handler
  */
 var doSubmit = function (e) {
 
@@ -551,7 +554,7 @@ var doSubmit = function (e) {
 
 
 /**
- *      Get user for @mentioning, when user name is clicked
+ * Get user for @mention, when user name is clicked
  */
 var getUserForMention = function () {
 
@@ -566,7 +569,7 @@ var getUserForMention = function () {
 /**
  * Automatically capitalize first letter of each sentence of the provided string.
  * Sentences are splitted by ".", so every dot will mark a new sentence.
- * @param {string} str Any string that need first letter capitalized  
+ * @param {string} str Any string that need first letter capitalized 
  */
 var capitalizeSentence = function (str) {
 
@@ -587,8 +590,8 @@ var capitalizeSentence = function (str) {
 };
 
 /**
- * 
- * @param {*} e 
+ * Reads the uploaded file and sends it to the server
+ * @param {object} e The event handler
  */
 var getInputedFile = function (e) {
 
@@ -623,9 +626,15 @@ var getInputedFile = function (e) {
     };
 };
 
+
 /**
- * 
- * @param {*} e 
+ *          Widgets visual manipulations
+ */
+
+
+/**
+ * Displays the chat widget
+ * @param {object} e The event handler
  */
 var toogleChatDisplay = function (e) {
 
@@ -635,52 +644,52 @@ var toogleChatDisplay = function (e) {
 };
 
 /**
- * 
- * @param {object} e 
+ * Displays the users list
+ * @param {object} e The event handler
  */
 var displayUserslist = function (e) {
 
     $users.animate({
         right: "+=400px"
     }, 200, function () {
-        $document.on('click.hideUsersList', hideUsersList);
+        $document.off('click.hideUsersList').on('click.hideUsersList', hideUsersList);
     });
 
     $(this).unbind(e);
 };
 
 /**
- * 
- * @param {*} e 
+ * Displays the offline users list
+ * @param {object} e The event handler
  */
 var displayOfflineUserslist = function (e) {
 
     $offline__users.animate({
         right: "+=400px"
     }, 200, function () {
-        $document.on('click.hideOfflineUsersList', hideOfflineUsersList);
+        $document.off('click.hideOfflineUsersList').on('click.hideOfflineUsersList', hideOfflineUsersList);
     });
 
     $(this).unbind(e);
 };
 
 /**
- * 
- * @param {*} e 
+ * Displays the streaming options list
+ * @param {object} e The event handler
  */
 var displayStreamingOptions = function (e) {
 
     $streaming.animate({
         right: "+=400px"
     }, 200, function () {
-        $document.on('click.hideUsersList', hideStreamingList);
+        $document.off('click.hideStreamingList').on('click.hideStreamingList', hideStreamingList);
     });
 
     $(this).unbind(e);
 };
 
 /**
- * 
+ * Triggers the file upload functionality
  */
 var fileUploadTrigger = function () {
 
@@ -688,114 +697,98 @@ var fileUploadTrigger = function () {
 };
 
 /**
- * 
- * @param {*} e 
+ * Displays the games list
+ * @param {object} e The event handler
  */
 var displayGamesList = function (e) {
 
     $playground__gamesList.animate({
         right: "+=400px"
     }, 200, function () {
-        $document.on('click.hideGamesList', hideGamesList);
+        $document.off('click.hideGamesList').on('click.hideGamesList', hideGamesList);
     });
 
     $(this).unbind(e);
 };
 
 /**
- * 
+ * Displays the random quotes widget
  */
 var displayQuotes = function () {
 
     $quoteGenerator.fadeIn(200, function () {
-        $document.on('click.hideQuote', hideQuotes);
+        $document.off('click.hideQuote').on('click.hideQuotes', hideQuotes);
     });
 };
 
 /**
- * 
+ * Displays the weather widget
  */
 var displayWeather = function () {
 
     $weather.fadeIn(200, function () {
-        $document.on('click.hideWeather', hideWeatherInfo);
+        $document.off('click.hideWeatherInfo').on('click.hideWeatherInfo', hideWeatherInfo);
     });
 };
 
 /**
- * 
- * @param {object} e
+ * Hide online users list
+ * @param {object} e The event handler
  */
 var hideUsersList = function (e) {
 
-    if (e.target.id == "chat__users")
-        return;
-    //For descendants of menu_content being clicked
-    if ($(e.target).closest('#chat__users').length)
-        return;
+    if (e.target.id == "chat__users" || $(e.target).closest('#chat__users').length) return;
 
     $users.animate({
         right: "-=400px"
     }, 200, function () {
-        $tools__toggleUsers.off('click.displayUsers').one('click.displayUsers', displayUserslist);
+        $tools__toggleUsers.off('click.displayUserslist').one('click.displayUserslist', displayUserslist);
     });
 
     $(this).unbind(e);
 };
 
 /**
- * 
- * @param {*} e 
+ * Hide offline users list
+ * @param {object} e The event handler
  */
 var hideOfflineUsersList = function (e) {
 
-    if (e.target.id == "offline__users")
-        return;
-    //For descendants of menu_content being clicked
-    if ($(e.target).closest('#offline__users').length)
-        return;
+    if (e.target.id == "offline__users" || $(e.target).closest('#offline__users').length) return;
 
     $offline__users.animate({
         right: "-=400px"
     }, 200, function () {
-        $tools__toggleOfflineUsers.off('click.displayOfflineUsers').one('click.displayOfflineUsers', displayOfflineUserslist);
+        $tools__toggleOfflineUsers.off('click.displayOfflineUserslist').one('click.displayOfflineUserslist', displayOfflineUserslist);
     });
 
     $(this).unbind(e);
 };
 
 /**
- * 
- * @param {*} e 
+ * Hide the streaming options list
+ * @param {object} e The event handler
  */
 var hideStreamingList = function (e) {
 
-    if (e.target.id == "streaming")
-        return;
-    //For descendants of menu_content being clicked
-    if ($(e.target).closest('#streaming').length)
-        return;
+    if (e.target.id == "streaming" || $(e.target).closest('#streaming').length) return;
 
     $streaming.animate({
         right: "-=400px"
     }, 200, function () {
-        $tools__streaming.off('click.displayOfflineUsers').one('click.displayOfflineUsers', displayStreamingOptions);
+        $tools__streaming.off('click.displayStreamingOptions').one('click.displayStreamingOptions', displayStreamingOptions);
     });
 
     $(this).unbind(e);
 };
 
 /**
- * 
- * @param {*} e 
+ * Hide the games list
+ * @param {object} e The event handler
  */
 var hideGamesList = function (e) {
 
-    if (e.target.id == "playground__gamesList")
-        return;
-    //For descendants of menu_content being clicked
-    // if ($(e.target).closest('#playground__gamesList').length)
-    //     return;
+    if (e.target.id == "playground__gamesList") return;
 
     $playground__gamesList.animate({
         right: "-=400px"
@@ -807,39 +800,31 @@ var hideGamesList = function (e) {
 };
 
 /**
- * 
- * @param {*} e 
+ * Hide the random quotes widget
+ * @param {object} e The event handler
  */
 var hideQuotes = function (e) {
 
-    if (e.target.id == "guoteGenerator")
-        return;
-    //For descendants of menu_content being clicked
-    if ($(e.target).closest('#guoteGenerator').length)
-        return;
+    if (e.target.id == "guoteGenerator" || $(e.target).closest('#guoteGenerator').length) return;
 
     $quoteGenerator.fadeOut();
     $(this).unbind(e);
 };
 
 /**
- * 
- * @param {*} e 
+ * Hide the weather widget
+ * @param {object} e The event handler
  */
 var hideWeatherInfo = function (e) {
 
-    if (e.target.id == "weather")
-        return;
-    //For descendants of menu_content being clicked
-    if ($(e.target).closest('#weather').length)
-        return;
+    if (e.target.id == "weather" || $(e.target).closest('#weather').length) return;
 
     $weather.fadeOut();
     $(this).unbind(e);
 };
 
 /**
- * 
+ * Checks if the application window is focused
  */
 var visibilityChanged = function () {
 
@@ -847,7 +832,7 @@ var visibilityChanged = function () {
 };
 
 /**
- *
+ * Triggers the form submission and sends the message, when user clicks the arrow icon
  */
 var triggerMessageSend = function () {
 
@@ -870,7 +855,7 @@ var closeWindow = function () {
 /**
  * Handle new connections
  */
-var onConnection =  function () {
+var onConnection = function () {
     //we need potato connection here
 };
 
@@ -918,7 +903,7 @@ var registerSuccess = function (user) {
     var username = user.user;
     var password = user.pass;
 
-    do_login(socket, username, password);
+    do_login(username, password);
 };
 
 /**
@@ -1032,15 +1017,15 @@ socket.on("file broadcast all", fileBroadcastAll);
  *      Event listeners
  */
 //          --/TOOLS/--         //
-$tools__toogleChat.off('click.toggleChat').on('click.toggleChat', toogleChatDisplay);
-$tools__toggleUsers.one('click.displayUsers', displayUserslist);
-$tools__toggleOfflineUsers.one('click.displayOfflineUsers', displayOfflineUserslist);
-$tools__fileSend.off('click.fileSend').on('click.fileSend', fileUploadTrigger);
+$tools__toogleChat.off('click.toogleChatDisplay').on('click.toogleChatDisplay', toogleChatDisplay);
+$tools__toggleUsers.off('click.displayUserslist').one('click.displayUserslist', displayUserslist);
+$tools__toggleOfflineUsers.one('click.displayOfflineUserslist', displayOfflineUserslist);
+$tools__fileSend.off('click.fileUploadTrigger').on('click.fileUploadTrigger', fileUploadTrigger);
 $tools__streaming.off('click.displayStreamingOptions').on('click.displayStreamingOptions', displayStreamingOptions);
 $tools__games.off('click.displayGamesList').on('click.displayGamesList', displayGamesList);
 $tools__quotes.off('click.displayQuotes').on('click.displayQuotes', displayQuotes);
 $tools__weather.off('click.displayWeather').on('click.displayWeather', displayWeather);
-$tools__signOut.off('click.triggerSignOut').on('click.triggerSignOut', do_logout);
+$tools__signOut.off('click.do_logout').on('click.do_logout', do_logout);
 
 //          --/DOCUMENT/--         //
 if (document.addEventListener) document.addEventListener("visibilitychange", visibilityChanged);

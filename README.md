@@ -1,6 +1,6 @@
 Title:	 VIT Application Description  
 Authors: Victor Popescu  
-Document Version: 2.0  
+Document Version: 2.0.1  
 Last Update: July 2017  
 
 # Vit
