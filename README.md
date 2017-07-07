@@ -28,14 +28,36 @@ Thx <a href="https://github.com/jester6san" target="_blank">Jester</a> for the a
 - Socket.io (Client)
 
 ## Running the application 
-- Download the solution   
-- Open the terminal in the project folder    
 
-Then type:   
-- `npm install`    
-- `nodemon`   
-- access the page at `http://localhost:4400/` in your browser   
-- type anything into login form, it will prompt you to register automatically
+### First time run:
+**Option 1:**
+- Download the solution  
+- Go to project folder
+- Run `Vit Install.bat` file to download & install all dependencies (this will take a while)
+- After all done, close the current terminal and go to the next step: `"Not first time run"`  
+
+**Option 2:**
+- Download the solution  
+- Open terminal and navigate to project folder
+- Type `npm install` to download & install all dependencies (this will take a while)
+- After all done, close the current terminal and go to the next step: `"Not first time run"`
+   
+### Not first time run:  
+
+**Option 1:**  
+In the project folder:
+- Run `Vit Start.bat` file  
+    *Note: This will start the server and try to open chrome browser to localhost:4400, the application page*  
+
+**Option 2:**  
+In the project folder:  
+- open the terminal and type `nodemon`  
+- open your browser and access the page at `http://localhost:4400/` 
+
+
+### ***Important Note: Type any credentials into login form, it will prompt you to register automatically***
+
+
 
 # Features  
 A list of the widgets and what can they do.   

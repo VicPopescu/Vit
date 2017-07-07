@@ -492,6 +492,7 @@ var serverStatus = function () {
     console.log("\n(SERVER INFO): Vit started...");
     console.log("(SERVER INFO): PID " + process.pid);
     console.log("(SERVER INFO): PORT " + port);
+    console.log("(SERVER INFO): Potato running! All good!");
     console.log("\n");
 };
 

@@ -2,7 +2,7 @@
  *      Global Constants
  */
 const url = window.location.protocol + '//' + window.location.host;
-var opt = {
+const opt = {
     path: '/socket.io'
 };
 
@@ -855,11 +855,12 @@ var triggerMessageSend = function () {
 };
 
 /**
- * 
+ * Close current widget window
  */
 var closeWindow = function () {
 
     $(this).parent().fadeOut();
+    document.off('click');
 };
 
 /**
@@ -867,7 +868,7 @@ var closeWindow = function () {
  */
 
 /**
- * 
+ * Handle new connections
  */
 var onConnection =  function () {
     //we need potato connection here
