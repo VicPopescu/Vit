@@ -231,7 +231,7 @@ var on_userLogin = function (userDetails) {
                 pass: password,
                 role: role
             },
-            history: ApplicationHistory.getMessageHistory()
+            history: ApplicationHistory.getMessagesHistory(null, "preview")
         });
     } else {
         client.emit('login failed', {

@@ -412,15 +412,7 @@ var update_offlineUsersList = function (offlineUsers) {
  */
 var update_history = function (history) {
 
-    var startHistory;
-
-    if (history.length > 20) {
-        startHistory = history.length - 20;
-    } else {
-        startHistory = 0;
-    };
-
-    for (var i = startHistory; i < history.length; i++) {
+    for (var i = 0; i < history.length; i++) {
 
         $chat__allMessages.append(template_message(history[i]));
     };

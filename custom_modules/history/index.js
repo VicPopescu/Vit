@@ -17,9 +17,10 @@ var HistoryHandler = (function () {
     /**
      * 
      */
-    var getHistory = function (room) {
+    var getMessagesHistory = function (room, count) {
 
         var room = room || "defaultRoom";
+        var count = count || "preview";
 
         function fsCallback(err, history) {
             
@@ -30,6 +31,11 @@ var HistoryHandler = (function () {
         };
 
         var msgHistory = JSON.parse(fs.readFileSync(history_log, 'utf8', fsCallback))[room];
+
+        if(count === "preview" && msgHistory.length > 50){
+
+            msgHistory = msgHistory.slice(msgHistory.length - 50, msgHistory.length);
+        }
 
         return msgHistory;
     };
@@ -70,7 +76,7 @@ var HistoryHandler = (function () {
      */
     var PUBLIC_METHODS = {
         logMessageHistory: logHistory,
-        getMessageHistory: getHistory
+        getMessagesHistory: getMessagesHistory
     };
 
     return PUBLIC_METHODS;
