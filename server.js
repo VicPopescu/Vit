@@ -13,21 +13,18 @@ app.set('port', process.env.PORT || 4400);
 /**
  *      Custom modules
  */
-//profanity filter
+//Profanity filter
 const ProfanityFilter = require('./custom_modules/profanity_filter/index.js');
-//command handler
+//Command handler
 const CommandHandler = require('./custom_modules/command_handler/index.js');
-//server logging
+//Server logging
 const Log = require('./custom_modules/custom_logging/index.js');
-//users management
+//Users management
 const Users = require('./custom_modules/users/index.js');
 //Application History
 const ApplicationHistory = require('./custom_modules/history/index.js');
 //Helpers
 const Helpers = require('./custom_modules/helpers/index.js');
-
-
-
 
 
 /**
