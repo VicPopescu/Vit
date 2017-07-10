@@ -23,6 +23,8 @@ const Log = require('./custom_modules/custom_logging/index.js');
 const Users = require('./custom_modules/users/index.js');
 //Application History
 const ApplicationHistory = require('./custom_modules/history/index.js');
+//Helpers
+const Helpers = require('./custom_modules/helpers/index.js');
 
 
 
@@ -138,12 +140,12 @@ var on_userLogin = function (userDetails) {
 
         if (client.username) {
 
-            console.log(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Joined!');
-            Log.write(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Joined!');
+            console.log(Helpers.get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Joined!');
+            Log.write(Helpers.get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Joined!');
         } else {
 
-            console.log(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Joined!');
-            Log.write(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Joined!');
+            console.log(Helpers.get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Joined!');
+            Log.write(Helpers.get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Joined!');
         }
 
         client.broadcast.emit('new user login', {
@@ -182,12 +184,12 @@ var on_disconnect = function (stateInfo) {
 
     if (client.username) {
 
-        console.log(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Disconnected!');
-        Log.write(get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Disconnected!');
+        console.log(Helpers.get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Disconnected!');
+        Log.write(Helpers.get_date('date and hour') + ' (SERVER) [USER: ' + client.username + ']: ' + ' Disconnected!');
     } else {
 
-        console.log(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Disconnected!');
-        Log.write(get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Disconnected!');
+        console.log(Helpers.get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Disconnected!');
+        Log.write(Helpers.get_date('date and hour') + ' (SERVER) [USER: unknown]: ' + ' Disconnected!');
     }
 
     delete allClients[id];
@@ -215,7 +217,7 @@ var on_userMessage = function (o) {
     ApplicationHistory.logMessageHistory(null, o);
     //logs
     console.log('(CLIENT): [' + o.usr + ']: ' + o.msg);
-    Log.write(get_date('date and hour') + ' (CLIENT): [' + o.usr + ']: ' + o.msg);
+    Log.write(Helpers.get_date('date and hour') + ' (CLIENT): [' + o.usr + ']: ' + o.msg);
     //broadcast message to all users
     io.emit('new message', o);
 };
