@@ -55,10 +55,11 @@ var HistoryHandler = (function () {
 
             //parse JSON
             var parsedMessagesList = JSON.parse(messageHistory);
-
+            //limit the saved history to 500 messages
+            if(parsedMessagesList[room].length > 500) parsedMessagesList[room].shift();
+            //save the current message
             parsedMessagesList[room].push(message);
-
-            //stringify object
+            //stringify the object
             parsedMessagesList = JSON.stringify(parsedMessagesList);
             //write to file
             fs.writeFile(history_log, parsedMessagesList, 'utf8', function (err) {
