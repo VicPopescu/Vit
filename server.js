@@ -339,7 +339,7 @@ var on_activityDeclined = function (player1_id) {
 var get_activityPartialView = function (challengeDetails) {
 
     var client = this;
-    var activityView = get_ActivityViewById(challengeDetails.activity.id);
+    var activityView = Helpers.get_ActivityViewById(challengeDetails.activity.id);
 
     fs.readFile(__dirname + '/server/views/activities/' + activityView, 'utf8', function (err, html) {
 
