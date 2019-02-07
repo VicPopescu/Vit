@@ -51,7 +51,7 @@ In the project folder:
 
 **Option 2:**  
 In the project folder:  
-- open the terminal and type `nodemon`  
+- open the terminal and type `npx nodemon`  
 - open your browser and access the page at `http://localhost:4400/` 
 
 

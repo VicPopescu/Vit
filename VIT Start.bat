@@ -8,5 +8,5 @@ echo           "Potato : Starting Application Server using nodemon"
 echo --------------------------------------------------------------------------
 (echo. && echo.)
 start chrome.exe http://localhost:4400
-nodemon
+npx nodemon
 @echo on

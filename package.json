@@ -24,11 +24,11 @@
   },
   "homepage": "https://github.com/VicPopescu/Vit#readme",
   "dependencies": {
-    "chart.js": "2.5.0",
-    "express": "^4.15.3",
+    "chart.js": "^2.5.0",
+    "express": "^4.16.4",
     "jquery": "^3.2.1",
     "node-sass-middleware": "^0.11.0",
-    "nodemon": "^1.11.0",
-    "socket.io": "^2.0.2"
+    "nodemon": "^1.18.9",
+    "socket.io": "^2.2.0"
   }
 }
